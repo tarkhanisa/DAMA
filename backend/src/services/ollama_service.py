@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import re
 import shutil
@@ -50,6 +50,20 @@ class OllamaModel:
         }
 
 
+@dataclass(frozen=True, slots=True)
+class OllamaGeneration:
+    """A text generation result returned by Ollama."""
+
+    model: str
+    response: str
+
+    def to_dict(self) -> dict[str, str]:
+        return {
+            "model": self.model,
+            "response": self.response,
+        }
+
+
 class OllamaService:
     """Service layer for interacting with the local Ollama installation."""
 
@@ -57,9 +71,14 @@ class OllamaService:
 
     DEFAULT_TIMEOUT_SECONDS: ClassVar[int] = 10
     LIST_TIMEOUT_SECONDS: ClassVar[int] = 15
+    GENERATE_TIMEOUT_SECONDS: ClassVar[int] = 120
 
     VERSION_RE: ClassVar[re.Pattern[str]] = re.compile(
         r"\d+(?:\.\d+){1,3}(?:[-+][A-Za-z0-9_.-]+)?"
+    )
+
+    ANSI_ESCAPE_RE: ClassVar[re.Pattern[str]] = re.compile(
+        r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])"
     )
 
     CURRENT_LIST_ROW_RE: ClassVar[re.Pattern[str]] = re.compile(
@@ -125,6 +144,45 @@ class OllamaService:
         models = cls._parse_list_output(output)
 
         return [model.to_dict() for model in models]
+
+    @classmethod
+    def generate(
+        cls,
+        *,
+        model: str,
+        prompt: str,
+        timeout: int | None = None,
+    ) -> dict[str, str]:
+        """
+        Generate text using a real local Ollama model.
+
+        This method uses the real `ollama run <model> <prompt>` command.
+        It does not return mock data and does not use placeholders.
+        """
+        normalized_model = model.strip()
+        normalized_prompt = prompt.strip()
+
+        if not normalized_model:
+            raise ValueError("Model name cannot be empty.")
+
+        if not normalized_prompt:
+            raise ValueError("Prompt cannot be empty.")
+
+        command_timeout = timeout or cls.GENERATE_TIMEOUT_SECONDS
+
+        output = cls._run_ollama(
+            ["run", normalized_model, normalized_prompt],
+            timeout=command_timeout,
+        )
+
+        cleaned_output = cls._clean_output(output)
+
+        generation = OllamaGeneration(
+            model=normalized_model,
+            response=cleaned_output,
+        )
+
+        return generation.to_dict()
 
     @classmethod
     def _run_ollama(cls, args: list[str], *, timeout: int) -> str:
@@ -272,6 +330,11 @@ class OllamaService:
             )
 
         return None
+
+    @classmethod
+    def _clean_output(cls, value: str) -> str:
+        without_ansi = cls.ANSI_ESCAPE_RE.sub("", value)
+        return without_ansi.strip()
 
     @staticmethod
     def _normalize_spaces(value: str) -> str:
