@@ -105,6 +105,30 @@ def main() -> None:
     assert "models" in models_response.json()
     print("GET /models OK.")
 
+    print("Checking GET /providers...")
+    providers_response = client.get("/providers")
+    assert providers_response.status_code == 200
+    providers_json = providers_response.json()
+    assert "providers" in providers_json
+    provider_keys = {provider["key"] for provider in providers_json["providers"]}
+    assert "ollama" in provider_keys
+    print("GET /providers OK.")
+
+    print("Checking GET /providers/ollama...")
+    ollama_provider_response = client.get("/providers/ollama")
+    assert ollama_provider_response.status_code == 200
+    ollama_provider_json = ollama_provider_response.json()
+    assert ollama_provider_json["key"] == "ollama"
+    assert ollama_provider_json["supports_text_generation"] is True
+    assert ollama_provider_json["is_local"] is True
+    print("GET /providers/ollama OK.")
+
+    print("Checking invalid GET /providers/fake...")
+    invalid_provider_detail_response = client.get("/providers/fake")
+    assert invalid_provider_detail_response.status_code == 400
+    assert "fake" in str(invalid_provider_detail_response.json())
+    print("Invalid provider detail validation OK.")
+
     print("Checking GET /content/types...")
     content_types_response = client.get("/content/types")
     assert content_types_response.status_code == 200
@@ -259,3 +283,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
