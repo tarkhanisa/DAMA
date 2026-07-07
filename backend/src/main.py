@@ -8,6 +8,7 @@ from src.api import (
     content_generation_router,
     providers_router,
     system_router,
+    index_router,
 )
 from src.config import settings
 
@@ -16,6 +17,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
+app.include_router(index_router)
 app.include_router(health_router)
 app.include_router(content_router)
 app.include_router(models_router)
