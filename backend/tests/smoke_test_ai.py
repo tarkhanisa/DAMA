@@ -61,7 +61,7 @@ def main() -> None:
         content_type="product_description",
         provider="ollama",
         language="English",
-        tone="professional",
+        tone="persuasive",
         audience="content teams and creators",
         instructions="Write only one short paragraph.",
         timeout=120,
@@ -69,7 +69,7 @@ def main() -> None:
     content_prompt = ContentService.build_prompt(content_request)
     assert "DAMA AI content automation platform" in content_prompt
     assert "product_description" in content_prompt
-    assert "professional" in content_prompt
+    assert "persuasive" in content_prompt
     print("ContentService prompt building OK.")
 
     print("Checking AIService generation with direct prompt...")
@@ -173,7 +173,7 @@ def main() -> None:
     assert "DAMA_SMOKE_API_TEMPLATE_OK" in generate_template_json["response"]
     print("POST /generate template OK.")
 
-    print("Checking POST /content/generate...")
+    print("Checking POST /content/generate with content type defaults...")
     content_response = client.post(
         "/content/generate",
         json={
@@ -182,9 +182,7 @@ def main() -> None:
             "topic": "DAMA AI content automation platform",
             "content_type": "product_description",
             "language": "English",
-            "tone": "professional",
             "audience": "content teams",
-            "instructions": "Write only one short sentence.",
             "timeout": 120,
         },
     )
@@ -194,9 +192,26 @@ def main() -> None:
     assert content_json["model"] == TEST_MODEL
     assert content_json["content_type"] == "product_description"
     assert content_json["topic"] == "DAMA AI content automation platform"
+    assert content_json["tone"] == "persuasive"
     assert content_json["content"]
     assert content_json["prompt"]
-    print("POST /content/generate OK.")
+    assert "Write benefit-focused product copy" in content_json["prompt"]
+    print("POST /content/generate content type defaults OK.")
+
+    print("Checking invalid /content/generate content type...")
+    invalid_content_type_generation_response = client.post(
+        "/content/generate",
+        json={
+            "provider": "ollama",
+            "model": TEST_MODEL,
+            "topic": "DAMA",
+            "content_type": "fake_type",
+            "timeout": 120,
+        },
+    )
+    assert invalid_content_type_generation_response.status_code == 400
+    assert "fake_type" in str(invalid_content_type_generation_response.json())
+    print("Invalid /content/generate content type validation OK.")
 
     print("Checking /content/generate validation...")
     invalid_content_response = client.post(
@@ -204,7 +219,7 @@ def main() -> None:
         json={
             "provider": "ollama",
             "model": TEST_MODEL,
-            "content_type": "post",
+            "content_type": "product_description",
         },
     )
     assert invalid_content_response.status_code == 422
@@ -244,5 +259,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-
