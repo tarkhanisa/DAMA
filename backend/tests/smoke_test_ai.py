@@ -43,6 +43,17 @@ def main() -> None:
     assert rendered_prompt == "Reply with exactly this text: DAMA_SMOKE_PROMPT_SERVICE_OK"
     print("PromptService rendering OK.")
 
+    print("Checking ContentService content types...")
+    content_types = ContentService.list_content_types()
+    content_type_keys = {content_type["key"] for content_type in content_types}
+    assert "blog_post" in content_type_keys
+    assert "social_caption" in content_type_keys
+    assert "product_description" in content_type_keys
+    assert "video_script" in content_type_keys
+    assert "email_campaign" in content_type_keys
+    assert "press_release" in content_type_keys
+    print("ContentService content types OK.")
+
     print("Checking ContentService prompt building...")
     content_request = ContentGenerationRequest(
         model=TEST_MODEL,
@@ -93,6 +104,23 @@ def main() -> None:
     assert models_response.status_code == 200
     assert "models" in models_response.json()
     print("GET /models OK.")
+
+    print("Checking GET /content/types...")
+    content_types_response = client.get("/content/types")
+    assert content_types_response.status_code == 200
+    content_types_json = content_types_response.json()
+    assert "content_types" in content_types_json
+    api_content_type_keys = {
+        content_type["key"]
+        for content_type in content_types_json["content_types"]
+    }
+    assert "blog_post" in api_content_type_keys
+    assert "social_caption" in api_content_type_keys
+    assert "product_description" in api_content_type_keys
+    assert "video_script" in api_content_type_keys
+    assert "email_campaign" in api_content_type_keys
+    assert "press_release" in api_content_type_keys
+    print("GET /content/types OK.")
 
     print("Checking POST /generate with direct prompt...")
     generate_prompt_response = client.post(
