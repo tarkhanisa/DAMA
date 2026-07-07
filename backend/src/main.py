@@ -1,6 +1,12 @@
 ﻿from fastapi import FastAPI
 
-from src.api import health_router, content_router, models_router, generate_router
+from src.api import (
+    health_router,
+    content_router,
+    models_router,
+    generate_router,
+    content_generation_router,
+)
 from src.config import settings
 
 app = FastAPI(
@@ -12,6 +18,7 @@ app.include_router(health_router)
 app.include_router(content_router)
 app.include_router(models_router)
 app.include_router(generate_router)
+app.include_router(content_generation_router)
 
 
 @app.get("/")
