@@ -129,6 +129,19 @@ def main() -> None:
     assert "fake" in str(invalid_provider_detail_response.json())
     print("Invalid provider detail validation OK.")
 
+    print("Checking GET /system/status...")
+    system_status_response = client.get("/system/status")
+    assert system_status_response.status_code == 200
+    system_status_json = system_status_response.json()
+    assert system_status_json["status"] in {"healthy", "degraded"}
+    assert system_status_json["ollama"]["installed"] is True
+    assert system_status_json["ollama"]["version"]
+    assert system_status_json["ollama"]["local_models_count"] >= 1
+    assert system_status_json["providers_count"] >= 1
+    assert system_status_json["content_types_count"] >= 6
+    assert isinstance(system_status_json["errors"], list)
+    print("GET /system/status OK.")
+
     print("Checking GET /content/types...")
     content_types_response = client.get("/content/types")
     assert content_types_response.status_code == 200
@@ -283,4 +296,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
 
