@@ -122,6 +122,20 @@ def main() -> None:
     assert "press_release" in api_content_type_keys
     print("GET /content/types OK.")
 
+    print("Checking GET /content/types/social_caption...")
+    single_content_type_response = client.get("/content/types/social_caption")
+    assert single_content_type_response.status_code == 200
+    single_content_type_json = single_content_type_response.json()
+    assert single_content_type_json["key"] == "social_caption"
+    assert single_content_type_json["label"] == "Social caption"
+    print("GET /content/types/social_caption OK.")
+
+    print("Checking invalid GET /content/types/fake_type...")
+    invalid_content_type_response = client.get("/content/types/fake_type")
+    assert invalid_content_type_response.status_code == 400
+    assert "fake_type" in str(invalid_content_type_response.json())
+    print("Invalid single content type validation OK.")
+
     print("Checking POST /generate with direct prompt...")
     generate_prompt_response = client.post(
         "/generate",
@@ -230,3 +244,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
