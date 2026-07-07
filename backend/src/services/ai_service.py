@@ -1,9 +1,10 @@
 ﻿from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import ClassVar
+from typing import Any, ClassVar
 
 from src.services.ollama_service import OllamaService
+from src.services.prompt_service import PromptService
 
 
 class AIServiceError(RuntimeError):
@@ -12,6 +13,10 @@ class AIServiceError(RuntimeError):
 
 class UnsupportedAIProviderError(AIServiceError):
     """Raised when the requested AI provider is not supported."""
+
+
+class InvalidAIRequestError(AIServiceError):
+    """Raised when an AI request is invalid."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -56,19 +61,31 @@ class AIService:
         cls,
         *,
         model: str,
-        prompt: str,
+        prompt: str | None = None,
+        template: str | None = None,
+        variables: dict[str, Any] | None = None,
         provider: str | None = None,
         timeout: int | None = None,
     ) -> dict[str, str]:
         """
         Generate text using the selected AI provider.
 
+        Supported input modes:
+            - prompt
+            - template + variables
+
         Currently supported providers:
             - ollama
         """
+        final_prompt = cls._resolve_prompt(
+            prompt=prompt,
+            template=template,
+            variables=variables,
+        )
+
         request = cls._normalize_text_generation_request(
             model=model,
-            prompt=prompt,
+            prompt=final_prompt,
             provider=provider,
             timeout=timeout,
         )
@@ -90,6 +107,35 @@ class AIService:
 
         raise UnsupportedAIProviderError(
             f"Unsupported AI provider: {request.provider}"
+        )
+
+    @classmethod
+    def _resolve_prompt(
+        cls,
+        *,
+        prompt: str | None,
+        template: str | None,
+        variables: dict[str, Any] | None,
+    ) -> str:
+        has_prompt = prompt is not None and bool(prompt.strip())
+        has_template = template is not None and bool(template.strip())
+
+        if has_prompt and has_template:
+            raise InvalidAIRequestError(
+                "Use either prompt or template, not both."
+            )
+
+        if has_prompt:
+            return prompt.strip()
+
+        if has_template:
+            return PromptService.render_to_string(
+                template=template or "",
+                variables=variables or {},
+            )
+
+        raise InvalidAIRequestError(
+            "Either prompt or template must be provided."
         )
 
     @classmethod
