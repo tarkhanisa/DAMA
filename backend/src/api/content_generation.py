@@ -33,7 +33,7 @@ class ContentGenerateRequest(BaseModel):
     content_type: str = Field(..., min_length=1)
     provider: str | None = Field(default="ollama", min_length=1)
     language: str | None = Field(default="English", min_length=1)
-    tone: str | None = Field(default="professional", min_length=1)
+    tone: str | None = Field(default=None, min_length=1)
     audience: str | None = Field(default=None)
     instructions: str | None = Field(default=None)
     timeout: int | None = Field(default=None, ge=1, le=600)
@@ -86,7 +86,9 @@ def generate_content(request: ContentGenerateRequest) -> ContentGenerateResponse
     """
     Generate structured production content using ContentService.
 
-    This route is for content-oriented generation, not raw prompt completion.
+    Supports content-type defaults:
+        - default tone
+        - default instructions
     """
     try:
         result = ContentService.generate_content(
