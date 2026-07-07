@@ -1,7 +1,7 @@
 ﻿from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import ClassVar
 
 from src.services.ai_service import AIService
 from src.services.prompt_service import PromptService
@@ -13,6 +13,26 @@ class ContentServiceError(RuntimeError):
 
 class InvalidContentRequestError(ContentServiceError):
     """Raised when a content generation request is invalid."""
+
+
+@dataclass(frozen=True, slots=True)
+class ContentTypeDefinition:
+    """Supported content type metadata."""
+
+    key: str
+    label: str
+    description: str
+    default_tone: str
+    default_instructions: str
+
+    def to_dict(self) -> dict[str, str]:
+        return {
+            "key": self.key,
+            "label": self.label,
+            "description": self.description,
+            "default_tone": self.default_tone,
+            "default_instructions": self.default_instructions,
+        }
 
 
 @dataclass(frozen=True, slots=True)
@@ -59,11 +79,56 @@ class ContentGenerationResponse:
 class ContentService:
     """High-level service for AI content generation."""
 
-    DEFAULT_LANGUAGE = "English"
-    DEFAULT_TONE = "professional"
-    DEFAULT_PROVIDER = "ollama"
+    DEFAULT_LANGUAGE: ClassVar[str] = "English"
+    DEFAULT_TONE: ClassVar[str] = "professional"
+    DEFAULT_PROVIDER: ClassVar[str] = "ollama"
 
-    CONTENT_PROMPT_TEMPLATE = """
+    SUPPORTED_CONTENT_TYPES: ClassVar[tuple[ContentTypeDefinition, ...]] = (
+        ContentTypeDefinition(
+            key="blog_post",
+            label="Blog post",
+            description="Long-form article or blog content.",
+            default_tone="informative",
+            default_instructions="Write a clear, structured blog post with a useful introduction and practical body.",
+        ),
+        ContentTypeDefinition(
+            key="social_caption",
+            label="Social caption",
+            description="Short caption for social media posts.",
+            default_tone="friendly",
+            default_instructions="Write a concise social caption with a clear hook and natural call to action.",
+        ),
+        ContentTypeDefinition(
+            key="product_description",
+            label="Product description",
+            description="Product-focused copy for ecommerce or catalog pages.",
+            default_tone="persuasive",
+            default_instructions="Write benefit-focused product copy that is clear, accurate, and ready to publish.",
+        ),
+        ContentTypeDefinition(
+            key="video_script",
+            label="Video script",
+            description="Script for short videos, reels, explainers, or promotional clips.",
+            default_tone="engaging",
+            default_instructions="Write a structured video script with a hook, body, and closing line.",
+        ),
+        ContentTypeDefinition(
+            key="email_campaign",
+            label="Email campaign",
+            description="Marketing or announcement email content.",
+            default_tone="professional",
+            default_instructions="Write a complete email with a strong opening, useful body, and clear call to action.",
+        ),
+        ContentTypeDefinition(
+            key="press_release",
+            label="Press release",
+            description="Formal announcement for media or public communication.",
+            default_tone="formal",
+            default_instructions="Write a professional press release with a clear headline-style opening and factual structure.",
+        ),
+    )
+
+    CONTENT_PROMPT_TEMPLATE: ClassVar[str] = """
 You are DAMA, an AI content production assistant.
 
 Generate {content_type} content.
@@ -89,6 +154,30 @@ Requirements:
 - Do not mention that you are an AI unless explicitly requested.
 - Keep the output clean and ready to use.
 """.strip()
+
+    @classmethod
+    def list_content_types(cls) -> list[dict[str, str]]:
+        """Return supported standard content types."""
+        return [
+            content_type.to_dict()
+            for content_type in cls.SUPPORTED_CONTENT_TYPES
+        ]
+
+    @classmethod
+    def get_content_type(cls, key: str) -> dict[str, str]:
+        """Return a supported content type by key."""
+        normalized_key = key.strip()
+
+        if not normalized_key:
+            raise InvalidContentRequestError("Content type key cannot be empty.")
+
+        for content_type in cls.SUPPORTED_CONTENT_TYPES:
+            if content_type.key == normalized_key:
+                return content_type.to_dict()
+
+        raise InvalidContentRequestError(
+            f"Unsupported content type key: {normalized_key}"
+        )
 
     @classmethod
     def generate_content(
