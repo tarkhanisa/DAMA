@@ -20,6 +20,28 @@ class InvalidAIRequestError(AIServiceError):
 
 
 @dataclass(frozen=True, slots=True)
+class AIProviderDefinition:
+    """Supported AI provider metadata."""
+
+    key: str
+    label: str
+    description: str
+    supports_text_generation: bool
+    supports_image_generation: bool
+    is_local: bool
+
+    def to_dict(self) -> dict[str, str | bool]:
+        return {
+            "key": self.key,
+            "label": self.label,
+            "description": self.description,
+            "supports_text_generation": self.supports_text_generation,
+            "supports_image_generation": self.supports_image_generation,
+            "is_local": self.is_local,
+        }
+
+
+@dataclass(frozen=True, slots=True)
 class TextGenerationRequest:
     """Normalized text generation request for AI providers."""
 
@@ -54,7 +76,35 @@ class AIService:
     """
 
     DEFAULT_PROVIDER: ClassVar[str] = "ollama"
-    SUPPORTED_PROVIDERS: ClassVar[frozenset[str]] = frozenset({"ollama"})
+
+    SUPPORTED_PROVIDER_DEFINITIONS: ClassVar[tuple[AIProviderDefinition, ...]] = (
+        AIProviderDefinition(
+            key="ollama",
+            label="Ollama",
+            description="Local Ollama runtime for running local language models.",
+            supports_text_generation=True,
+            supports_image_generation=False,
+            is_local=True,
+        ),
+    )
+
+    SUPPORTED_PROVIDERS: ClassVar[frozenset[str]] = frozenset(
+        provider.key for provider in SUPPORTED_PROVIDER_DEFINITIONS
+    )
+
+    @classmethod
+    def list_providers(cls) -> list[dict[str, str | bool]]:
+        """Return supported AI providers."""
+        return [
+            provider.to_dict()
+            for provider in cls.SUPPORTED_PROVIDER_DEFINITIONS
+        ]
+
+    @classmethod
+    def get_provider(cls, key: str) -> dict[str, str | bool]:
+        """Return one supported AI provider by key."""
+        provider_definition = cls._get_provider_definition(key)
+        return provider_definition.to_dict()
 
     @classmethod
     def generate_text(
@@ -151,10 +201,7 @@ class AIService:
         normalized_model = model.strip()
         normalized_prompt = prompt.strip()
 
-        if normalized_provider not in cls.SUPPORTED_PROVIDERS:
-            raise UnsupportedAIProviderError(
-                f"Unsupported AI provider: {normalized_provider}"
-            )
+        cls._get_provider_definition(normalized_provider)
 
         if not normalized_model:
             raise ValueError("Model name cannot be empty.")
@@ -170,4 +217,19 @@ class AIService:
             model=normalized_model,
             prompt=normalized_prompt,
             timeout=timeout,
+        )
+
+    @classmethod
+    def _get_provider_definition(cls, key: str) -> AIProviderDefinition:
+        normalized_key = key.strip().lower()
+
+        if not normalized_key:
+            raise UnsupportedAIProviderError("AI provider key cannot be empty.")
+
+        for provider in cls.SUPPORTED_PROVIDER_DEFINITIONS:
+            if provider.key == normalized_key:
+                return provider
+
+        raise UnsupportedAIProviderError(
+            f"Unsupported AI provider: {normalized_key}"
         )
