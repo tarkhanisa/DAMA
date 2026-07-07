@@ -15,6 +15,18 @@ from src.services.ollama_service import (
 from src.services.prompt_service import PromptServiceError
 
 
+class ContentTypeResponse(BaseModel):
+    key: str
+    label: str
+    description: str
+    default_tone: str
+    default_instructions: str
+
+
+class ContentTypesResponse(BaseModel):
+    content_types: list[ContentTypeResponse]
+
+
 class ContentGenerateRequest(BaseModel):
     model: str = Field(..., min_length=1)
     topic: str = Field(..., min_length=1)
@@ -39,6 +51,18 @@ class ContentGenerateResponse(BaseModel):
 
 
 router = APIRouter(prefix="/content", tags=["content"])
+
+
+@router.get("/types", response_model=ContentTypesResponse)
+def list_content_types() -> ContentTypesResponse:
+    """
+    Return supported standard content types.
+
+    This endpoint exposes DAMA's content production catalog.
+    """
+    return ContentTypesResponse(
+        content_types=ContentService.list_content_types()
+    )
 
 
 @router.post("/generate", response_model=ContentGenerateResponse)
