@@ -10,7 +10,9 @@ from fastapi.testclient import TestClient
 
 from src.main import app
 from src.services.ai_service import AIService
+from src.services.content_service import ContentGenerationRequest, ContentService
 from src.services.ollama_service import OllamaService
+from src.services.prompt_service import PromptService
 
 
 TEST_MODEL = "qwen2.5-coder:7b"
@@ -33,17 +35,56 @@ def main() -> None:
     assert any(model["name"] == TEST_MODEL for model in models)
     print(f"Found model: {TEST_MODEL}")
 
-    print("Checking AIService generation...")
-    ai_result = AIService.generate_text(
+    print("Checking PromptService rendering...")
+    rendered_prompt = PromptService.render_to_string(
+        template="Reply with exactly this text: {text}",
+        variables={"text": "DAMA_SMOKE_PROMPT_SERVICE_OK"},
+    )
+    assert rendered_prompt == "Reply with exactly this text: DAMA_SMOKE_PROMPT_SERVICE_OK"
+    print("PromptService rendering OK.")
+
+    print("Checking ContentService prompt building...")
+    content_request = ContentGenerationRequest(
         model=TEST_MODEL,
-        prompt="Reply with exactly this text: DAMA_SMOKE_AI_OK",
+        topic="DAMA AI content automation platform",
+        content_type="one-paragraph product introduction",
+        provider="ollama",
+        language="English",
+        tone="professional",
+        audience="content teams and creators",
+        instructions="Write only one short paragraph.",
+        timeout=120,
+    )
+    content_prompt = ContentService.build_prompt(content_request)
+    assert "DAMA AI content automation platform" in content_prompt
+    assert "one-paragraph product introduction" in content_prompt
+    assert "professional" in content_prompt
+    print("ContentService prompt building OK.")
+
+    print("Checking AIService generation with direct prompt...")
+    ai_prompt_result = AIService.generate_text(
+        model=TEST_MODEL,
+        prompt="Reply with exactly this text: DAMA_SMOKE_AI_PROMPT_OK",
         provider="ollama",
         timeout=120,
     )
-    assert ai_result["provider"] == "ollama"
-    assert ai_result["model"] == TEST_MODEL
-    assert "DAMA_SMOKE_AI_OK" in ai_result["response"]
-    print("AIService generation OK.")
+    assert ai_prompt_result["provider"] == "ollama"
+    assert ai_prompt_result["model"] == TEST_MODEL
+    assert "DAMA_SMOKE_AI_PROMPT_OK" in ai_prompt_result["response"]
+    print("AIService direct prompt generation OK.")
+
+    print("Checking AIService generation with template...")
+    ai_template_result = AIService.generate_text(
+        model=TEST_MODEL,
+        template="Reply with exactly this text: {text}",
+        variables={"text": "DAMA_SMOKE_AI_TEMPLATE_OK"},
+        provider="ollama",
+        timeout=120,
+    )
+    assert ai_template_result["provider"] == "ollama"
+    assert ai_template_result["model"] == TEST_MODEL
+    assert "DAMA_SMOKE_AI_TEMPLATE_OK" in ai_template_result["response"]
+    print("AIService template generation OK.")
 
     client = TestClient(app)
 
@@ -53,22 +94,96 @@ def main() -> None:
     assert "models" in models_response.json()
     print("GET /models OK.")
 
-    print("Checking POST /generate...")
-    generate_response = client.post(
+    print("Checking POST /generate with direct prompt...")
+    generate_prompt_response = client.post(
         "/generate",
         json={
             "provider": "ollama",
             "model": TEST_MODEL,
-            "prompt": "Reply with exactly this text: DAMA_SMOKE_API_OK",
+            "prompt": "Reply with exactly this text: DAMA_SMOKE_API_PROMPT_OK",
             "timeout": 120,
         },
     )
-    assert generate_response.status_code == 200
-    generate_json = generate_response.json()
-    assert generate_json["provider"] == "ollama"
-    assert generate_json["model"] == TEST_MODEL
-    assert "DAMA_SMOKE_API_OK" in generate_json["response"]
-    print("POST /generate OK.")
+    assert generate_prompt_response.status_code == 200
+    generate_prompt_json = generate_prompt_response.json()
+    assert generate_prompt_json["provider"] == "ollama"
+    assert generate_prompt_json["model"] == TEST_MODEL
+    assert "DAMA_SMOKE_API_PROMPT_OK" in generate_prompt_json["response"]
+    print("POST /generate direct prompt OK.")
+
+    print("Checking POST /generate with template...")
+    generate_template_response = client.post(
+        "/generate",
+        json={
+            "provider": "ollama",
+            "model": TEST_MODEL,
+            "template": "Reply with exactly this text: {text}",
+            "variables": {
+                "text": "DAMA_SMOKE_API_TEMPLATE_OK",
+            },
+            "timeout": 120,
+        },
+    )
+    assert generate_template_response.status_code == 200
+    generate_template_json = generate_template_response.json()
+    assert generate_template_json["provider"] == "ollama"
+    assert generate_template_json["model"] == TEST_MODEL
+    assert "DAMA_SMOKE_API_TEMPLATE_OK" in generate_template_json["response"]
+    print("POST /generate template OK.")
+
+    print("Checking POST /content/generate...")
+    content_response = client.post(
+        "/content/generate",
+        json={
+            "provider": "ollama",
+            "model": TEST_MODEL,
+            "topic": "DAMA AI content automation platform",
+            "content_type": "one-sentence product description",
+            "language": "English",
+            "tone": "professional",
+            "audience": "content teams",
+            "instructions": "Write only one short sentence.",
+            "timeout": 120,
+        },
+    )
+    assert content_response.status_code == 200
+    content_json = content_response.json()
+    assert content_json["provider"] == "ollama"
+    assert content_json["model"] == TEST_MODEL
+    assert content_json["content_type"] == "one-sentence product description"
+    assert content_json["topic"] == "DAMA AI content automation platform"
+    assert content_json["content"]
+    assert content_json["prompt"]
+    print("POST /content/generate OK.")
+
+    print("Checking /content/generate validation...")
+    invalid_content_response = client.post(
+        "/content/generate",
+        json={
+            "provider": "ollama",
+            "model": TEST_MODEL,
+            "content_type": "post",
+        },
+    )
+    assert invalid_content_response.status_code == 422
+    print("/content/generate validation OK.")
+
+    print("Checking missing template variable validation...")
+    missing_variable_response = client.post(
+        "/generate",
+        json={
+            "provider": "ollama",
+            "model": TEST_MODEL,
+            "template": "Write about {topic} in {tone} tone.",
+            "variables": {
+                "topic": "DAMA",
+            },
+            "timeout": 120,
+        },
+    )
+    assert missing_variable_response.status_code == 400
+    assert "tone" in str(missing_variable_response.json())
+    print("Missing template variable validation OK.")
 
     print("Checking unsupported provider validation...")
     invalid_provider_response = client.post(
