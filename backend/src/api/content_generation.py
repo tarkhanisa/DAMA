@@ -65,6 +65,22 @@ def list_content_types() -> ContentTypesResponse:
     )
 
 
+@router.get("/types/{key}", response_model=ContentTypeResponse)
+def get_content_type(key: str) -> ContentTypeResponse:
+    """
+    Return one supported content type by key.
+    """
+    try:
+        content_type = ContentService.get_content_type(key)
+    except InvalidContentRequestError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        ) from exc
+
+    return ContentTypeResponse(**content_type)
+
+
 @router.post("/generate", response_model=ContentGenerateResponse)
 def generate_content(request: ContentGenerateRequest) -> ContentGenerateResponse:
     """
