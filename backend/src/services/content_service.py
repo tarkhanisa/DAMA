@@ -80,7 +80,6 @@ class ContentService:
     """High-level service for AI content generation."""
 
     DEFAULT_LANGUAGE: ClassVar[str] = "English"
-    DEFAULT_TONE: ClassVar[str] = "professional"
     DEFAULT_PROVIDER: ClassVar[str] = "ollama"
 
     SUPPORTED_CONTENT_TYPES: ClassVar[tuple[ContentTypeDefinition, ...]] = (
@@ -131,7 +130,16 @@ class ContentService:
     CONTENT_PROMPT_TEMPLATE: ClassVar[str] = """
 You are DAMA, an AI content production assistant.
 
-Generate {content_type} content.
+Generate content using the following production brief.
+
+Content type key:
+{content_type}
+
+Content type label:
+{content_type_label}
+
+Content type description:
+{content_type_description}
 
 Topic:
 {topic}
@@ -145,7 +153,7 @@ Tone:
 Audience:
 {audience}
 
-Additional instructions:
+Instructions:
 {instructions}
 
 Requirements:
@@ -166,18 +174,7 @@ Requirements:
     @classmethod
     def get_content_type(cls, key: str) -> dict[str, str]:
         """Return a supported content type by key."""
-        normalized_key = key.strip()
-
-        if not normalized_key:
-            raise InvalidContentRequestError("Content type key cannot be empty.")
-
-        for content_type in cls.SUPPORTED_CONTENT_TYPES:
-            if content_type.key == normalized_key:
-                return content_type.to_dict()
-
-        raise InvalidContentRequestError(
-            f"Unsupported content type key: {normalized_key}"
-        )
+        return cls._get_content_type_definition(key).to_dict()
 
     @classmethod
     def generate_content(
@@ -231,15 +228,21 @@ Requirements:
     @classmethod
     def build_prompt(cls, request: ContentGenerationRequest) -> str:
         """Build the final content prompt from a normalized request."""
+        content_type_definition = cls._get_content_type_definition(
+            request.content_type
+        )
+
         return PromptService.render_to_string(
             template=cls.CONTENT_PROMPT_TEMPLATE,
             variables={
-                "content_type": request.content_type,
+                "content_type": content_type_definition.key,
+                "content_type_label": content_type_definition.label,
+                "content_type_description": content_type_definition.description,
                 "topic": request.topic,
                 "language": request.language,
                 "tone": request.tone,
                 "audience": request.audience or "General audience",
-                "instructions": request.instructions or "No additional instructions.",
+                "instructions": request.instructions or content_type_definition.default_instructions,
             },
         )
 
@@ -259,12 +262,24 @@ Requirements:
     ) -> ContentGenerationRequest:
         normalized_model = model.strip()
         normalized_topic = topic.strip()
-        normalized_content_type = content_type.strip()
         normalized_provider = (provider or cls.DEFAULT_PROVIDER).strip().lower()
         normalized_language = (language or cls.DEFAULT_LANGUAGE).strip()
-        normalized_tone = (tone or cls.DEFAULT_TONE).strip()
         normalized_audience = audience.strip() if audience else None
-        normalized_instructions = instructions.strip() if instructions else None
+
+        content_type_definition = cls._get_content_type_definition(content_type)
+        normalized_content_type = content_type_definition.key
+
+        normalized_tone = (
+            tone.strip()
+            if tone and tone.strip()
+            else content_type_definition.default_tone
+        )
+
+        normalized_instructions = (
+            instructions.strip()
+            if instructions and instructions.strip()
+            else content_type_definition.default_instructions
+        )
 
         if not normalized_model:
             raise InvalidContentRequestError("Model name cannot be empty.")
@@ -272,17 +287,11 @@ Requirements:
         if not normalized_topic:
             raise InvalidContentRequestError("Topic cannot be empty.")
 
-        if not normalized_content_type:
-            raise InvalidContentRequestError("Content type cannot be empty.")
-
         if not normalized_provider:
             raise InvalidContentRequestError("Provider cannot be empty.")
 
         if not normalized_language:
             raise InvalidContentRequestError("Language cannot be empty.")
-
-        if not normalized_tone:
-            raise InvalidContentRequestError("Tone cannot be empty.")
 
         if timeout is not None and timeout <= 0:
             raise InvalidContentRequestError("Timeout must be greater than zero.")
@@ -297,4 +306,19 @@ Requirements:
             audience=normalized_audience,
             instructions=normalized_instructions,
             timeout=timeout,
+        )
+
+    @classmethod
+    def _get_content_type_definition(cls, key: str) -> ContentTypeDefinition:
+        normalized_key = key.strip().lower()
+
+        if not normalized_key:
+            raise InvalidContentRequestError("Content type key cannot be empty.")
+
+        for content_type in cls.SUPPORTED_CONTENT_TYPES:
+            if content_type.key == normalized_key:
+                return content_type
+
+        raise InvalidContentRequestError(
+            f"Unsupported content type key: {normalized_key}"
         )
