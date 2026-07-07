@@ -58,7 +58,7 @@ def main() -> None:
     content_request = ContentGenerationRequest(
         model=TEST_MODEL,
         topic="DAMA AI content automation platform",
-        content_type="one-paragraph product introduction",
+        content_type="product_description",
         provider="ollama",
         language="English",
         tone="professional",
@@ -68,7 +68,7 @@ def main() -> None:
     )
     content_prompt = ContentService.build_prompt(content_request)
     assert "DAMA AI content automation platform" in content_prompt
-    assert "one-paragraph product introduction" in content_prompt
+    assert "product_description" in content_prompt
     assert "professional" in content_prompt
     print("ContentService prompt building OK.")
 
@@ -180,7 +180,7 @@ def main() -> None:
             "provider": "ollama",
             "model": TEST_MODEL,
             "topic": "DAMA AI content automation platform",
-            "content_type": "one-sentence product description",
+            "content_type": "product_description",
             "language": "English",
             "tone": "professional",
             "audience": "content teams",
@@ -192,7 +192,7 @@ def main() -> None:
     content_json = content_response.json()
     assert content_json["provider"] == "ollama"
     assert content_json["model"] == TEST_MODEL
-    assert content_json["content_type"] == "one-sentence product description"
+    assert content_json["content_type"] == "product_description"
     assert content_json["topic"] == "DAMA AI content automation platform"
     assert content_json["content"]
     assert content_json["prompt"]
@@ -244,4 +244,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
 
