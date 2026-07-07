@@ -6,6 +6,7 @@ from src.api import (
     models_router,
     generate_router,
     content_generation_router,
+    providers_router,
 )
 from src.config import settings
 
@@ -19,6 +20,7 @@ app.include_router(content_router)
 app.include_router(models_router)
 app.include_router(generate_router)
 app.include_router(content_generation_router)
+app.include_router(providers_router)
 
 
 @app.get("/")
