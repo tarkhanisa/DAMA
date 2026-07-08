@@ -413,3 +413,48 @@ Suggested scope:
 - project status updates
 - content counts per project
 - workflow-ready project state
+
+## Mega Pack A Completed
+
+Name:
+
+Project Workflow Core
+
+Updated files:
+
+- backend/src/services/project_service.py
+- backend/src/repositories/project_repository.py
+- backend/src/api/projects.py
+- backend/src/api/content_generation.py
+- backend/src/api/index.py
+- scripts/backend-check.ps1
+- docs/backend-api.md
+- docs/project-status.md
+
+Added files:
+
+- backend/tests/smoke_test_generation_storage.py
+- backend/tests/smoke_test_project_workflow.py
+
+Added behavior:
+
+- POST /content/generate can save output into content assets
+- GET /projects/{project_id}/content-assets
+- GET /projects/{project_id}/summary
+- PATCH /projects/{project_id}/status
+
+Purpose:
+
+Move DAMA from simple storage into project workflow core.
+
+Next recommended Mega Pack:
+
+Mega Pack B: Content Workflow Automation
+
+Suggested scope:
+
+- generate and save content through project-aware workflow endpoint
+- create content asset drafts from project type defaults
+- add project output plan endpoint
+- add batch generation preparation
+- avoid multi-agent logic for now

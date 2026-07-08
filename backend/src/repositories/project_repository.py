@@ -7,19 +7,17 @@ from src.database.sqlite_database import get_connection, initialize_database
 
 
 class ProjectRepositoryError(RuntimeError):
-    """Base exception for project repository failures."""
+    pass
 
 
 class ProjectRepository:
-    """SQLite-backed project repository."""
-
     def __init__(self) -> None:
         initialize_database()
 
     def create_project(self, project: dict[str, Any]) -> dict[str, Any]:
         with get_connection() as connection:
             connection.execute(
-                """
+                '''
                 INSERT INTO projects (
                     id,
                     name,
@@ -33,7 +31,7 @@ class ProjectRepository:
                     updated_at
                 )
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """,
+                ''',
                 (
                     project["id"],
                     project["name"],
@@ -61,7 +59,7 @@ class ProjectRepository:
 
         with get_connection() as connection:
             rows = connection.execute(
-                """
+                '''
                 SELECT
                     id,
                     name,
@@ -77,7 +75,7 @@ class ProjectRepository:
                 ORDER BY created_at DESC
                 LIMIT ?
                 OFFSET ?
-                """,
+                ''',
                 (safe_limit, safe_offset),
             ).fetchall()
 
@@ -86,7 +84,7 @@ class ProjectRepository:
     def get_project(self, project_id: str) -> dict[str, Any] | None:
         with get_connection() as connection:
             row = connection.execute(
-                """
+                '''
                 SELECT
                     id,
                     name,
@@ -100,7 +98,7 @@ class ProjectRepository:
                     updated_at
                 FROM projects
                 WHERE id = ?
-                """,
+                ''',
                 (project_id,),
             ).fetchone()
 
@@ -108,6 +106,25 @@ class ProjectRepository:
             return None
 
         return self._row_to_project(row)
+
+    def update_project_status(
+        self,
+        *,
+        project_id: str,
+        status: str,
+        updated_at: str,
+    ) -> dict[str, Any] | None:
+        with get_connection() as connection:
+            connection.execute(
+                '''
+                UPDATE projects
+                SET status = ?, updated_at = ?
+                WHERE id = ?
+                ''',
+                (status, updated_at, project_id),
+            )
+
+        return self.get_project(project_id)
 
     @staticmethod
     def _row_to_project(row: Any) -> dict[str, Any]:

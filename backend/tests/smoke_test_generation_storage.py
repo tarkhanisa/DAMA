@@ -73,6 +73,13 @@ def main() -> None:
     assert loaded_asset["project_id"] == project_id
     print("Saved asset load OK.")
 
+    print("Checking project content assets include saved generation...")
+    project_assets_response = client.get(f"/projects/{project_id}/content-assets")
+    assert project_assets_response.status_code == 200, project_assets_response.text
+    project_assets = project_assets_response.json()["content_assets"]
+    assert any(asset["id"] == asset_id for asset in project_assets)
+    print("Project content assets include saved generation OK.")
+
     print("Checking save_output=true without project_id...")
     invalid_response = client.post(
         "/content/generate",

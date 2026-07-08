@@ -118,6 +118,7 @@ def generate_content(request: ContentGenerateRequest) -> dict[str, Any]:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
     generation_data = _to_dict(generation_result)
+
     response_text = str(generation_data.get("response", "")).strip()
     prompt_text = str(generation_data.get("prompt", "")).strip()
 

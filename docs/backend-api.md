@@ -374,3 +374,64 @@ Example behavior:
 Current source value for saved generations:
 
 ai_generated
+
+## Project Workflow Core
+
+DAMA now supports project-level workflow operations.
+
+Project workflow endpoints:
+
+GET /projects/{project_id}/content-assets
+
+Returns content assets connected to one project.
+
+GET /projects/{project_id}/summary
+
+Returns a project summary with:
+
+- total_assets
+- assets_by_status
+- assets_by_content_type
+
+PATCH /projects/{project_id}/status
+
+Updates project workflow status.
+
+Allowed project statuses:
+
+- draft
+- active
+- review
+- paused
+- completed
+- archived
+
+## Generation Storage
+
+POST /content/generate can optionally save generated output as a project-linked content asset.
+
+Additional request fields:
+
+project_id
+
+Required when save_output is true.
+
+save_output
+
+Boolean. When true, generated content is stored as a content asset.
+
+asset_title
+
+Optional title for the saved content asset.
+
+asset_status
+
+Optional status for the saved content asset.
+
+asset_metadata
+
+Optional metadata dictionary for the saved content asset.
+
+Current source value for saved generations:
+
+ai_generated

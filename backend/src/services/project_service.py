@@ -8,11 +8,11 @@ from uuid import uuid4
 
 
 class ProjectServiceError(RuntimeError):
-    """Base exception for project service failures."""
+    pass
 
 
 class InvalidProjectRequestError(ProjectServiceError):
-    """Raised when a project request is invalid."""
+    pass
 
 
 @dataclass(frozen=True, slots=True)
@@ -65,6 +65,15 @@ class ProjectMetadata:
 
 class ProjectService:
     DEFAULT_STATUS: ClassVar[str] = "draft"
+
+    ALLOWED_STATUSES: ClassVar[set[str]] = {
+        "draft",
+        "active",
+        "review",
+        "paused",
+        "completed",
+        "archived",
+    }
 
     SUPPORTED_PROJECT_TYPES: ClassVar[tuple[ProjectTypeDefinition, ...]] = (
         ProjectTypeDefinition(
@@ -158,6 +167,17 @@ class ProjectService:
         ).to_dict()
 
     @classmethod
+    def normalize_status(cls, status: str) -> str:
+        normalized_status = cls._normalize_key(status, "Project status")
+
+        if normalized_status not in cls.ALLOWED_STATUSES:
+            raise InvalidProjectRequestError(
+                f"Unsupported project status: {normalized_status}"
+            )
+
+        return normalized_status
+
+    @classmethod
     def _get_project_type_definition(cls, key: str) -> ProjectTypeDefinition:
         normalized_key = cls._normalize_required_text(key, "Project type key").lower()
 
@@ -194,6 +214,17 @@ class ProjectService:
     @staticmethod
     def _normalize_required_text(value: str, field_name: str) -> str:
         normalized_value = value.strip()
+
+        if not normalized_value:
+            raise InvalidProjectRequestError(f"{field_name} cannot be empty.")
+
+        return normalized_value
+
+    @classmethod
+    def _normalize_key(cls, value: str, field_name: str) -> str:
+        normalized_value = cls._normalize_required_text(value, field_name).lower()
+        normalized_value = re.sub(r"[^a-z0-9_]+", "_", normalized_value)
+        normalized_value = normalized_value.strip("_")
 
         if not normalized_value:
             raise InvalidProjectRequestError(f"{field_name} cannot be empty.")
