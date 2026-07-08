@@ -1,6 +1,7 @@
 import { ActionCard } from "../../../components/action-card";
 import { DataTable, StatusPill } from "../../../components/data-table";
 import { JsonPreview } from "../../../components/json-preview";
+import { PageHeader } from "../../../components/page-header";
 import { StatCard } from "../../../components/stat-card";
 import { DAMA_API_BASE_URL, damaApi } from "../../../lib/api-client";
 import type { OutputPlanResponse, PlannedOutput, Project } from "../../../lib/types";
@@ -51,22 +52,23 @@ export default async function WorkflowProjectPage({ params }: WorkflowProjectPag
 
   return (
     <main className="page-shell">
-      <section className="page-heading">
-        <p className="eyebrow">Project Workflow</p>
-        <h1>{project.name}</h1>
-        <p className="lead">
-          Output planning and safe workflow operations for this project.
-        </p>
-
+      <PageHeader
+        eyebrow="Project Workflow"
+        title={project.name}
+        lead="Output planning and safe workflow operations for this project."
+      >
         <div className="actions">
           <a href={`${DAMA_API_BASE_URL}/workflows/projects/${project.id}/output-plan`}>
             Raw Output Plan
+          </a>
+          <a href={`/workflows/${project.id}/dry-run`}>
+            Dry Run UI
           </a>
           <a href={`${DAMA_API_BASE_URL}/projects/${project.id}/summary`}>
             Project Summary
           </a>
         </div>
-      </section>
+      </PageHeader>
 
       <section className="stats-grid">
         <StatCard label="Planned Outputs" value={plannedOutputs.length} helper="From project content types" />
@@ -83,10 +85,10 @@ export default async function WorkflowProjectPage({ params }: WorkflowProjectPag
           label="POST endpoint"
         />
         <ActionCard
-          title="Batch Generate"
-          description="Run batch generation with dry_run=true first to avoid unsafe execution."
-          href={`${DAMA_API_BASE_URL}/workflows/projects/${project.id}/batch-generate`}
-          label="POST endpoint"
+          title="Batch Dry Run UI"
+          description="Preview planned outputs without generating or saving content."
+          href={`/workflows/${project.id}/dry-run`}
+          label="Open UI"
         />
         <ActionCard
           title="Export Bundle"

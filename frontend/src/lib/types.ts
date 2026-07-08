@@ -21,6 +21,14 @@ export type Project = {
   updated_at?: string;
 };
 
+export type CreateProjectInput = {
+  name: string;
+  project_type: string;
+  language?: string;
+  description?: string;
+  content_types?: string[];
+};
+
 export type ContentAsset = {
   id: string;
   project_id: string;
@@ -32,6 +40,16 @@ export type ContentAsset = {
   metadata?: Record<string, unknown>;
   created_at?: string;
   updated_at?: string;
+};
+
+export type CreateContentAssetInput = {
+  project_id: string;
+  content_type: string;
+  title: string;
+  body: string;
+  status?: string;
+  source?: string;
+  metadata?: Record<string, unknown>;
 };
 
 export type ProjectSummary = {
@@ -60,6 +78,23 @@ export type PlannedOutput = {
 export type OutputPlanResponse = {
   project_id: string;
   planned_outputs: PlannedOutput[];
+};
+
+export type BatchGenerateDryRunInput = {
+  model: string;
+  topic?: string;
+  content_types?: string[];
+  max_outputs?: number;
+  dry_run: true;
+};
+
+export type BatchGenerateResponse = {
+  project_id: string;
+  dry_run: boolean;
+  planned_count: number;
+  generated_count: number;
+  planned_outputs: PlannedOutput[];
+  saved_content_assets: ContentAsset[];
 };
 
 export type MaintenanceStatus = {

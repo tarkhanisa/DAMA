@@ -1,4 +1,5 @@
 import { DataTable, StatusPill } from "../../components/data-table";
+import { PageHeader } from "../../components/page-header";
 import { StatCard } from "../../components/stat-card";
 import { damaApi } from "../../lib/api-client";
 import type { Project } from "../../lib/types";
@@ -16,13 +17,15 @@ export default async function ProjectsPage() {
 
   return (
     <main className="page-shell">
-      <section className="page-heading">
-        <p className="eyebrow">Projects</p>
-        <h1>Project workspace</h1>
-        <p className="lead">
-          Browse DAMA projects and open project summaries for content workflow management.
-        </p>
-      </section>
+      <PageHeader
+        eyebrow="Projects"
+        title="Project workspace"
+        lead="Browse DAMA projects and open project summaries for content workflow management."
+      >
+        <div className="actions">
+          <a href="/projects/new">Create project</a>
+        </div>
+      </PageHeader>
 
       <section className="stats-grid">
         <StatCard label="Projects" value={projects.length} helper="Loaded from backend" />

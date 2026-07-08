@@ -1,4 +1,5 @@
 import { DataTable, StatusPill } from "../../components/data-table";
+import { PageHeader } from "../../components/page-header";
 import { StatCard } from "../../components/stat-card";
 import { damaApi } from "../../lib/api-client";
 import type { ContentAsset } from "../../lib/types";
@@ -16,13 +17,15 @@ export default async function ContentAssetsPage() {
 
   return (
     <main className="page-shell">
-      <section className="page-heading">
-        <p className="eyebrow">Content Assets</p>
-        <h1>Content asset library</h1>
-        <p className="lead">
-          Browse manual and AI-generated content assets stored inside DAMA.
-        </p>
-      </section>
+      <PageHeader
+        eyebrow="Content Assets"
+        title="Content asset library"
+        lead="Browse manual and AI-generated content assets stored inside DAMA."
+      >
+        <div className="actions">
+          <a href="/content-assets/new">Create content asset</a>
+        </div>
+      </PageHeader>
 
       <section className="stats-grid">
         <StatCard label="Assets" value={assets.length} helper="Total loaded assets" />

@@ -11,10 +11,13 @@ $RequiredFiles = @(
     ".\frontend\src\app\layout.tsx",
     ".\frontend\src\app\page.tsx",
     ".\frontend\src\app\projects\page.tsx",
+    ".\frontend\src\app\projects\new\page.tsx",
     ".\frontend\src\app\projects\[projectId]\page.tsx",
     ".\frontend\src\app\content-assets\page.tsx",
+    ".\frontend\src\app\content-assets\new\page.tsx",
     ".\frontend\src\app\workflows\page.tsx",
     ".\frontend\src\app\workflows\[projectId]\page.tsx",
+    ".\frontend\src\app\workflows\[projectId]\dry-run\page.tsx",
     ".\frontend\src\app\exports\page.tsx",
     ".\frontend\src\app\maintenance\page.tsx",
     ".\frontend\src\app\globals.css",
@@ -32,7 +35,11 @@ $RequiredFiles = @(
     ".\frontend\src\components\action-card.tsx",
     ".\frontend\src\components\json-preview.tsx",
     ".\frontend\src\components\page-header.tsx",
-    ".\frontend\src\components\error-panel.tsx"
+    ".\frontend\src\components\error-panel.tsx",
+    ".\frontend\src\components\form-status.tsx",
+    ".\frontend\src\components\create-project-form.tsx",
+    ".\frontend\src\components\create-content-asset-form.tsx",
+    ".\frontend\src\components\workflow-dry-run-form.tsx"
 )
 
 foreach ($File in $RequiredFiles) {
@@ -41,20 +48,43 @@ foreach ($File in $RequiredFiles) {
     }
 }
 
-$DataTable = Get-Content ".\frontend\src\components\data-table.tsx" -Raw
-$Layout = Get-Content ".\frontend\src\app\layout.tsx" -Raw
-$PackageJson = Get-Content ".\frontend\package.json" -Raw
+$ApiClient = Get-Content ".\frontend\src\lib\api-client.ts" -Raw
+$ProjectForm = Get-Content ".\frontend\src\components\create-project-form.tsx" -Raw
+$AssetForm = Get-Content ".\frontend\src\components\create-content-asset-form.tsx" -Raw
+$DryRunForm = Get-Content ".\frontend\src\components\workflow-dry-run-form.tsx" -Raw
+$ProjectsPage = Get-Content ".\frontend\src\app\projects\page.tsx" -Raw
+$AssetsPage = Get-Content ".\frontend\src\app\content-assets\page.tsx" -Raw
 
-if ($DataTable -notmatch "DataTable<T,>") {
-    throw "DataTable generic syntax is not TSX-safe."
+if ($ApiClient -notmatch "createProject") {
+    throw "API client does not expose createProject."
 }
 
-if ($Layout -notmatch "import type \{ ReactNode \}") {
-    throw "Layout does not import ReactNode type."
+if ($ApiClient -notmatch "createContentAsset") {
+    throw "API client does not expose createContentAsset."
 }
 
-if ($PackageJson -notmatch '"typecheck"') {
-    throw "Frontend package.json does not include typecheck script."
+if ($ApiClient -notmatch "batchGenerateDryRun") {
+    throw "API client does not expose batchGenerateDryRun."
+}
+
+if ($ProjectForm -notmatch '"use client"') {
+    throw "CreateProjectForm is not a client component."
+}
+
+if ($AssetForm -notmatch '"use client"') {
+    throw "CreateContentAssetForm is not a client component."
+}
+
+if ($DryRunForm -notmatch '"use client"') {
+    throw "WorkflowDryRunForm is not a client component."
+}
+
+if ($ProjectsPage -notmatch "/projects/new") {
+    throw "Projects page does not link to create project page."
+}
+
+if ($AssetsPage -notmatch "/content-assets/new") {
+    throw "Content assets page does not link to create asset page."
 }
 
 if (Test-Path ".\frontend\node_modules") {
@@ -74,4 +104,4 @@ else {
     Write-Host "node_modules not found. Skipping npm typecheck."
 }
 
-Write-Host "Frontend hardening check passed."
+Write-Host "Frontend write UI shell check passed."

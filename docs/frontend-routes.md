@@ -64,3 +64,15 @@ Added routes:
 Purpose:
 
 Expose workflow planning, export status, and maintenance status in the frontend shell.
+
+## Super Pack M Routes
+
+Added routes:
+
+    /projects/new
+    /content-assets/new
+    /workflows/[projectId]/dry-run
+
+Purpose:
+
+Allow safe creation of projects, safe creation of manual content assets, and safe workflow dry-run previews.

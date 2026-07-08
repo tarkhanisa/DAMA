@@ -1,5 +1,9 @@
 import type {
+  BatchGenerateDryRunInput,
+  BatchGenerateResponse,
   ContentAsset,
+  CreateContentAssetInput,
+  CreateProjectInput,
   DashboardSummary,
   FrontendContract,
   MaintenanceStatus,
@@ -12,7 +16,7 @@ import type {
 export const DAMA_API_BASE_URL =
   process.env.NEXT_PUBLIC_DAMA_API_BASE_URL ?? "http://127.0.0.1:8000";
 
-async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
+export async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${DAMA_API_BASE_URL}${path}`, {
     ...init,
     headers: {
@@ -77,6 +81,13 @@ export const damaApi = {
     return normalizeListResponse<Project>(data, ["projects", "items", "results"]);
   },
 
+  createProject(input: CreateProjectInput): Promise<Project> {
+    return requestJson<Project>("/projects", {
+      method: "POST",
+      body: JSON.stringify(input)
+    });
+  },
+
   project(projectId: string): Promise<Project> {
     return requestJson<Project>(`/projects/${projectId}`);
   },
@@ -97,6 +108,19 @@ export const damaApi = {
     );
   },
 
+  batchGenerateDryRun(
+    projectId: string,
+    input: BatchGenerateDryRunInput
+  ): Promise<BatchGenerateResponse> {
+    return requestJson<BatchGenerateResponse>(
+      `/workflows/projects/${projectId}/batch-generate`,
+      {
+        method: "POST",
+        body: JSON.stringify(input)
+      }
+    );
+  },
+
   async contentAssets(): Promise<ContentAsset[]> {
     const data = await requestJson<unknown>("/content-assets");
     return normalizeListResponse<ContentAsset>(data, [
@@ -105,5 +129,12 @@ export const damaApi = {
       "items",
       "results"
     ]);
+  },
+
+  createContentAsset(input: CreateContentAssetInput): Promise<ContentAsset> {
+    return requestJson<ContentAsset>("/content-assets", {
+      method: "POST",
+      body: JSON.stringify(input)
+    });
   }
 };
