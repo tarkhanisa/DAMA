@@ -1,0 +1,279 @@
+﻿# DAMA Backend API
+
+DAMA is an AI content automation backend built with FastAPI.
+
+This document describes the current backend API surface.
+
+## Base URL
+
+Local development:
+
+http://127.0.0.1:8000
+
+## Current Capabilities
+
+- API index
+- Local Ollama model discovery
+- Raw text generation
+- Prompt-template based generation
+- Structured content generation
+- Content type catalog
+- AI provider catalog
+- System status
+
+---
+
+## Root
+
+### GET /
+
+Returns basic application status.
+
+Example response:
+
+{
+  "project": "DAMA",
+  "status": "running"
+}
+
+---
+
+## API Index
+
+### GET /api
+
+Returns a human-readable index of available backend capabilities.
+
+Current capabilities:
+
+- models
+- generation
+- content
+- providers
+- system
+
+---
+
+## Models
+
+### GET /models
+
+Returns locally available Ollama models.
+
+Example response:
+
+{
+  "models": [
+    {
+      "name": "qwen2.5-coder:7b",
+      "id": "dae161e27b0e",
+      "size": "4.7 GB",
+      "modified": "4 days ago"
+    }
+  ]
+}
+
+---
+
+## Raw Text Generation
+
+### POST /generate
+
+Generates text using a supported AI provider.
+
+Currently supported provider:
+
+ollama
+
+Direct prompt request:
+
+{
+  "provider": "ollama",
+  "model": "qwen2.5-coder:7b",
+  "prompt": "Reply with exactly this text: DAMA_OK",
+  "timeout": 120
+}
+
+Direct prompt response:
+
+{
+  "provider": "ollama",
+  "model": "qwen2.5-coder:7b",
+  "response": "DAMA_OK"
+}
+
+Template request:
+
+{
+  "provider": "ollama",
+  "model": "qwen2.5-coder:7b",
+  "template": "Write a {tone} post about {topic}.",
+  "variables": {
+    "tone": "professional",
+    "topic": "DAMA"
+  },
+  "timeout": 120
+}
+
+Rules:
+
+- Use either prompt or template, not both.
+- If template is used, required variables must be provided.
+- Unsupported providers return 400.
+- Ollama runtime failures return 503.
+
+---
+
+## Content Types
+
+### GET /content/types
+
+Returns supported standard content types.
+
+Current content type keys:
+
+- blog_post
+- social_caption
+- product_description
+- video_script
+- email_campaign
+- press_release
+
+### GET /content/types/{key}
+
+Returns one content type definition by key.
+
+Example:
+
+GET /content/types/social_caption
+
+Invalid content type keys return 400.
+
+---
+
+## Structured Content Generation
+
+### POST /content/generate
+
+Generates production-oriented content using a standard content type.
+
+Example request:
+
+{
+  "provider": "ollama",
+  "model": "qwen2.5-coder:7b",
+  "topic": "DAMA AI content automation platform",
+  "content_type": "product_description",
+  "language": "English",
+  "audience": "content teams",
+  "timeout": 120
+}
+
+Example response:
+
+{
+  "provider": "ollama",
+  "model": "qwen2.5-coder:7b",
+  "content_type": "product_description",
+  "topic": "DAMA AI content automation platform",
+  "language": "English",
+  "tone": "persuasive",
+  "content": "...",
+  "prompt": "..."
+}
+
+Notes:
+
+- content_type must be one of the supported standard content type keys.
+- If tone is not provided, DAMA uses the default tone for the selected content type.
+- If instructions is not provided, DAMA uses the default instructions for the selected content type.
+- Invalid content type keys return 400.
+- Missing required request fields return 422.
+
+---
+
+## Providers
+
+### GET /providers
+
+Returns supported AI providers.
+
+Current provider:
+
+- ollama
+
+### GET /providers/{key}
+
+Returns one provider definition by key.
+
+Example:
+
+GET /providers/ollama
+
+Invalid provider keys return 400.
+
+---
+
+## System Status
+
+### GET /system/status
+
+Returns aggregated backend runtime status.
+
+Example response:
+
+{
+  "app_name": "DAMA",
+  "status": "healthy",
+  "ollama": {
+    "installed": true,
+    "version": "0.23.0",
+    "local_models_count": 1
+  },
+  "providers_count": 1,
+  "content_types_count": 6,
+  "errors": []
+}
+
+Possible status values:
+
+- healthy
+- degraded
+
+---
+
+## Local Testing
+
+Run the fast backend smoke test:
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\backend-check.ps1
+
+The smoke test validates:
+
+- Ollama installation
+- Ollama version
+- Local model listing
+- Prompt rendering
+- Provider catalog
+- Content type catalog
+- System status
+- API index
+- Model endpoint
+- Provider endpoints
+- Content type endpoints
+- One real generation through /generate
+
+---
+
+## Current Backend Endpoint List
+
+GET  /
+GET  /api
+GET  /models
+POST /generate
+GET  /content/types
+GET  /content/types/{key}
+POST /content/generate
+GET  /providers
+GET  /providers/{key}
+GET  /system/status
