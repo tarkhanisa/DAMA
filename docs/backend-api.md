@@ -626,3 +626,19 @@ error.type = validation_error
 error.details
 
 Validation detail list.
+
+## Developer API
+
+The developer API helps future frontend and operator workflows.
+
+GET /developer/endpoint-map
+
+Returns all FastAPI routes with path, methods, tags, name, and response model.
+
+GET /developer/frontend-contract
+
+Returns the first frontend contract for the future DAMA dashboard.
+
+GET /developer/runbook
+
+Returns the local operator runbook as structured JSON.

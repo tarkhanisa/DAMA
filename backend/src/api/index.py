@@ -19,6 +19,14 @@ def api_index() -> dict[str, Any]:
                 "description": "Aggregated dashboard readiness and operational summary.",
                 "endpoints": ["GET /dashboard/summary"],
             },
+            "developer": {
+                "description": "Developer endpoint map, frontend contract, and local runbook.",
+                "endpoints": [
+                    "GET /developer/endpoint-map",
+                    "GET /developer/frontend-contract",
+                    "GET /developer/runbook",
+                ],
+            },
             "maintenance": {
                 "description": "Maintenance status, database status, and local database backup.",
                 "endpoints": [

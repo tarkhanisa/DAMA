@@ -10,6 +10,7 @@ from src.api.content import router as content_router
 from src.api.content_assets import router as content_assets_router
 from src.api.content_generation import router as content_generation_router
 from src.api.dashboard import router as dashboard_router
+from src.api.developer import router as developer_router
 from src.api.exports import router as exports_router
 from src.api.generate import router as generate_router
 from src.api.health import router as health_router
@@ -90,3 +91,4 @@ app.include_router(workflows_router)
 app.include_router(exports_router)
 app.include_router(dashboard_router)
 app.include_router(maintenance_router)
+app.include_router(developer_router)

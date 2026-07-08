@@ -694,3 +694,51 @@ Suggested scope:
 - system lifecycle docs
 - project workflow example docs
 - frontend readiness contract
+
+## Super Pack G Completed
+
+Name:
+
+Developer Readiness + Frontend Contract + Operator Docs
+
+Added files:
+
+- backend/src/services/developer_service.py
+- backend/src/api/developer.py
+- backend/tests/smoke_test_developer.py
+- docs/operator-guide.md
+- docs/frontend-contract.md
+- docs/workflow-example.md
+
+Updated files:
+
+- backend/src/main.py
+- backend/src/api/__init__.py
+- backend/src/api/index.py
+- scripts/backend-check.ps1
+- docs/backend-api.md
+- docs/project-status.md
+
+Added endpoints:
+
+GET /developer/endpoint-map
+
+GET /developer/frontend-contract
+
+GET /developer/runbook
+
+Purpose:
+
+Prepare DAMA for faster frontend development, easier local operation, and cleaner developer handoff.
+
+Next recommended Super Pack:
+
+Super Pack H: Frontend Foundation
+
+Suggested scope:
+
+- create frontend package baseline
+- create simple dashboard structure
+- define API client
+- define page map
+- no heavy UI framework decision beyond current project stack unless confirmed

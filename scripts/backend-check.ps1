@@ -4,28 +4,19 @@ $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
 $PythonPath = ".\backend\.venv\Scripts\python.exe"
-$AISmokeTestPath = ".\backend\tests\smoke_test_ai.py"
-$ProjectSmokeTestPath = ".\backend\tests\smoke_test_projects.py"
-$ContentAssetSmokeTestPath = ".\backend\tests\smoke_test_content_assets.py"
-$GenerationStorageSmokeTestPath = ".\backend\tests\smoke_test_generation_storage.py"
-$ProjectWorkflowSmokeTestPath = ".\backend\tests\smoke_test_project_workflow.py"
-$WorkflowAutomationSmokeTestPath = ".\backend\tests\smoke_test_workflow_automation.py"
-$ExportSmokeTestPath = ".\backend\tests\smoke_test_exports.py"
-$BatchGenerationSmokeTestPath = ".\backend\tests\smoke_test_batch_generation.py"
-$DashboardSmokeTestPath = ".\backend\tests\smoke_test_dashboard.py"
-$MaintenanceSmokeTestPath = ".\backend\tests\smoke_test_maintenance.py"
 
 $SmokeTests = @(
-    $AISmokeTestPath,
-    $ProjectSmokeTestPath,
-    $ContentAssetSmokeTestPath,
-    $GenerationStorageSmokeTestPath,
-    $ProjectWorkflowSmokeTestPath,
-    $WorkflowAutomationSmokeTestPath,
-    $ExportSmokeTestPath,
-    $BatchGenerationSmokeTestPath,
-    $DashboardSmokeTestPath,
-    $MaintenanceSmokeTestPath
+    ".\backend\tests\smoke_test_ai.py",
+    ".\backend\tests\smoke_test_projects.py",
+    ".\backend\tests\smoke_test_content_assets.py",
+    ".\backend\tests\smoke_test_generation_storage.py",
+    ".\backend\tests\smoke_test_project_workflow.py",
+    ".\backend\tests\smoke_test_workflow_automation.py",
+    ".\backend\tests\smoke_test_exports.py",
+    ".\backend\tests\smoke_test_batch_generation.py",
+    ".\backend\tests\smoke_test_dashboard.py",
+    ".\backend\tests\smoke_test_maintenance.py",
+    ".\backend\tests\smoke_test_developer.py"
 )
 
 if (-not (Test-Path $PythonPath)) {
