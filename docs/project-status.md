@@ -551,3 +551,50 @@ Suggested scope:
 - dry-run mode
 - execution summary
 - safer timeout handling
+
+## Mega Pack D Completed
+
+Name:
+
+Project-Aware Batch Generation
+
+Updated files:
+
+- backend/src/services/workflow_service.py
+- backend/src/api/workflows.py
+- backend/src/api/index.py
+- scripts/backend-check.ps1
+- docs/backend-api.md
+- docs/project-status.md
+
+Added files:
+
+- backend/tests/smoke_test_batch_generation.py
+
+Added endpoint:
+
+POST /workflows/projects/{project_id}/batch-generate
+
+Added behavior:
+
+- dry-run batch generation planning
+- content type filtering
+- max output limiting
+- optional execution mode
+- generated content asset storage when dry_run is false
+
+Purpose:
+
+Allow DAMA to prepare and eventually execute multiple project-aware content generations in one workflow call.
+
+Next recommended Mega Pack:
+
+Mega Pack E: Dashboard Readiness API
+
+Suggested scope:
+
+- aggregate dashboard summary endpoint
+- counts for projects, assets, statuses, exports
+- recent projects
+- recent content assets
+- system + workflow readiness summary

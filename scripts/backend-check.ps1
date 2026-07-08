@@ -11,6 +11,7 @@ $GenerationStorageSmokeTestPath = ".\backend\tests\smoke_test_generation_storage
 $ProjectWorkflowSmokeTestPath = ".\backend\tests\smoke_test_project_workflow.py"
 $WorkflowAutomationSmokeTestPath = ".\backend\tests\smoke_test_workflow_automation.py"
 $ExportSmokeTestPath = ".\backend\tests\smoke_test_exports.py"
+$BatchGenerationSmokeTestPath = ".\backend\tests\smoke_test_batch_generation.py"
 
 if (-not (Test-Path $PythonPath)) {
     throw "Python virtual environment was not found at $PythonPath"
@@ -44,6 +45,10 @@ if (-not (Test-Path $ExportSmokeTestPath)) {
     throw "Export smoke test was not found at $ExportSmokeTestPath"
 }
 
+if (-not (Test-Path $BatchGenerationSmokeTestPath)) {
+    throw "Batch generation smoke test was not found at $BatchGenerationSmokeTestPath"
+}
+
 Write-Host "Running DAMA backend AI smoke test..."
 & $PythonPath $AISmokeTestPath
 
@@ -70,6 +75,10 @@ Write-Host "Running DAMA workflow automation smoke test..."
 Write-Host ""
 Write-Host "Running DAMA export smoke test..."
 & $PythonPath $ExportSmokeTestPath
+
+Write-Host ""
+Write-Host "Running DAMA batch generation smoke test..."
+& $PythonPath $BatchGenerationSmokeTestPath
 
 Write-Host ""
 Write-Host "Git status:"

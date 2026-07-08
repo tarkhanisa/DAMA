@@ -493,3 +493,47 @@ The export directory is ignored by Git.
 Current export format:
 
 Markdown
+
+## Batch Generation API
+
+The batch generation API prepares or executes multiple project-aware content generations.
+
+POST /workflows/projects/{project_id}/batch-generate
+
+Request fields:
+
+model
+
+Required model name.
+
+topic
+
+Optional generation topic. Defaults to project name.
+
+content_types
+
+Optional list of content types to generate.
+
+max_outputs
+
+Optional maximum number of planned outputs. Current accepted range: 1 to 10.
+
+dry_run
+
+Boolean. Defaults to true.
+
+When dry_run is true:
+
+- no AI generation is executed
+- no content asset is created
+- a planned output list is returned
+
+When dry_run is false:
+
+- each planned output is generated
+- each generated result is stored as a content asset
+- execution summary is returned
+
+Recommended use:
+
+Start with dry_run true, review planned outputs, then execute with dry_run false.

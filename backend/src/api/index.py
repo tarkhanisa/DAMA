@@ -66,11 +66,12 @@ def api_index() -> dict[str, Any]:
                 ],
             },
             "workflows": {
-                "description": "Project-aware content workflow automation.",
+                "description": "Project-aware content workflow automation and batch generation planning.",
                 "endpoints": [
                     "GET /workflows/projects/{project_id}/output-plan",
                     "POST /workflows/projects/{project_id}/draft-assets",
                     "POST /workflows/projects/{project_id}/generate",
+                    "POST /workflows/projects/{project_id}/batch-generate",
                 ],
             },
             "system": {

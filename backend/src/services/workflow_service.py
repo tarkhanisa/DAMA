@@ -72,6 +72,40 @@ class WorkflowService:
         return [planned_output.to_dict() for planned_output in planned_outputs]
 
     @classmethod
+    def build_batch_generation_plan(
+        cls,
+        *,
+        project: dict[str, Any],
+        topic: str | None = None,
+        content_types: list[str] | None = None,
+        max_outputs: int | None = None,
+    ) -> list[dict[str, Any]]:
+        plan = cls.build_output_plan(project=project, topic=topic)
+
+        if content_types:
+            requested_types = {
+                cls._normalize_content_type(content_type)
+                for content_type in content_types
+            }
+
+            plan = [
+                item
+                for item in plan
+                if item["content_type"] in requested_types
+            ]
+
+        if not plan:
+            raise InvalidWorkflowRequestError("No planned outputs matched the request.")
+
+        if max_outputs is not None:
+            if max_outputs < 1:
+                raise InvalidWorkflowRequestError("max_outputs must be greater than zero.")
+
+            plan = plan[:max_outputs]
+
+        return plan
+
+    @classmethod
     def build_draft_asset_payloads(
         cls,
         *,
@@ -125,3 +159,12 @@ class WorkflowService:
     @staticmethod
     def _humanize_content_type(content_type: str) -> str:
         return content_type.replace("_", " ").strip().title()
+
+    @staticmethod
+    def _normalize_content_type(content_type: str) -> str:
+        normalized_content_type = str(content_type or "").strip().lower()
+
+        if not normalized_content_type:
+            raise InvalidWorkflowRequestError("Content type cannot be empty.")
+
+        return normalized_content_type

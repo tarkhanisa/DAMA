@@ -88,6 +88,31 @@ class WorkflowGenerateResponse(BaseModel):
     saved_content_asset: ContentAssetResponse
 
 
+class BatchGenerateRequest(BaseModel):
+    model: str = Field(..., min_length=1)
+    topic: str | None = None
+    provider: str | None = None
+    language: str | None = None
+    tone: str | None = None
+    audience: str | None = None
+    instructions: str | None = None
+    timeout: int | None = None
+    content_types: list[str] | None = None
+    max_outputs: int | None = Field(default=None, ge=1, le=10)
+    dry_run: bool = True
+    asset_status: str | None = None
+    asset_metadata: dict[str, Any] | None = None
+
+
+class BatchGenerateResponse(BaseModel):
+    project_id: str
+    dry_run: bool
+    planned_count: int
+    generated_count: int
+    planned_outputs: list[PlannedOutputResponse]
+    saved_content_assets: list[ContentAssetResponse]
+
+
 @router.get("/projects/{project_id}/output-plan", response_model=OutputPlanResponse)
 def get_project_output_plan(project_id: str, topic: str | None = None) -> dict[str, Any]:
     project = _load_project(project_id)
@@ -149,54 +174,38 @@ def generate_project_content(
 
     topic = request.topic.strip() if request.topic and request.topic.strip() else project["name"]
 
-    try:
-        generation_result = ContentService.generate_content(
-            model=request.model,
-            topic=topic,
-            content_type=request.content_type,
-            provider=request.provider,
-            language=request.language or project.get("language"),
-            tone=request.tone,
-            audience=request.audience,
-            instructions=request.instructions,
-            timeout=request.timeout,
-        )
-    except InvalidContentRequestError as exc:
-        raise HTTPException(status_code=400, detail=str(exc)) from exc
-
-    generation_data = _to_dict(generation_result)
+    generation_data = _generate_content(
+        model=request.model,
+        topic=topic,
+        content_type=request.content_type,
+        provider=request.provider,
+        language=request.language or project.get("language"),
+        tone=request.tone,
+        audience=request.audience,
+        instructions=request.instructions,
+        timeout=request.timeout,
+    )
 
     response_text = str(generation_data.get("response", "")).strip()
     provider = str(generation_data.get("provider") or request.provider or "ollama")
     model = str(generation_data.get("model") or request.model)
     content_type = str(generation_data.get("content_type") or request.content_type)
 
-    try:
-        asset = ContentAssetService.build_content_asset(
-            project_id=project_id,
-            content_type=content_type,
-            title=request.asset_title or f"{project['name']} - {content_type.replace('_', ' ').title()}",
-            body=response_text,
-            status=request.asset_status,
-            source="ai_generated",
-            metadata={
-                "workflow": "project_generate",
-                "provider": provider,
-                "model": model,
-                "topic": topic,
-                "prompt": generation_data.get("prompt"),
-                **(request.asset_metadata or {}),
-            },
-        )
-    except InvalidContentAssetRequestError as exc:
-        raise HTTPException(status_code=400, detail=str(exc)) from exc
-
-    repository = ContentAssetRepository()
-
-    try:
-        saved_asset = repository.create_content_asset(asset)
-    except ContentAssetRepositoryError as exc:
-        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    saved_asset = _save_generated_asset(
+        project_id=project_id,
+        content_type=content_type,
+        title=request.asset_title or f"{project['name']} - {content_type.replace('_', ' ').title()}",
+        body=response_text,
+        status=request.asset_status,
+        provider=provider,
+        model=model,
+        topic=topic,
+        prompt=generation_data.get("prompt"),
+        metadata={
+            "workflow": "project_generate",
+            **(request.asset_metadata or {}),
+        },
+    )
 
     return {
         "provider": provider,
@@ -209,6 +218,80 @@ def generate_project_content(
     }
 
 
+@router.post("/projects/{project_id}/batch-generate", response_model=BatchGenerateResponse)
+def batch_generate_project_content(
+    project_id: str,
+    request: BatchGenerateRequest,
+) -> dict[str, Any]:
+    project = _load_project(project_id)
+
+    try:
+        planned_outputs = WorkflowService.build_batch_generation_plan(
+            project=project,
+            topic=request.topic,
+            content_types=request.content_types,
+            max_outputs=request.max_outputs,
+        )
+    except InvalidWorkflowRequestError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    if request.dry_run:
+        return {
+            "project_id": project_id,
+            "dry_run": True,
+            "planned_count": len(planned_outputs),
+            "generated_count": 0,
+            "planned_outputs": planned_outputs,
+            "saved_content_assets": [],
+        }
+
+    saved_assets: list[dict[str, Any]] = []
+
+    for item in planned_outputs:
+        generation_data = _generate_content(
+            model=request.model,
+            topic=item["generation_topic"],
+            content_type=item["content_type"],
+            provider=request.provider,
+            language=request.language or project.get("language"),
+            tone=request.tone,
+            audience=request.audience,
+            instructions=request.instructions,
+            timeout=request.timeout,
+        )
+
+        response_text = str(generation_data.get("response", "")).strip()
+        provider = str(generation_data.get("provider") or request.provider or "ollama")
+        model = str(generation_data.get("model") or request.model)
+
+        saved_asset = _save_generated_asset(
+            project_id=project_id,
+            content_type=item["content_type"],
+            title=item["title"],
+            body=response_text,
+            status=request.asset_status,
+            provider=provider,
+            model=model,
+            topic=item["generation_topic"],
+            prompt=generation_data.get("prompt"),
+            metadata={
+                "workflow": "project_batch_generate",
+                "planned_order": item["order"],
+                **(request.asset_metadata or {}),
+            },
+        )
+        saved_assets.append(saved_asset)
+
+    return {
+        "project_id": project_id,
+        "dry_run": False,
+        "planned_count": len(planned_outputs),
+        "generated_count": len(saved_assets),
+        "planned_outputs": planned_outputs,
+        "saved_content_assets": saved_assets,
+    }
+
+
 def _load_project(project_id: str) -> dict[str, Any]:
     repository = ProjectRepository()
     project = repository.get_project(project_id)
@@ -217,6 +300,76 @@ def _load_project(project_id: str) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail="Project not found.")
 
     return project
+
+
+def _generate_content(
+    *,
+    model: str,
+    topic: str,
+    content_type: str,
+    provider: str | None,
+    language: str | None,
+    tone: str | None,
+    audience: str | None,
+    instructions: str | None,
+    timeout: int | None,
+) -> dict[str, Any]:
+    try:
+        generation_result = ContentService.generate_content(
+            model=model,
+            topic=topic,
+            content_type=content_type,
+            provider=provider,
+            language=language,
+            tone=tone,
+            audience=audience,
+            instructions=instructions,
+            timeout=timeout,
+        )
+    except InvalidContentRequestError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    return _to_dict(generation_result)
+
+
+def _save_generated_asset(
+    *,
+    project_id: str,
+    content_type: str,
+    title: str,
+    body: str,
+    status: str | None,
+    provider: str,
+    model: str,
+    topic: str,
+    prompt: Any,
+    metadata: dict[str, Any],
+) -> dict[str, Any]:
+    try:
+        asset = ContentAssetService.build_content_asset(
+            project_id=project_id,
+            content_type=content_type,
+            title=title,
+            body=body,
+            status=status,
+            source="ai_generated",
+            metadata={
+                "provider": provider,
+                "model": model,
+                "topic": topic,
+                "prompt": prompt,
+                **metadata,
+            },
+        )
+    except InvalidContentAssetRequestError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    repository = ContentAssetRepository()
+
+    try:
+        return repository.create_content_asset(asset)
+    except ContentAssetRepositoryError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
 
 
 def _to_dict(value: Any) -> dict[str, Any]:
