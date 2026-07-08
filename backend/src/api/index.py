@@ -40,6 +40,13 @@ def api_index() -> dict[str, Any]:
                     "PATCH /content-assets/{asset_id}/status",
                 ],
             },
+            "exports": {
+                "description": "Markdown exports for content assets and project bundles.",
+                "endpoints": [
+                    "POST /exports/content-assets/{asset_id}/markdown",
+                    "POST /exports/projects/{project_id}/bundle",
+                ],
+            },
             "providers": {
                 "description": "AI provider catalog.",
                 "endpoints": ["GET /providers", "GET /providers/{key}"],

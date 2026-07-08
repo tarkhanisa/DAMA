@@ -503,3 +503,51 @@ Suggested scope:
 - add local export directory
 - add export repository/service
 - add smoke test
+
+## Mega Pack C Completed
+
+Name:
+
+Export Layer
+
+Added files:
+
+- backend/src/services/export_service.py
+- backend/src/api/exports.py
+- backend/tests/smoke_test_exports.py
+
+Updated files:
+
+- backend/src/api/__init__.py
+- backend/src/main.py
+- backend/src/api/index.py
+- scripts/backend-check.ps1
+- docs/backend-api.md
+- docs/project-status.md
+- .gitignore
+
+Added endpoints:
+
+POST /exports/content-assets/{asset_id}/markdown
+
+POST /exports/projects/{project_id}/bundle
+
+Purpose:
+
+Allow DAMA to produce usable Markdown files from stored content assets and projects.
+
+Current export directory:
+
+backend/exports
+
+Next recommended Mega Pack:
+
+Mega Pack D: Project-Aware Generation Batch
+
+Suggested scope:
+
+- batch generation request from project output plan
+- create multiple generated assets in one call
+- dry-run mode
+- execution summary
+- safer timeout handling

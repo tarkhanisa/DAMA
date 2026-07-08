@@ -471,3 +471,25 @@ Generates content for a project and stores the output as a content asset.
 Current note:
 
 The workflow automation layer is intentionally simple. It does not use multi-agent execution yet.
+
+## Export API
+
+The export API creates Markdown files from stored DAMA content.
+
+POST /exports/content-assets/{asset_id}/markdown
+
+Exports one content asset as a Markdown file.
+
+POST /exports/projects/{project_id}/bundle
+
+Exports all content assets of one project as a Markdown bundle.
+
+Current export directory:
+
+backend/exports
+
+The export directory is ignored by Git.
+
+Current export format:
+
+Markdown
