@@ -1,9 +1,12 @@
 import { ActionCard } from "../../components/action-card";
 import { CountBreakdown } from "../../components/count-breakdown";
 import { DataTable } from "../../components/data-table";
+import { ErrorPanel } from "../../components/error-panel";
 import { JsonPreview } from "../../components/json-preview";
+import { PageHeader } from "../../components/page-header";
 import { StatCard } from "../../components/stat-card";
 import { DAMA_API_BASE_URL, damaApi } from "../../lib/api-client";
+import { formatBytes, formatNumber } from "../../lib/formatters";
 import type { MaintenanceStatus } from "../../lib/types";
 
 async function loadMaintenanceStatus(): Promise<MaintenanceStatus | null> {
@@ -20,28 +23,22 @@ export default async function MaintenancePage() {
   if (!status) {
     return (
       <main className="page-shell">
-        <section className="panel">
-          <div className="panel-heading">
-            <p className="eyebrow">Maintenance</p>
-            <h1>Maintenance status unavailable</h1>
-          </div>
-          <p className="empty-state">
-            Start the backend first, then refresh this page.
-          </p>
-        </section>
+        <ErrorPanel
+          eyebrow="Maintenance"
+          title="Maintenance status unavailable"
+          message="Start the backend first, then refresh this page."
+        />
       </main>
     );
   }
 
   return (
     <main className="page-shell">
-      <section className="page-heading">
-        <p className="eyebrow">Maintenance</p>
-        <h1>Local maintenance center</h1>
-        <p className="lead">
-          Inspect database state, export files, backup files, and safe maintenance endpoints.
-        </p>
-
+      <PageHeader
+        eyebrow="Maintenance"
+        title="Local maintenance center"
+        lead="Inspect database state, export files, backup files, and safe maintenance endpoints."
+      >
         <div className="actions">
           <a href={`${DAMA_API_BASE_URL}/maintenance/status`}>
             Raw Maintenance Status
@@ -50,23 +47,23 @@ export default async function MaintenancePage() {
             Backup Endpoint
           </a>
         </div>
-      </section>
+      </PageHeader>
 
       <section className="stats-grid">
         <StatCard
           label="Database"
           value={status.database.exists ? "Ready" : "Missing"}
-          helper={`${status.database.size_bytes} bytes`}
+          helper={formatBytes(status.database.size_bytes)}
         />
         <StatCard
           label="Exports"
-          value={status.exports.file_count}
-          helper={`${status.exports.total_size_bytes} bytes`}
+          value={formatNumber(status.exports.file_count)}
+          helper={formatBytes(status.exports.total_size_bytes)}
         />
         <StatCard
           label="Backups"
-          value={status.backups.file_count}
-          helper={`${status.backups.total_size_bytes} bytes`}
+          value={formatNumber(status.backups.file_count)}
+          helper={formatBytes(status.backups.total_size_bytes)}
         />
         <StatCard
           label="Maintenance"
@@ -124,7 +121,7 @@ export default async function MaintenancePage() {
               {
                 key: "size",
                 label: "Size",
-                render: (item) => `${item.size_bytes} bytes`
+                render: (item) => formatBytes(item.size_bytes)
               }
             ]}
           />
@@ -148,7 +145,7 @@ export default async function MaintenancePage() {
               {
                 key: "size",
                 label: "Size",
-                render: (item) => `${item.size_bytes} bytes`
+                render: (item) => formatBytes(item.size_bytes)
               }
             ]}
           />

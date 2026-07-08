@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { AppNav } from "../components/app-nav";
 import "./globals.css";
 
@@ -9,7 +11,7 @@ export const metadata = {
 export default function RootLayout({
   children
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <html lang="en">

@@ -1,9 +1,11 @@
 import { CountBreakdown } from "../components/count-breakdown";
+import { ErrorPanel } from "../components/error-panel";
 import { LinkCard } from "../components/link-card";
 import { ReadinessPanel } from "../components/readiness-panel";
 import { RecentList } from "../components/recent-list";
 import { StatCard } from "../components/stat-card";
 import { DAMA_API_BASE_URL, damaApi } from "../lib/api-client";
+import { formatNumber } from "../lib/formatters";
 import type { DashboardSummary, FrontendContract } from "../lib/types";
 
 async function loadDashboardSummary(): Promise<DashboardSummary | null> {
@@ -51,17 +53,17 @@ export default async function HomePage() {
           <section className="stats-grid">
             <StatCard
               label="Projects"
-              value={summary.projects.total}
+              value={formatNumber(summary.projects.total)}
               helper="Total stored projects"
             />
             <StatCard
               label="Content Assets"
-              value={summary.content_assets.total}
+              value={formatNumber(summary.content_assets.total)}
               helper="Manual and AI-generated assets"
             />
             <StatCard
               label="Markdown Exports"
-              value={summary.exports.total_markdown_files}
+              value={formatNumber(summary.exports.total_markdown_files)}
               helper="Local export files"
             />
             <StatCard
@@ -96,16 +98,12 @@ export default async function HomePage() {
           </section>
         </>
       ) : (
-        <section className="panel">
-          <div className="panel-heading">
-            <p className="eyebrow">Backend</p>
-            <h2>Backend is not reachable</h2>
-          </div>
-          <p className="empty-state">
-            Start the backend first, then refresh this page.
-          </p>
-          <pre className="code-block">cd I:\DAMA\backend{"\n"}.\.venv\Scripts\python.exe -m uvicorn src.main:app --reload</pre>
-        </section>
+        <ErrorPanel
+          eyebrow="Backend"
+          title="Backend is not reachable"
+          message="Start the backend first, then refresh this page."
+          command={"cd I:\\DAMA\\backend\n.\\.venv\\Scripts\\python.exe -m uvicorn src.main:app --reload"}
+        />
       )}
 
       <section className="panel">

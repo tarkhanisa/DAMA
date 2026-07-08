@@ -66,3 +66,14 @@ Added shared UI:
 - AppNav
 - DataTable
 - StatusPill
+
+## Build Hardening
+
+Super Pack L adds TypeScript build hardening:
+
+- TSX-safe DataTable generic syntax
+- ReactNode type import
+- formatter helpers
+- shared error and page header components
+- package typecheck script
+- optional frontend typecheck when node_modules exists

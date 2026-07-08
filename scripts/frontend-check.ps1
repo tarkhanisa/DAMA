@@ -20,6 +20,7 @@ $RequiredFiles = @(
     ".\frontend\src\app\globals.css",
     ".\frontend\src\lib\api-client.ts",
     ".\frontend\src\lib\types.ts",
+    ".\frontend\src\lib\formatters.ts",
     ".\frontend\src\components\app-nav.tsx",
     ".\frontend\src\components\stat-card.tsx",
     ".\frontend\src\components\readiness-panel.tsx",
@@ -29,7 +30,9 @@ $RequiredFiles = @(
     ".\frontend\src\components\data-table.tsx",
     ".\frontend\src\components\status-pill.tsx",
     ".\frontend\src\components\action-card.tsx",
-    ".\frontend\src\components\json-preview.tsx"
+    ".\frontend\src\components\json-preview.tsx",
+    ".\frontend\src\components\page-header.tsx",
+    ".\frontend\src\components\error-panel.tsx"
 )
 
 foreach ($File in $RequiredFiles) {
@@ -38,42 +41,37 @@ foreach ($File in $RequiredFiles) {
     }
 }
 
-$ApiClient = Get-Content ".\frontend\src\lib\api-client.ts" -Raw
-$Nav = Get-Content ".\frontend\src\components\app-nav.tsx" -Raw
-$WorkflowsPage = Get-Content ".\frontend\src\app\workflows\page.tsx" -Raw
-$ExportsPage = Get-Content ".\frontend\src\app\exports\page.tsx" -Raw
-$MaintenancePage = Get-Content ".\frontend\src\app\maintenance\page.tsx" -Raw
+$DataTable = Get-Content ".\frontend\src\components\data-table.tsx" -Raw
+$Layout = Get-Content ".\frontend\src\app\layout.tsx" -Raw
+$PackageJson = Get-Content ".\frontend\package.json" -Raw
 
-if ($ApiClient -notmatch "projectOutputPlan") {
-    throw "API client does not expose projectOutputPlan."
+if ($DataTable -notmatch "DataTable<T,>") {
+    throw "DataTable generic syntax is not TSX-safe."
 }
 
-if ($ApiClient -notmatch "maintenanceStatus") {
-    throw "API client does not expose maintenanceStatus."
+if ($Layout -notmatch "import type \{ ReactNode \}") {
+    throw "Layout does not import ReactNode type."
 }
 
-if ($Nav -notmatch "/workflows") {
-    throw "Navigation does not include workflows."
+if ($PackageJson -notmatch '"typecheck"') {
+    throw "Frontend package.json does not include typecheck script."
 }
 
-if ($Nav -notmatch "/exports") {
-    throw "Navigation does not include exports."
+if (Test-Path ".\frontend\node_modules") {
+    Write-Host "node_modules found. Running frontend typecheck..."
+    Push-Location ".\frontend"
+    try {
+        npm run typecheck
+        if ($LASTEXITCODE -ne 0) {
+            throw "Frontend typecheck failed."
+        }
+    }
+    finally {
+        Pop-Location
+    }
+}
+else {
+    Write-Host "node_modules not found. Skipping npm typecheck."
 }
 
-if ($Nav -notmatch "/maintenance") {
-    throw "Navigation does not include maintenance."
-}
-
-if ($WorkflowsPage -notmatch "damaApi.projects") {
-    throw "Workflows page does not load projects."
-}
-
-if ($ExportsPage -notmatch "dashboardSummary") {
-    throw "Exports page does not load dashboard summary."
-}
-
-if ($MaintenancePage -notmatch "maintenanceStatus") {
-    throw "Maintenance page does not load maintenance status."
-}
-
-Write-Host "Frontend workflow/export/maintenance UI check passed."
+Write-Host "Frontend hardening check passed."

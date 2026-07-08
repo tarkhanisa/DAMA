@@ -1,9 +1,11 @@
+import type { ReactNode } from "react";
+
 import { StatusPill } from "./status-pill";
 
 type Column<T> = {
   key: string;
   label: string;
-  render: (item: T) => React.ReactNode;
+  render: (item: T) => ReactNode;
 };
 
 type DataTableProps<T> = {
@@ -12,7 +14,7 @@ type DataTableProps<T> = {
   emptyLabel: string;
 };
 
-export function DataTable<T>({ columns, items, emptyLabel }: DataTableProps<T>) {
+export function DataTable<T,>({ columns, items, emptyLabel }: DataTableProps<T>) {
   if (items.length === 0) {
     return <p className="empty-state">{emptyLabel}</p>;
   }
