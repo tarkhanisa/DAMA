@@ -58,6 +58,14 @@ def api_index() -> dict[str, Any]:
                     "PATCH /projects/{project_id}/status",
                 ],
             },
+            "workflows": {
+                "description": "Project-aware content workflow automation.",
+                "endpoints": [
+                    "GET /workflows/projects/{project_id}/output-plan",
+                    "POST /workflows/projects/{project_id}/draft-assets",
+                    "POST /workflows/projects/{project_id}/generate",
+                ],
+            },
             "system": {
                 "description": "Runtime system status.",
                 "endpoints": ["GET /system/status"],

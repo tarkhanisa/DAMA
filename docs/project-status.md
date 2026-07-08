@@ -458,3 +458,48 @@ Suggested scope:
 - add project output plan endpoint
 - add batch generation preparation
 - avoid multi-agent logic for now
+
+## Mega Pack B Completed
+
+Name:
+
+Content Workflow Automation
+
+Added files:
+
+- backend/src/services/workflow_service.py
+- backend/src/api/workflows.py
+- backend/tests/smoke_test_workflow_automation.py
+
+Updated files:
+
+- backend/src/api/__init__.py
+- backend/src/main.py
+- backend/src/api/index.py
+- scripts/backend-check.ps1
+- docs/backend-api.md
+- docs/project-status.md
+
+Added endpoints:
+
+GET /workflows/projects/{project_id}/output-plan
+
+POST /workflows/projects/{project_id}/draft-assets
+
+POST /workflows/projects/{project_id}/generate
+
+Purpose:
+
+Move DAMA from project workflow storage to project-aware content workflow automation.
+
+Next recommended Mega Pack:
+
+Mega Pack C: Export Layer
+
+Suggested scope:
+
+- export content asset as markdown
+- export project content bundle
+- add local export directory
+- add export repository/service
+- add smoke test

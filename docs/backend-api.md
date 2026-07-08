@@ -435,3 +435,39 @@ Optional metadata dictionary for the saved content asset.
 Current source value for saved generations:
 
 ai_generated
+
+## Workflow Automation API
+
+The workflow automation API adds project-aware content planning and content asset preparation.
+
+GET /workflows/projects/{project_id}/output-plan
+
+Returns a planned content output list based on the project content types.
+
+Query fields:
+
+topic
+
+Optional. Overrides the default generation topic.
+
+POST /workflows/projects/{project_id}/draft-assets
+
+Creates draft content assets based on the project content types.
+
+Request fields:
+
+topic
+
+Optional. Used as the workflow topic.
+
+title_prefix
+
+Optional. Used as the title prefix for created draft assets.
+
+POST /workflows/projects/{project_id}/generate
+
+Generates content for a project and stores the output as a content asset.
+
+Current note:
+
+The workflow automation layer is intentionally simple. It does not use multi-agent execution yet.

@@ -41,3 +41,7 @@ app.include_router(projects_router)
 from src.api.content_assets import router as content_assets_router
 
 app.include_router(content_assets_router)
+
+from src.api.workflows import router as workflows_router
+
+app.include_router(workflows_router)
