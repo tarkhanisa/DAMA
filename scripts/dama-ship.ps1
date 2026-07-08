@@ -18,6 +18,10 @@ Write-Host ""
 Write-Host "Running checks before shipping..."
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\scripts\dama-check.ps1"
 
+if ($LASTEXITCODE -ne 0) {
+    throw "DAMA check failed. Ship stopped."
+}
+
 Write-Host ""
 Write-Host "Checking Git status..."
 $Changes = git status --short

@@ -770,3 +770,14 @@ Added files:
 Purpose:
 
 Reduce repetitive manual development steps and prepare DAMA for faster frontend implementation.
+
+## API Capability Compatibility Hotfix
+
+The API index endpoint now returns capabilities in two formats:
+
+- capabilities: list format for backward compatibility with smoke tests
+- capabilities_by_key: dictionary format for frontend and developer usage
+
+Purpose:
+
+Keep old checks stable while preserving key-based API discovery.

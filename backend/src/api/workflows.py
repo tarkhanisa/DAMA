@@ -186,7 +186,10 @@ def generate_project_content(
         timeout=request.timeout,
     )
 
-    response_text = str(generation_data.get("response", "")).strip()
+    response_text = _extract_generated_text(generation_data)
+
+    if not response_text:
+        raise HTTPException(status_code=502, detail="AI generation returned empty content.")
     provider = str(generation_data.get("provider") or request.provider or "ollama")
     model = str(generation_data.get("model") or request.model)
     content_type = str(generation_data.get("content_type") or request.content_type)
@@ -260,7 +263,7 @@ def batch_generate_project_content(
             timeout=request.timeout,
         )
 
-        response_text = str(generation_data.get("response", "")).strip()
+        response_text = _extract_generated_text(generation_data)
         provider = str(generation_data.get("provider") or request.provider or "ollama")
         model = str(generation_data.get("model") or request.model)
 
@@ -386,3 +389,43 @@ def _to_dict(value: Any) -> dict[str, Any]:
         status_code=500,
         detail="Unsupported content generation result format.",
     )
+
+
+def _extract_generated_text(generation_data: dict[str, Any]) -> str:
+    possible_keys = [
+        "response",
+        "content",
+        "body",
+        "text",
+        "output",
+        "result",
+        "generated_text",
+        "generated_content",
+    ]
+
+    for key in possible_keys:
+        value = generation_data.get(key)
+
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+
+    nested_generation = generation_data.get("generation")
+
+    if isinstance(nested_generation, dict):
+        for key in possible_keys:
+            value = nested_generation.get(key)
+
+            if isinstance(value, str) and value.strip():
+                return value.strip()
+
+    nested_data = generation_data.get("data")
+
+    if isinstance(nested_data, dict):
+        for key in possible_keys:
+            value = nested_data.get(key)
+
+            if isinstance(value, str) and value.strip():
+                return value.strip()
+
+    return ""
+

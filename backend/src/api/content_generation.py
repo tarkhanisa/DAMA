@@ -119,7 +119,10 @@ def generate_content(request: ContentGenerateRequest) -> dict[str, Any]:
 
     generation_data = _to_dict(generation_result)
 
-    response_text = str(generation_data.get("response", "")).strip()
+    response_text = _extract_generated_text(generation_data)
+
+    if not response_text:
+        raise HTTPException(status_code=502, detail="AI generation returned empty content.")
     prompt_text = str(generation_data.get("prompt", "")).strip()
 
     response_payload: dict[str, Any] = {
@@ -212,3 +215,43 @@ def _build_asset_metadata(
     metadata.update(extra_metadata)
 
     return metadata
+
+
+def _extract_generated_text(generation_data: dict[str, Any]) -> str:
+    possible_keys = [
+        "response",
+        "content",
+        "body",
+        "text",
+        "output",
+        "result",
+        "generated_text",
+        "generated_content",
+    ]
+
+    for key in possible_keys:
+        value = generation_data.get(key)
+
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+
+    nested_generation = generation_data.get("generation")
+
+    if isinstance(nested_generation, dict):
+        for key in possible_keys:
+            value = nested_generation.get(key)
+
+            if isinstance(value, str) and value.strip():
+                return value.strip()
+
+    nested_data = generation_data.get("data")
+
+    if isinstance(nested_data, dict):
+        for key in possible_keys:
+            value = nested_data.get(key)
+
+            if isinstance(value, str) and value.strip():
+                return value.strip()
+
+    return ""
+

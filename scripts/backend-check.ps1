@@ -4,6 +4,9 @@ $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
 $PythonPath = ".\backend\.venv\Scripts\python.exe"
+$BackendPath = Join-Path $Root "backend"
+
+$env:PYTHONPATH = $BackendPath
 
 $SmokeTests = @(
     ".\backend\tests\smoke_test_ai.py",
@@ -30,11 +33,16 @@ foreach ($SmokeTest in $SmokeTests) {
 }
 
 Write-Host "Running DAMA backend smoke tests..."
+Write-Host "PYTHONPATH=$env:PYTHONPATH"
 
 foreach ($SmokeTest in $SmokeTests) {
     Write-Host ""
     Write-Host "Running $SmokeTest..."
     & $PythonPath $SmokeTest
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "Smoke test failed: $SmokeTest"
+    }
 }
 
 Write-Host ""

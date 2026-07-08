@@ -1,3 +1,28 @@
+﻿from pathlib import Path
+
+ROOT = Path("I:/DAMA")
+
+
+def write_file(path: str, content: str) -> None:
+    target = ROOT / path
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(content.strip() + "\n", encoding="utf-8")
+    print(f"Wrote {path}")
+
+
+def append_once(path: str, marker: str, content: str) -> None:
+    target = ROOT / path
+    text = target.read_text(encoding="utf-8") if target.exists() else ""
+    if marker not in text:
+        target.write_text(text.rstrip() + "\n\n" + content.strip() + "\n", encoding="utf-8")
+        print(f"Updated {path}")
+    else:
+        print(f"Skipped {path}")
+
+
+write_file(
+    "backend/src/api/index.py",
+    '''
 from __future__ import annotations
 
 from typing import Any
@@ -138,3 +163,25 @@ def api_index() -> dict[str, Any]:
         "capabilities": capabilities,
         "capabilities_by_key": capabilities_by_key,
     }
+    ''',
+)
+
+
+append_once(
+    "docs/project-status.md",
+    "## API Capability Compatibility Hotfix",
+    '''
+## API Capability Compatibility Hotfix
+
+The API index endpoint now returns capabilities in two formats:
+
+- capabilities: list format for backward compatibility with smoke tests
+- capabilities_by_key: dictionary format for frontend and developer usage
+
+Purpose:
+
+Keep old checks stable while preserving key-based API discovery.
+    ''',
+)
+
+print("API capability compatibility hotfix applied.")

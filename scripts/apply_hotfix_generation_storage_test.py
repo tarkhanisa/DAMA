@@ -1,3 +1,18 @@
+﻿from pathlib import Path
+
+ROOT = Path("I:/DAMA")
+
+
+def write_file(path: str, content: str) -> None:
+    target = ROOT / path
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(content.strip() + "\n", encoding="utf-8")
+    print(f"Wrote {path}")
+
+
+write_file(
+    "backend/tests/smoke_test_generation_storage.py",
+    r'''
 from __future__ import annotations
 
 from uuid import uuid4
@@ -109,3 +124,7 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+    ''',
+)
+
+print("Generation storage smoke test hotfix applied.")

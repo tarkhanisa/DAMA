@@ -1,3 +1,18 @@
+﻿from pathlib import Path
+
+ROOT = Path("I:/DAMA")
+
+
+def write_file(path: str, content: str) -> None:
+    target = ROOT / path
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(content.strip() + "\n", encoding="utf-8")
+    print(f"Wrote {path}")
+
+
+write_file(
+    "backend/src/services/developer_service.py",
+    r'''
 from __future__ import annotations
 
 from typing import Any
@@ -174,3 +189,7 @@ class DeveloperService:
                 "git push",
             ],
         }
+    ''',
+)
+
+print("Developer endpoint map hotfix applied.")
