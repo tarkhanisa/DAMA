@@ -2,6 +2,8 @@ import type {
   ContentAsset,
   DashboardSummary,
   FrontendContract,
+  MaintenanceStatus,
+  OutputPlanResponse,
   Project,
   ProjectContentAssetsResponse,
   ProjectSummary
@@ -66,6 +68,10 @@ export const damaApi = {
     return requestJson<unknown>("/developer/runbook");
   },
 
+  maintenanceStatus(): Promise<MaintenanceStatus> {
+    return requestJson<MaintenanceStatus>("/maintenance/status");
+  },
+
   async projects(): Promise<Project[]> {
     const data = await requestJson<unknown>("/projects");
     return normalizeListResponse<Project>(data, ["projects", "items", "results"]);
@@ -82,6 +88,12 @@ export const damaApi = {
   projectContentAssets(projectId: string): Promise<ProjectContentAssetsResponse> {
     return requestJson<ProjectContentAssetsResponse>(
       `/projects/${projectId}/content-assets`
+    );
+  },
+
+  projectOutputPlan(projectId: string): Promise<OutputPlanResponse> {
+    return requestJson<OutputPlanResponse>(
+      `/workflows/projects/${projectId}/output-plan`
     );
   },
 

@@ -51,3 +51,16 @@ The frontend API client now covers:
 - project summary
 - project content assets
 - content asset list
+
+## Super Pack K Routes
+
+Added routes:
+
+    /workflows
+    /workflows/[projectId]
+    /exports
+    /maintenance
+
+Purpose:
+
+Expose workflow planning, export status, and maintenance status in the frontend shell.

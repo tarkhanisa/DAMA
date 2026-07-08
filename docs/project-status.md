@@ -882,3 +882,55 @@ Suggested scope:
 - export links
 - maintenance status page
 - backup trigger note or safe manual link
+
+## Super Pack K Completed
+
+Name:
+
+Workflow UI + Export UI + Maintenance UI
+
+Added files:
+
+- frontend/src/components/action-card.tsx
+- frontend/src/components/json-preview.tsx
+- frontend/src/app/workflows/page.tsx
+- frontend/src/app/workflows/[projectId]/page.tsx
+- frontend/src/app/exports/page.tsx
+- frontend/src/app/maintenance/page.tsx
+- docs/workflow-ui.md
+
+Updated files:
+
+- frontend/src/components/app-nav.tsx
+- frontend/src/lib/api-client.ts
+- frontend/src/lib/types.ts
+- frontend/src/app/globals.css
+- scripts/frontend-check.ps1
+- docs/frontend-routes.md
+- docs/project-status.md
+
+Added behavior:
+
+- workflow project selection page
+- project workflow output plan page
+- export center page
+- maintenance center page
+- extended frontend API client
+- extended navigation
+- safer UI by linking POST operations instead of executing them directly
+
+Purpose:
+
+Move DAMA frontend into a broader operational dashboard that covers workflow, export, and maintenance surfaces.
+
+Next recommended Super Pack:
+
+Super Pack L: Frontend Build Hardening + TypeScript Validation
+
+Suggested scope:
+
+- add frontend install/build docs
+- add optional npm build check when node_modules exists
+- add TypeScript/Next compatibility fixes
+- fix dynamic route typing if needed
+- improve API client error display

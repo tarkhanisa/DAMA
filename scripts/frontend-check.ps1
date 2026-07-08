@@ -13,6 +13,10 @@ $RequiredFiles = @(
     ".\frontend\src\app\projects\page.tsx",
     ".\frontend\src\app\projects\[projectId]\page.tsx",
     ".\frontend\src\app\content-assets\page.tsx",
+    ".\frontend\src\app\workflows\page.tsx",
+    ".\frontend\src\app\workflows\[projectId]\page.tsx",
+    ".\frontend\src\app\exports\page.tsx",
+    ".\frontend\src\app\maintenance\page.tsx",
     ".\frontend\src\app\globals.css",
     ".\frontend\src\lib\api-client.ts",
     ".\frontend\src\lib\types.ts",
@@ -23,7 +27,9 @@ $RequiredFiles = @(
     ".\frontend\src\components\count-breakdown.tsx",
     ".\frontend\src\components\link-card.tsx",
     ".\frontend\src\components\data-table.tsx",
-    ".\frontend\src\components\status-pill.tsx"
+    ".\frontend\src\components\status-pill.tsx",
+    ".\frontend\src\components\action-card.tsx",
+    ".\frontend\src\components\json-preview.tsx"
 )
 
 foreach ($File in $RequiredFiles) {
@@ -33,28 +39,41 @@ foreach ($File in $RequiredFiles) {
 }
 
 $ApiClient = Get-Content ".\frontend\src\lib\api-client.ts" -Raw
-$DashboardPage = Get-Content ".\frontend\src\app\page.tsx" -Raw
-$ProjectsPage = Get-Content ".\frontend\src\app\projects\page.tsx" -Raw
-$AssetsPage = Get-Content ".\frontend\src\app\content-assets\page.tsx" -Raw
+$Nav = Get-Content ".\frontend\src\components\app-nav.tsx" -Raw
+$WorkflowsPage = Get-Content ".\frontend\src\app\workflows\page.tsx" -Raw
+$ExportsPage = Get-Content ".\frontend\src\app\exports\page.tsx" -Raw
+$MaintenancePage = Get-Content ".\frontend\src\app\maintenance\page.tsx" -Raw
 
-if ($ApiClient -notmatch "projects") {
-    throw "API client does not expose projects."
+if ($ApiClient -notmatch "projectOutputPlan") {
+    throw "API client does not expose projectOutputPlan."
 }
 
-if ($ApiClient -notmatch "contentAssets") {
-    throw "API client does not expose contentAssets."
+if ($ApiClient -notmatch "maintenanceStatus") {
+    throw "API client does not expose maintenanceStatus."
 }
 
-if ($DashboardPage -notmatch "dashboardSummary") {
-    throw "Dashboard page does not use dashboardSummary API client."
+if ($Nav -notmatch "/workflows") {
+    throw "Navigation does not include workflows."
 }
 
-if ($ProjectsPage -notmatch "damaApi.projects") {
-    throw "Projects page does not use projects API client."
+if ($Nav -notmatch "/exports") {
+    throw "Navigation does not include exports."
 }
 
-if ($AssetsPage -notmatch "damaApi.contentAssets") {
-    throw "Content assets page does not use contentAssets API client."
+if ($Nav -notmatch "/maintenance") {
+    throw "Navigation does not include maintenance."
 }
 
-Write-Host "Frontend UI check passed."
+if ($WorkflowsPage -notmatch "damaApi.projects") {
+    throw "Workflows page does not load projects."
+}
+
+if ($ExportsPage -notmatch "dashboardSummary") {
+    throw "Exports page does not load dashboard summary."
+}
+
+if ($MaintenancePage -notmatch "maintenanceStatus") {
+    throw "Maintenance page does not load maintenance status."
+}
+
+Write-Host "Frontend workflow/export/maintenance UI check passed."

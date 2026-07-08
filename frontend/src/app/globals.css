@@ -84,6 +84,7 @@ a {
 .stat-card,
 .breakdown-card,
 .link-card,
+.action-card,
 .page-heading {
   border: 1px solid var(--border);
   background: rgba(255, 250, 242, 0.88);
@@ -177,7 +178,8 @@ p {
 .stats-grid,
 .breakdown-grid,
 .link-grid,
-.readiness-grid {
+.readiness-grid,
+.action-grid {
   display: grid;
   gap: 16px;
 }
@@ -187,11 +189,38 @@ p {
   margin-top: 24px;
 }
 
-.stat-card {
+.action-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 24px;
+}
+
+.stat-card,
+.action-card {
   display: grid;
   gap: 8px;
   padding: 24px;
   border-radius: 22px;
+  text-decoration: none;
+}
+
+.action-card span {
+  color: var(--accent);
+  font-weight: 900;
+}
+
+.action-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.action-card strong {
+  width: fit-content;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
 }
 
 .stat-card p,
@@ -400,7 +429,8 @@ p {
   .breakdown-grid,
   .link-grid,
   .readiness-grid,
-  .two-card-grid {
+  .two-card-grid,
+  .action-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -422,7 +452,8 @@ p {
   .breakdown-grid,
   .link-grid,
   .readiness-grid,
-  .two-card-grid {
+  .two-card-grid,
+  .action-grid {
     grid-template-columns: 1fr;
   }
 }

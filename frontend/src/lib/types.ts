@@ -47,6 +47,54 @@ export type ProjectContentAssetsResponse = {
   content_assets: ContentAsset[];
 };
 
+export type PlannedOutput = {
+  order: number;
+  project_id: string;
+  content_type: string;
+  title: string;
+  workflow_stage: string;
+  recommended_status: string;
+  generation_topic: string;
+};
+
+export type OutputPlanResponse = {
+  project_id: string;
+  planned_outputs: PlannedOutput[];
+};
+
+export type MaintenanceStatus = {
+  database: {
+    path: string;
+    exists: boolean;
+    size_bytes: number;
+    tables: Record<string, number>;
+  };
+  exports: {
+    path: string;
+    exists: boolean;
+    file_count: number;
+    total_size_bytes: number;
+    recent: Array<{
+      file_name: string;
+      file_path: string;
+      size_bytes: number;
+    }>;
+  };
+  backups: {
+    path: string;
+    exists: boolean;
+    file_count: number;
+    total_size_bytes: number;
+    recent: Array<{
+      file_name: string;
+      file_path: string;
+      size_bytes: number;
+    }>;
+  };
+  maintenance_ready: boolean;
+  generated_at: string;
+};
+
 export type DashboardSummary = {
   system: Record<string, unknown>;
   projects: {
@@ -65,7 +113,11 @@ export type DashboardSummary = {
   exports: {
     total_markdown_files: number;
     export_root: string;
-    recent: unknown[];
+    recent: Array<{
+      file_name?: string;
+      file_path?: string;
+      size_bytes?: number;
+    }>;
   };
   readiness: {
     has_projects: boolean;

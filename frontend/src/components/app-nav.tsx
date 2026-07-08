@@ -1,7 +1,10 @@
 const navItems = [
   { href: "/", label: "Dashboard" },
   { href: "/projects", label: "Projects" },
-  { href: "/content-assets", label: "Content Assets" }
+  { href: "/content-assets", label: "Content Assets" },
+  { href: "/workflows", label: "Workflows" },
+  { href: "/exports", label: "Exports" },
+  { href: "/maintenance", label: "Maintenance" }
 ];
 
 export function AppNav() {
