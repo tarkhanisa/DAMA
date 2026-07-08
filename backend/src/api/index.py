@@ -31,6 +31,15 @@ def api_index() -> dict[str, Any]:
                     "POST /content/generate",
                 ],
             },
+            "content_assets": {
+                "description": "Persisted content assets connected to projects.",
+                "endpoints": [
+                    "POST /content-assets",
+                    "GET /content-assets",
+                    "GET /content-assets/{asset_id}",
+                    "PATCH /content-assets/{asset_id}/status",
+                ],
+            },
             "providers": {
                 "description": "AI provider catalog.",
                 "endpoints": ["GET /providers", "GET /providers/{key}"],

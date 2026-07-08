@@ -299,3 +299,41 @@ Current supported project type keys:
 Current note:
 
 The project layer does not persist data yet. It prepares the future project record structure before database persistence is added.
+
+## Content Assets API
+
+The content asset API stores content outputs and connects them to projects.
+
+POST /content-assets
+
+Creates and stores a content asset.
+
+GET /content-assets
+
+Returns stored content assets.
+
+GET /content-assets?project_id={project_id}
+
+Returns content assets for one project.
+
+GET /content-assets/{asset_id}
+
+Returns one content asset by ID.
+
+PATCH /content-assets/{asset_id}/status
+
+Updates the content asset status.
+
+Current content asset statuses:
+
+- draft
+- review
+- approved
+- published
+- archived
+
+Current content asset sources:
+
+- manual
+- ai_generated
+- imported

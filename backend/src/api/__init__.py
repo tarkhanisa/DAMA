@@ -8,3 +8,5 @@ from .system import router as system_router
 from .index import router as index_router
 
 from .projects import router as projects_router
+
+from .content_assets import router as content_assets_router

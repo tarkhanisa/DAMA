@@ -316,3 +316,54 @@ Suggested scope:
 - generated content storage
 - content list/read endpoints
 - smoke test update
+
+## Macro Pack 3 Completed
+
+Name:
+
+Content Asset Layer
+
+Added files:
+
+- backend/src/services/content_asset_service.py
+- backend/src/repositories/content_asset_repository.py
+- backend/src/api/content_assets.py
+- backend/tests/smoke_test_content_assets.py
+
+Updated files:
+
+- backend/src/database/sqlite_database.py
+- backend/src/api/__init__.py
+- backend/src/main.py
+- backend/src/api/index.py
+- scripts/backend-check.ps1
+- docs/backend-api.md
+- docs/project-status.md
+
+Added endpoints:
+
+POST /content-assets
+
+GET /content-assets
+
+GET /content-assets?project_id={project_id}
+
+GET /content-assets/{asset_id}
+
+PATCH /content-assets/{asset_id}/status
+
+Purpose:
+
+Allow DAMA to store content outputs as project-linked assets.
+
+Next recommended step:
+
+Macro Pack 4: Generation History and Save Generated Output
+
+Suggested scope:
+
+- connect /content/generate to persisted content assets
+- add optional project_id and save_output fields
+- store AI-generated content as content asset
+- add generation metadata
+- update smoke tests

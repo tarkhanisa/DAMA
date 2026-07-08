@@ -37,3 +37,7 @@ async def root():
 from src.api.projects import router as projects_router
 
 app.include_router(projects_router)
+
+from src.api.content_assets import router as content_assets_router
+
+app.include_router(content_assets_router)
