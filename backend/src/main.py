@@ -49,3 +49,7 @@ app.include_router(workflows_router)
 from src.api.exports import router as exports_router
 
 app.include_router(exports_router)
+
+from src.api.dashboard import router as dashboard_router
+
+app.include_router(dashboard_router)

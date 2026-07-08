@@ -14,3 +14,5 @@ from .content_assets import router as content_assets_router
 from .workflows import router as workflows_router
 
 from .exports import router as exports_router
+
+from .dashboard import router as dashboard_router

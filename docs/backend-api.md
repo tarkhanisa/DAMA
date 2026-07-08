@@ -537,3 +537,38 @@ When dry_run is false:
 Recommended use:
 
 Start with dry_run true, review planned outputs, then execute with dry_run false.
+
+## Dashboard API
+
+The dashboard API provides an aggregated backend summary for future UI development.
+
+GET /dashboard/summary
+
+Returns:
+
+- system status
+- project totals
+- project counts by status
+- project counts by type
+- recent projects
+- content asset totals
+- content asset counts by status
+- content asset counts by content type
+- content asset counts by source
+- recent content assets
+- export file summary
+- readiness flags
+
+Current readiness flags:
+
+dashboard_ready
+
+True when the dashboard API is available.
+
+workflow_ready
+
+True when the system has at least one project and one content asset.
+
+export_ready
+
+True when the system has at least one content asset.

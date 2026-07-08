@@ -15,6 +15,10 @@ def api_index() -> dict[str, Any]:
         "version": "1.0.0",
         "description": "Backend API for the DAMA AI Content Automation Platform.",
         "capabilities": {
+            "dashboard": {
+                "description": "Aggregated dashboard readiness and operational summary.",
+                "endpoints": ["GET /dashboard/summary"],
+            },
             "models": {
                 "description": "Local AI model discovery.",
                 "endpoints": ["GET /models"],
