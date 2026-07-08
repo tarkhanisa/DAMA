@@ -26,3 +26,8 @@ backend/data/*.db-wal
 backend/exports/
 
 backend/backups/
+
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env.local

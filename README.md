@@ -137,3 +137,21 @@ Phase 3:
 - RAG
 - Agents
 - Plugin system
+
+## DAMA Autopilot
+
+Check:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dama.ps1 check
+
+Status:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dama.ps1 status
+
+Ship:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dama.ps1 ship "Commit message"
+
+Backup:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dama.ps1 backup

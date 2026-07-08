@@ -1,0 +1,23 @@
+{
+  "name": "dama-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Frontend foundation for DAMA AI Content Automation Platform.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "check": "echo Frontend structure check is handled by scripts/frontend-check.ps1"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "latest"
+  }
+}
