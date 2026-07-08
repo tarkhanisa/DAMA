@@ -367,3 +367,49 @@ Suggested scope:
 - store AI-generated content as content asset
 - add generation metadata
 - update smoke tests
+
+## Macro Pack 4 Completed
+
+Name:
+
+Generation Storage
+
+Updated files:
+
+- backend/src/api/content_generation.py
+- backend/src/api/index.py
+- scripts/backend-check.ps1
+- docs/backend-api.md
+- docs/project-status.md
+
+Added files:
+
+- backend/tests/smoke_test_generation_storage.py
+
+Updated behavior:
+
+POST /content/generate can now save generated output as a project-linked content asset.
+
+New request fields:
+
+- project_id
+- save_output
+- asset_title
+- asset_status
+- asset_metadata
+
+Purpose:
+
+Connect content generation to persistent project assets.
+
+Next recommended step:
+
+Macro Pack 5: Project Content Workflow
+
+Suggested scope:
+
+- project detail endpoint with attached content assets
+- project summary endpoint
+- project status updates
+- content counts per project
+- workflow-ready project state

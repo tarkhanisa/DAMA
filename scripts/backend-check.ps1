@@ -7,6 +7,7 @@ $PythonPath = ".\backend\.venv\Scripts\python.exe"
 $AISmokeTestPath = ".\backend\tests\smoke_test_ai.py"
 $ProjectSmokeTestPath = ".\backend\tests\smoke_test_projects.py"
 $ContentAssetSmokeTestPath = ".\backend\tests\smoke_test_content_assets.py"
+$GenerationStorageSmokeTestPath = ".\backend\tests\smoke_test_generation_storage.py"
 
 if (-not (Test-Path $PythonPath)) {
     throw "Python virtual environment was not found at $PythonPath"
@@ -24,6 +25,10 @@ if (-not (Test-Path $ContentAssetSmokeTestPath)) {
     throw "Content asset smoke test was not found at $ContentAssetSmokeTestPath"
 }
 
+if (-not (Test-Path $GenerationStorageSmokeTestPath)) {
+    throw "Generation storage smoke test was not found at $GenerationStorageSmokeTestPath"
+}
+
 Write-Host "Running DAMA backend AI smoke test..."
 & $PythonPath $AISmokeTestPath
 
@@ -34,6 +39,10 @@ Write-Host "Running DAMA project persistence smoke test..."
 Write-Host ""
 Write-Host "Running DAMA content asset smoke test..."
 & $PythonPath $ContentAssetSmokeTestPath
+
+Write-Host ""
+Write-Host "Running DAMA generation storage smoke test..."
+& $PythonPath $GenerationStorageSmokeTestPath
 
 Write-Host ""
 Write-Host "Git status:"

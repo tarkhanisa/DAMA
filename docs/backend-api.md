@@ -337,3 +337,40 @@ Current content asset sources:
 - manual
 - ai_generated
 - imported
+
+## Generation Storage
+
+POST /content/generate can optionally save generated output as a project-linked content asset.
+
+Additional request fields:
+
+project_id
+
+Required when save_output is true.
+
+save_output
+
+Boolean. When true, generated content is stored as a content asset.
+
+asset_title
+
+Optional title for the saved content asset.
+
+asset_status
+
+Optional status for the saved content asset.
+
+asset_metadata
+
+Optional metadata dictionary for the saved content asset.
+
+Example behavior:
+
+- Generate structured content through the selected provider
+- Return the generated response
+- Store the generated response as a content asset when save_output is true
+- Attach generation metadata to the stored content asset
+
+Current source value for saved generations:
+
+ai_generated

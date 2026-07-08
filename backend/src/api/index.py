@@ -24,7 +24,7 @@ def api_index() -> dict[str, Any]:
                 "endpoints": ["POST /generate"],
             },
             "content": {
-                "description": "Structured content generation and content type catalog.",
+                "description": "Structured content generation, content type catalog, and optional output storage.",
                 "endpoints": [
                     "GET /content/types",
                     "GET /content/types/{key}",
