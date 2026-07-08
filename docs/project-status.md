@@ -226,3 +226,38 @@ Content Generation
 Prompt Engine
 
 Project Workflow Layer
+
+## Macro Pack 1 Completed
+
+Name:
+
+Project Layer without database persistence
+
+Added files:
+
+- backend/src/services/project_service.py
+- backend/src/api/projects.py
+
+Updated files:
+
+- backend/src/api/__init__.py
+- backend/src/main.py
+- backend/src/api/index.py
+- docs/backend-api.md
+- docs/project-status.md
+
+Added endpoints:
+
+GET /projects/types
+
+GET /projects/types/{key}
+
+POST /projects/metadata
+
+Purpose:
+
+Prepare DAMA for project-based content workflows before database persistence is added.
+
+Next recommended step:
+
+Macro Pack 2: Persistence Layer

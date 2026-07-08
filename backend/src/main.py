@@ -33,3 +33,7 @@ async def root():
         "project": settings.APP_NAME,
         "status": "running"
     }
+
+from src.api.projects import router as projects_router
+
+app.include_router(projects_router)

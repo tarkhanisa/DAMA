@@ -1,114 +1,51 @@
-﻿from pydantic import BaseModel
+from __future__ import annotations
+
+from typing import Any
+
 from fastapi import APIRouter
 
 
-class APIEndpointInfo(BaseModel):
-    method: str
-    path: str
-    description: str
+router = APIRouter()
 
 
-class APICapabilityInfo(BaseModel):
-    key: str
-    label: str
-    description: str
-    endpoints: list[APIEndpointInfo]
-
-
-class APIIndexResponse(BaseModel):
-    name: str
-    version: str
-    description: str
-    capabilities: list[APICapabilityInfo]
-
-
-router = APIRouter(tags=["api"])
-
-
-@router.get("/api", response_model=APIIndexResponse)
-def get_api_index() -> APIIndexResponse:
-    """
-    Return a human-readable index of DAMA backend API capabilities.
-    """
-    return APIIndexResponse(
-        name="DAMA Backend API",
-        version="1.0.0",
-        description="AI content automation backend API for local model generation, prompt-driven content, providers, and system status.",
-        capabilities=[
-            APICapabilityInfo(
-                key="models",
-                label="Models",
-                description="Inspect locally available AI models.",
-                endpoints=[
-                    APIEndpointInfo(
-                        method="GET",
-                        path="/models",
-                        description="List locally available Ollama models.",
-                    ),
+@router.get("/api")
+def api_index() -> dict[str, Any]:
+    return {
+        "name": "DAMA Backend API",
+        "version": "1.0.0",
+        "description": "Backend API for the DAMA AI Content Automation Platform.",
+        "capabilities": {
+            "models": {
+                "description": "Local AI model discovery.",
+                "endpoints": ["GET /models"],
+            },
+            "generation": {
+                "description": "Raw text generation through AI providers.",
+                "endpoints": ["POST /generate"],
+            },
+            "content": {
+                "description": "Structured content generation and content type catalog.",
+                "endpoints": [
+                    "GET /content/types",
+                    "GET /content/types/{key}",
+                    "POST /content/generate",
                 ],
-            ),
-            APICapabilityInfo(
-                key="generation",
-                label="Text Generation",
-                description="Generate raw text using supported AI providers.",
-                endpoints=[
-                    APIEndpointInfo(
-                        method="POST",
-                        path="/generate",
-                        description="Generate text from a direct prompt or a prompt template.",
-                    ),
+            },
+            "providers": {
+                "description": "AI provider catalog.",
+                "endpoints": ["GET /providers", "GET /providers/{key}"],
+            },
+            "projects": {
+                "description": "Project type catalog and project metadata preparation.",
+                "endpoints": [
+                    "GET /projects/types",
+                    "GET /projects/types/{key}",
+                    "POST /projects/metadata",
                 ],
-            ),
-            APICapabilityInfo(
-                key="content",
-                label="Content Generation",
-                description="Generate structured production content using standard content types.",
-                endpoints=[
-                    APIEndpointInfo(
-                        method="GET",
-                        path="/content/types",
-                        description="List supported content generation types.",
-                    ),
-                    APIEndpointInfo(
-                        method="GET",
-                        path="/content/types/{key}",
-                        description="Get one content type definition by key.",
-                    ),
-                    APIEndpointInfo(
-                        method="POST",
-                        path="/content/generate",
-                        description="Generate structured content using a standard content type.",
-                    ),
-                ],
-            ),
-            APICapabilityInfo(
-                key="providers",
-                label="AI Providers",
-                description="Inspect supported AI provider integrations.",
-                endpoints=[
-                    APIEndpointInfo(
-                        method="GET",
-                        path="/providers",
-                        description="List supported AI providers.",
-                    ),
-                    APIEndpointInfo(
-                        method="GET",
-                        path="/providers/{key}",
-                        description="Get one AI provider definition by key.",
-                    ),
-                ],
-            ),
-            APICapabilityInfo(
-                key="system",
-                label="System",
-                description="Inspect backend runtime status.",
-                endpoints=[
-                    APIEndpointInfo(
-                        method="GET",
-                        path="/system/status",
-                        description="Get aggregated DAMA backend system status.",
-                    ),
-                ],
-            ),
-        ],
-    )
+            },
+            "system": {
+                "description": "Runtime system status.",
+                "endpoints": ["GET /system/status"],
+            },
+        },
+    }

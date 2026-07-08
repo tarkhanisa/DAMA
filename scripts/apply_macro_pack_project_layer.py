@@ -1,3 +1,25 @@
+﻿from pathlib import Path
+
+ROOT = Path("I:/DAMA")
+
+def write_file(path: str, content: str) -> None:
+    target = ROOT / path
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(content.strip() + "\n", encoding="utf-8")
+    print(f"Wrote {path}")
+
+def append_once(path: str, marker: str, content: str) -> None:
+    target = ROOT / path
+    text = target.read_text(encoding="utf-8") if target.exists() else ""
+    if marker not in text:
+        target.write_text(text.rstrip() + "\n\n" + content.strip() + "\n", encoding="utf-8")
+        print(f"Updated {path}")
+    else:
+        print(f"Skipped {path}")
+
+write_file(
+    "backend/src/services/project_service.py",
+    """
 from __future__ import annotations
 
 import re
@@ -8,11 +30,11 @@ from uuid import uuid4
 
 
 class ProjectServiceError(RuntimeError):
-    """Base exception for project service failures."""
+    \"\"\"Base exception for project service failures.\"\"\"
 
 
 class InvalidProjectRequestError(ProjectServiceError):
-    """Raised when a project request is invalid."""
+    \"\"\"Raised when a project request is invalid.\"\"\"
 
 
 @dataclass(frozen=True, slots=True)
@@ -210,3 +232,227 @@ class ProjectService:
             return f"project-{uuid4().hex[:8]}"
 
         return normalized_value
+    """,
+)
+
+write_file(
+    "backend/src/api/projects.py",
+    """
+from __future__ import annotations
+
+from typing import Any
+
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel, Field
+
+from src.services.project_service import InvalidProjectRequestError, ProjectService
+
+
+router = APIRouter(prefix="/projects", tags=["projects"])
+
+
+class ProjectTypeResponse(BaseModel):
+    key: str
+    label: str
+    description: str
+    default_language: str
+    default_content_types: list[str]
+    workflow_stages: list[str]
+
+
+class ProjectTypesResponse(BaseModel):
+    project_types: list[ProjectTypeResponse]
+
+
+class ProjectMetadataRequest(BaseModel):
+    name: str = Field(..., min_length=1)
+    project_type: str = Field(..., min_length=1)
+    language: str | None = None
+    description: str | None = None
+    content_types: list[str] | None = None
+
+
+class ProjectMetadataResponse(BaseModel):
+    id: str
+    name: str
+    slug: str
+    project_type: str
+    language: str
+    description: str | None
+    status: str
+    content_types: list[str]
+    created_at: str
+    updated_at: str
+
+
+@router.get("/types", response_model=ProjectTypesResponse)
+def list_project_types() -> dict[str, Any]:
+    return {"project_types": ProjectService.list_project_types()}
+
+
+@router.get("/types/{key}", response_model=ProjectTypeResponse)
+def get_project_type(key: str) -> dict[str, Any]:
+    try:
+        return ProjectService.get_project_type(key)
+    except InvalidProjectRequestError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@router.post("/metadata", response_model=ProjectMetadataResponse)
+def build_project_metadata(request: ProjectMetadataRequest) -> dict[str, Any]:
+    try:
+        return ProjectService.build_project_metadata(
+            name=request.name,
+            project_type=request.project_type,
+            language=request.language,
+            description=request.description,
+            content_types=request.content_types,
+        )
+    except InvalidProjectRequestError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    """,
+)
+
+append_once(
+    "backend/src/api/__init__.py",
+    "projects_router",
+    "from .projects import router as projects_router",
+)
+
+append_once(
+    "backend/src/main.py",
+    "projects_router",
+    """
+from src.api.projects import router as projects_router
+
+app.include_router(projects_router)
+    """,
+)
+
+write_file(
+    "backend/src/api/index.py",
+    """
+from __future__ import annotations
+
+from typing import Any
+
+from fastapi import APIRouter
+
+
+router = APIRouter()
+
+
+@router.get("/api")
+def api_index() -> dict[str, Any]:
+    return {
+        "name": "DAMA Backend API",
+        "version": "1.0.0",
+        "description": "Backend API for the DAMA AI Content Automation Platform.",
+        "capabilities": {
+            "models": {
+                "description": "Local AI model discovery.",
+                "endpoints": ["GET /models"],
+            },
+            "generation": {
+                "description": "Raw text generation through AI providers.",
+                "endpoints": ["POST /generate"],
+            },
+            "content": {
+                "description": "Structured content generation and content type catalog.",
+                "endpoints": [
+                    "GET /content/types",
+                    "GET /content/types/{key}",
+                    "POST /content/generate",
+                ],
+            },
+            "providers": {
+                "description": "AI provider catalog.",
+                "endpoints": ["GET /providers", "GET /providers/{key}"],
+            },
+            "projects": {
+                "description": "Project type catalog and project metadata preparation.",
+                "endpoints": [
+                    "GET /projects/types",
+                    "GET /projects/types/{key}",
+                    "POST /projects/metadata",
+                ],
+            },
+            "system": {
+                "description": "Runtime system status.",
+                "endpoints": ["GET /system/status"],
+            },
+        },
+    }
+    """,
+)
+
+append_once(
+    "docs/backend-api.md",
+    "## Projects API",
+    """
+## Projects API
+
+The project API prepares DAMA for project-based content workflows.
+
+Current project endpoints:
+
+GET /projects/types
+
+GET /projects/types/{key}
+
+POST /projects/metadata
+
+Current supported project type keys:
+
+- content_campaign
+- product_launch
+- video_package
+
+Current note:
+
+The project layer does not persist data yet. It prepares the future project record structure before database persistence is added.
+    """,
+)
+
+append_once(
+    "docs/project-status.md",
+    "## Macro Pack 1 Completed",
+    """
+## Macro Pack 1 Completed
+
+Name:
+
+Project Layer without database persistence
+
+Added files:
+
+- backend/src/services/project_service.py
+- backend/src/api/projects.py
+
+Updated files:
+
+- backend/src/api/__init__.py
+- backend/src/main.py
+- backend/src/api/index.py
+- docs/backend-api.md
+- docs/project-status.md
+
+Added endpoints:
+
+GET /projects/types
+
+GET /projects/types/{key}
+
+POST /projects/metadata
+
+Purpose:
+
+Prepare DAMA for project-based content workflows before database persistence is added.
+
+Next recommended step:
+
+Macro Pack 2: Persistence Layer
+    """,
+)
+
+print("Macro Pack 1 applied successfully.")

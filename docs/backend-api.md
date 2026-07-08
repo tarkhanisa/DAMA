@@ -277,3 +277,25 @@ POST /content/generate
 GET  /providers
 GET  /providers/{key}
 GET  /system/status
+
+## Projects API
+
+The project API prepares DAMA for project-based content workflows.
+
+Current project endpoints:
+
+GET /projects/types
+
+GET /projects/types/{key}
+
+POST /projects/metadata
+
+Current supported project type keys:
+
+- content_campaign
+- product_launch
+- video_package
+
+Current note:
+
+The project layer does not persist data yet. It prepares the future project record structure before database persistence is added.
