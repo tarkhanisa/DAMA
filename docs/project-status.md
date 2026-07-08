@@ -261,3 +261,58 @@ Prepare DAMA for project-based content workflows before database persistence is 
 Next recommended step:
 
 Macro Pack 2: Persistence Layer
+
+## Macro Pack 2 Completed
+
+Name:
+
+Persistence Layer
+
+Added files:
+
+- backend/src/database/sqlite_database.py
+- backend/src/repositories/__init__.py
+- backend/src/repositories/project_repository.py
+- backend/tests/smoke_test_projects.py
+
+Updated files:
+
+- backend/src/api/projects.py
+- backend/src/api/index.py
+- scripts/backend-check.ps1
+- docs/backend-api.md
+- docs/project-status.md
+- .gitignore
+
+Added endpoints:
+
+POST /projects
+
+GET /projects
+
+GET /projects/{project_id}
+
+Purpose:
+
+Move DAMA from temporary project metadata generation to persisted project records.
+
+Persistence backend:
+
+SQLite standard library.
+
+Database file:
+
+backend/data/dama.db
+
+Next recommended step:
+
+Macro Pack 3: Content Asset Layer
+
+Suggested scope:
+
+- content asset model
+- content repository
+- project-to-content relationship
+- generated content storage
+- content list/read endpoints
+- smoke test update

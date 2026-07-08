@@ -36,11 +36,14 @@ def api_index() -> dict[str, Any]:
                 "endpoints": ["GET /providers", "GET /providers/{key}"],
             },
             "projects": {
-                "description": "Project type catalog and project metadata preparation.",
+                "description": "Project type catalog, project metadata preparation, and persisted project records.",
                 "endpoints": [
                     "GET /projects/types",
                     "GET /projects/types/{key}",
                     "POST /projects/metadata",
+                    "POST /projects",
+                    "GET /projects",
+                    "GET /projects/{project_id}",
                 ],
             },
             "system": {
