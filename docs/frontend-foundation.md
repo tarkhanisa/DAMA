@@ -35,3 +35,17 @@ The frontend should use:
 - Exports
 - Maintenance
 - Developer
+
+## Real Dashboard UI
+
+Super Pack I upgraded the frontend from a placeholder landing page to a real dashboard UI.
+
+Added components:
+
+- StatCard
+- ReadinessPanel
+- RecentList
+- CountBreakdown
+- LinkCard
+
+The page now fetches dashboard data from the backend and displays operational summaries.

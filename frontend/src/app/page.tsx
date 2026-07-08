@@ -1,44 +1,141 @@
-import { DAMA_API_BASE_URL } from "../lib/api-client";
+import { CountBreakdown } from "../components/count-breakdown";
+import { LinkCard } from "../components/link-card";
+import { ReadinessPanel } from "../components/readiness-panel";
+import { RecentList } from "../components/recent-list";
+import { StatCard } from "../components/stat-card";
+import { DAMA_API_BASE_URL, damaApi } from "../lib/api-client";
+import type { DashboardSummary, FrontendContract } from "../lib/types";
 
-const sections = [
-  "Dashboard",
-  "Projects",
-  "Content Assets",
-  "Workflows",
-  "Exports",
-  "Maintenance",
-  "Developer"
-];
+async function loadDashboardSummary(): Promise<DashboardSummary | null> {
+  try {
+    return await damaApi.dashboardSummary();
+  } catch {
+    return null;
+  }
+}
 
-export default function HomePage() {
+async function loadFrontendContract(): Promise<FrontendContract | null> {
+  try {
+    return await damaApi.frontendContract();
+  } catch {
+    return null;
+  }
+}
+
+export default async function HomePage() {
+  const [summary, contract] = await Promise.all([
+    loadDashboardSummary(),
+    loadFrontendContract()
+  ]);
+
   return (
     <main className="page-shell">
-      <section className="hero">
-        <p className="eyebrow">DAMA Frontend Foundation</p>
-        <h1>AI Content Automation Platform</h1>
-        <p className="lead">
-          This is the first frontend foundation for DAMA. The backend is already
-          API-first and dashboard-ready.
-        </p>
+      <section className="hero dashboard-hero">
+        <div>
+          <p className="eyebrow">DAMA Dashboard</p>
+          <h1>AI Content Automation Platform</h1>
+          <p className="lead">
+            Project workflow, content assets, exports, maintenance, and developer readiness in one local dashboard.
+          </p>
+        </div>
 
-        <div className="actions">
-          <a href={`${DAMA_API_BASE_URL}/docs`}>Open API Docs</a>
-          <a href={`${DAMA_API_BASE_URL}/dashboard/summary`}>
-            Dashboard Summary
-          </a>
-          <a href={`${DAMA_API_BASE_URL}/developer/frontend-contract`}>
-            Frontend Contract
-          </a>
+        <div className="hero-status">
+          <span>{summary ? "Backend connected" : "Backend unavailable"}</span>
+          <strong>{contract?.endpoint_count ?? "—"}</strong>
+          <p>registered endpoints</p>
         </div>
       </section>
 
-      <section className="grid">
-        {sections.map((section) => (
-          <article key={section} className="card">
-            <h2>{section}</h2>
-            <p>Ready for the next frontend implementation step.</p>
-          </article>
-        ))}
+      {summary ? (
+        <>
+          <section className="stats-grid">
+            <StatCard
+              label="Projects"
+              value={summary.projects.total}
+              helper="Total stored projects"
+            />
+            <StatCard
+              label="Content Assets"
+              value={summary.content_assets.total}
+              helper="Manual and AI-generated assets"
+            />
+            <StatCard
+              label="Markdown Exports"
+              value={summary.exports.total_markdown_files}
+              helper="Local export files"
+            />
+            <StatCard
+              label="Workflow"
+              value={summary.readiness.workflow_ready ? "Ready" : "Pending"}
+              helper="Project + content readiness"
+            />
+          </section>
+
+          <ReadinessPanel readiness={summary.readiness} />
+
+          <section className="breakdown-grid">
+            <CountBreakdown title="Projects by status" items={summary.projects.by_status} />
+            <CountBreakdown title="Projects by type" items={summary.projects.by_type} />
+            <CountBreakdown title="Assets by status" items={summary.content_assets.by_status} />
+            <CountBreakdown title="Assets by source" items={summary.content_assets.by_source} />
+          </section>
+
+          <section className="two-column">
+            <RecentList
+              eyebrow="Projects"
+              title="Recent projects"
+              emptyLabel="No projects yet."
+              items={summary.projects.recent}
+            />
+            <RecentList
+              eyebrow="Content"
+              title="Recent content assets"
+              emptyLabel="No content assets yet."
+              items={summary.content_assets.recent}
+            />
+          </section>
+        </>
+      ) : (
+        <section className="panel">
+          <div className="panel-heading">
+            <p className="eyebrow">Backend</p>
+            <h2>Backend is not reachable</h2>
+          </div>
+          <p className="empty-state">
+            Start the backend first, then refresh this page.
+          </p>
+          <pre className="code-block">cd I:\DAMA\backend{"\n"}.\.venv\Scripts\python.exe -m uvicorn src.main:app --reload</pre>
+        </section>
+      )}
+
+      <section className="panel">
+        <div className="panel-heading">
+          <p className="eyebrow">Developer</p>
+          <h2>Quick links</h2>
+        </div>
+
+        <div className="link-grid">
+          <LinkCard
+            title="API Docs"
+            description="Open FastAPI Swagger UI."
+            href={`${DAMA_API_BASE_URL}/docs`}
+          />
+          <LinkCard
+            title="Dashboard Summary"
+            description="Inspect raw dashboard summary JSON."
+            href={`${DAMA_API_BASE_URL}/dashboard/summary`}
+          />
+          <LinkCard
+            title="Frontend Contract"
+            description="Inspect frontend contract JSON."
+            href={`${DAMA_API_BASE_URL}/developer/frontend-contract`}
+          />
+          <LinkCard
+            title="Endpoint Map"
+            description="Inspect all backend endpoints."
+            href={`${DAMA_API_BASE_URL}/developer/endpoint-map`}
+          />
+        </div>
       </section>
     </main>
   );
