@@ -1037,3 +1037,117 @@ Suggested scope:
 - status filters
 - frontend filter UI
 - safer list scaling
+
+## Release Pack N Completed
+
+Name:
+
+Search + Filters + Content Asset Detail + Export UX
+
+Added backend files:
+
+- backend/src/services/search_service.py
+- backend/src/api/search.py
+- backend/tests/smoke_test_search.py
+
+Added frontend files:
+
+- frontend/src/components/search-filter-card.tsx
+- frontend/src/components/asset-body-preview.tsx
+- frontend/src/app/search/page.tsx
+- frontend/src/app/search/projects/page.tsx
+- frontend/src/app/search/content-assets/page.tsx
+- frontend/src/app/content-assets/[assetId]/page.tsx
+
+Updated files:
+
+- backend/src/main.py
+- backend/src/api/__init__.py
+- scripts/backend-check.ps1
+- frontend/src/lib/api-client.ts
+- frontend/src/lib/types.ts
+- frontend/src/components/app-nav.tsx
+- frontend/src/app/projects/page.tsx
+- frontend/src/app/content-assets/page.tsx
+- frontend/src/app/globals.css
+- scripts/frontend-check.ps1
+- docs/backend-api.md
+- docs/frontend-routes.md
+- docs/project-status.md
+
+Added behavior:
+
+- read-only backend search API
+- project search filters
+- content asset search filters
+- frontend search pages
+- content asset detail page
+- asset markdown export endpoint link
+- stronger frontend check
+- backend smoke test for search
+
+Next recommended Release Pack:
+
+Release Pack O: Operational Actions and Safe POST UI
+
+Suggested scope:
+
+- safe export trigger UI
+- safe backup trigger UI
+- project status update UI
+- content asset status update UI
+- confirmation-first UI actions
+- no delete operations
+
+## Release Pack O Completed
+
+Name:
+
+Safe Operational Actions UI
+
+Added frontend files:
+
+- frontend/src/components/safe-action-button.tsx
+- frontend/src/components/operation-result.tsx
+- frontend/src/components/backup-action.tsx
+- frontend/src/components/export-project-action.tsx
+- frontend/src/components/export-content-asset-action.tsx
+- frontend/src/components/project-status-form.tsx
+- frontend/src/components/content-asset-status-form.tsx
+- frontend/src/app/operations/page.tsx
+- docs/safe-operations-ui.md
+
+Updated files:
+
+- frontend/src/lib/api-client.ts
+- frontend/src/lib/types.ts
+- frontend/src/components/app-nav.tsx
+- frontend/src/app/projects/[projectId]/page.tsx
+- frontend/src/app/content-assets/[assetId]/page.tsx
+- frontend/src/app/maintenance/page.tsx
+- frontend/src/app/globals.css
+- scripts/frontend-check.ps1
+- docs/frontend-routes.md
+- docs/project-status.md
+
+Added behavior:
+
+- confirmation-first backup action
+- confirmation-first project bundle export
+- confirmation-first content asset markdown export
+- project status update UI
+- content asset status update UI
+- operations center
+- no delete operations
+
+Next recommended Release Pack:
+
+Release Pack P: Frontend Dependency Install + Real Typecheck Fixes
+
+Suggested scope:
+
+- run npm install
+- run npm typecheck
+- fix real TypeScript/Next errors
+- run npm build if feasible
+- add lockfile if generated

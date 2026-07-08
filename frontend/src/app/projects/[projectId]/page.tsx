@@ -1,4 +1,8 @@
 import { CountBreakdown } from "../../../components/count-breakdown";
+import { ErrorPanel } from "../../../components/error-panel";
+import { ExportProjectAction } from "../../../components/export-project-action";
+import { PageHeader } from "../../../components/page-header";
+import { ProjectStatusForm } from "../../../components/project-status-form";
 import { RecentList } from "../../../components/recent-list";
 import { StatCard } from "../../../components/stat-card";
 import { DAMA_API_BASE_URL, damaApi } from "../../../lib/api-client";
@@ -35,40 +39,34 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
   if (!project) {
     return (
       <main className="page-shell">
-        <section className="panel">
-          <div className="panel-heading">
-            <p className="eyebrow">Project</p>
-            <h1>Project not found</h1>
-          </div>
-          <p className="empty-state">
-            The selected project could not be loaded from the backend.
-          </p>
-        </section>
+        <ErrorPanel
+          eyebrow="Project"
+          title="Project not found"
+          message="The selected project could not be loaded from the backend."
+        />
       </main>
     );
   }
 
   return (
     <main className="page-shell">
-      <section className="page-heading">
-        <p className="eyebrow">Project Detail</p>
-        <h1>{project.name}</h1>
-        <p className="lead">
-          {project.description || "Project workflow and content asset overview."}
-        </p>
-
+      <PageHeader
+        eyebrow="Project Detail"
+        title={project.name}
+        lead={project.description || "Project workflow and content asset overview."}
+      >
         <div className="actions">
           <a href={`${DAMA_API_BASE_URL}/projects/${project.id}/summary`}>
             Raw Summary
           </a>
-          <a href={`${DAMA_API_BASE_URL}/workflows/projects/${project.id}/output-plan`}>
-            Output Plan
+          <a href={`/workflows/${project.id}`}>
+            Workflow
           </a>
-          <a href={`${DAMA_API_BASE_URL}/exports/projects/${project.id}/bundle`}>
-            Export Endpoint
+          <a href={`/workflows/${project.id}/dry-run`}>
+            Dry Run
           </a>
         </div>
-      </section>
+      </PageHeader>
 
       <section className="stats-grid">
         <StatCard label="Status" value={project.status} helper="Project state" />
@@ -79,6 +77,26 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
           value={summary?.total_assets ?? 0}
           helper="Connected content assets"
         />
+      </section>
+
+      <section className="two-column">
+        <section className="panel">
+          <div className="panel-heading">
+            <p className="eyebrow">Status</p>
+            <h2>Update project status</h2>
+          </div>
+
+          <ProjectStatusForm projectId={project.id} currentStatus={project.status} />
+        </section>
+
+        <section className="panel">
+          <div className="panel-heading">
+            <p className="eyebrow">Export</p>
+            <h2>Project bundle</h2>
+          </div>
+
+          <ExportProjectAction projectId={project.id} />
+        </section>
       </section>
 
       {summary ? (

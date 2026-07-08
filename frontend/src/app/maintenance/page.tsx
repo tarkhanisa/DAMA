@@ -1,4 +1,5 @@
 import { ActionCard } from "../../components/action-card";
+import { BackupAction } from "../../components/backup-action";
 import { CountBreakdown } from "../../components/count-breakdown";
 import { DataTable } from "../../components/data-table";
 import { ErrorPanel } from "../../components/error-panel";
@@ -43,8 +44,8 @@ export default async function MaintenancePage() {
           <a href={`${DAMA_API_BASE_URL}/maintenance/status`}>
             Raw Maintenance Status
           </a>
-          <a href={`${DAMA_API_BASE_URL}/maintenance/database/backup`}>
-            Backup Endpoint
+          <a href="/operations">
+            Operations
           </a>
         </div>
       </PageHeader>
@@ -74,10 +75,10 @@ export default async function MaintenancePage() {
 
       <section className="action-grid">
         <ActionCard
-          title="Create Database Backup"
-          description="Use the POST endpoint or DAMA autopilot backup command to create a local SQLite backup."
-          href={`${DAMA_API_BASE_URL}/maintenance/database/backup`}
-          label="POST endpoint"
+          title="Operations Center"
+          description="Open the confirmation-first operations page."
+          href="/operations"
+          label="Open"
         />
         <ActionCard
           title="Autopilot Backup"
@@ -89,6 +90,15 @@ export default async function MaintenancePage() {
           description="Run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\dama.ps1 check"
           label="Local command"
         />
+      </section>
+
+      <section className="panel">
+        <div className="panel-heading">
+          <p className="eyebrow">Backup</p>
+          <h2>Create database backup</h2>
+        </div>
+
+        <BackupAction />
       </section>
 
       <section className="breakdown-grid two-card-grid">

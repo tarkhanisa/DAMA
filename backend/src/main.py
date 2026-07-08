@@ -18,6 +18,7 @@ from src.api.index import router as index_router
 from src.api.maintenance import router as maintenance_router
 from src.api.models import router as models_router
 from src.api.projects import router as projects_router
+from src.api.search import router as search_router
 from src.api.providers import router as providers_router
 from src.api.system import router as system_router
 from src.api.workflows import router as workflows_router
@@ -86,6 +87,7 @@ app.include_router(content_generation_router)
 app.include_router(providers_router)
 app.include_router(system_router)
 app.include_router(projects_router)
+app.include_router(search_router)
 app.include_router(content_assets_router)
 app.include_router(workflows_router)
 app.include_router(exports_router)

@@ -20,3 +20,4 @@ from .dashboard import router as dashboard_router
 from .maintenance import router as maintenance_router
 
 from .developer import router as developer_router
+from .search import router as search_router

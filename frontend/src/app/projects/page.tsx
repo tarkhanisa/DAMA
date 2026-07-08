@@ -24,6 +24,7 @@ export default async function ProjectsPage() {
       >
         <div className="actions">
           <a href="/projects/new">Create project</a>
+          <a href="/search/projects">Search projects</a>
         </div>
       </PageHeader>
 

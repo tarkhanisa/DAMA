@@ -3,6 +3,8 @@ const navItems = [
   { href: "/projects", label: "Projects" },
   { href: "/content-assets", label: "Content Assets" },
   { href: "/workflows", label: "Workflows" },
+  { href: "/search", label: "Search" },
+  { href: "/operations", label: "Operations" },
   { href: "/exports", label: "Exports" },
   { href: "/maintenance", label: "Maintenance" }
 ];

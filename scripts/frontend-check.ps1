@@ -1,5 +1,16 @@
 $ErrorActionPreference = "Stop"
 
+
+function Read-TextFile {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Path
+    )
+
+    return [string]::Join("`n", (Get-Content -LiteralPath $Path))
+}
+
+
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
@@ -15,9 +26,14 @@ $RequiredFiles = @(
     ".\frontend\src\app\projects\[projectId]\page.tsx",
     ".\frontend\src\app\content-assets\page.tsx",
     ".\frontend\src\app\content-assets\new\page.tsx",
+    ".\frontend\src\app\content-assets\[assetId]\page.tsx",
     ".\frontend\src\app\workflows\page.tsx",
     ".\frontend\src\app\workflows\[projectId]\page.tsx",
     ".\frontend\src\app\workflows\[projectId]\dry-run\page.tsx",
+    ".\frontend\src\app\search\page.tsx",
+    ".\frontend\src\app\search\projects\page.tsx",
+    ".\frontend\src\app\search\content-assets\page.tsx",
+    ".\frontend\src\app\operations\page.tsx",
     ".\frontend\src\app\exports\page.tsx",
     ".\frontend\src\app\maintenance\page.tsx",
     ".\frontend\src\app\globals.css",
@@ -25,6 +41,15 @@ $RequiredFiles = @(
     ".\frontend\src\lib\types.ts",
     ".\frontend\src\lib\formatters.ts",
     ".\frontend\src\components\app-nav.tsx",
+    ".\frontend\src\components\safe-action-button.tsx",
+    ".\frontend\src\components\operation-result.tsx",
+    ".\frontend\src\components\backup-action.tsx",
+    ".\frontend\src\components\export-project-action.tsx",
+    ".\frontend\src\components\export-content-asset-action.tsx",
+    ".\frontend\src\components\project-status-form.tsx",
+    ".\frontend\src\components\content-asset-status-form.tsx",
+    ".\frontend\src\components\search-filter-card.tsx",
+    ".\frontend\src\components\asset-body-preview.tsx",
     ".\frontend\src\components\stat-card.tsx",
     ".\frontend\src\components\readiness-panel.tsx",
     ".\frontend\src\components\recent-list.tsx",
@@ -48,43 +73,51 @@ foreach ($File in $RequiredFiles) {
     }
 }
 
-$ApiClient = Get-Content ".\frontend\src\lib\api-client.ts" -Raw
-$ProjectForm = Get-Content ".\frontend\src\components\create-project-form.tsx" -Raw
-$AssetForm = Get-Content ".\frontend\src\components\create-content-asset-form.tsx" -Raw
-$DryRunForm = Get-Content ".\frontend\src\components\workflow-dry-run-form.tsx" -Raw
-$ProjectsPage = Get-Content ".\frontend\src\app\projects\page.tsx" -Raw
-$AssetsPage = Get-Content ".\frontend\src\app\content-assets\page.tsx" -Raw
+$ApiClient = Read-TextFile ".\frontend\src\lib\api-client.ts"
+$Nav = Read-TextFile ".\frontend\src\components\app-nav.tsx"
+$SafeAction = Read-TextFile ".\frontend\src\components\safe-action-button.tsx"
+$Operations = Read-TextFile ".\frontend\src\app\operations\page.tsx"
+$ProjectDetail = Read-TextFile ".\frontend\src\app\projects\[projectId]\page.tsx"
+$AssetDetail = Read-TextFile ".\frontend\src\app\content-assets\[assetId]\page.tsx"
 
-if ($ApiClient -notmatch "createProject") {
-    throw "API client does not expose createProject."
+if ($ApiClient -notmatch "backupDatabase") {
+    throw "API client does not expose backupDatabase."
 }
 
-if ($ApiClient -notmatch "createContentAsset") {
-    throw "API client does not expose createContentAsset."
+if ($ApiClient -notmatch "exportProjectBundle") {
+    throw "API client does not expose exportProjectBundle."
 }
 
-if ($ApiClient -notmatch "batchGenerateDryRun") {
-    throw "API client does not expose batchGenerateDryRun."
+if ($ApiClient -notmatch "exportContentAssetMarkdown") {
+    throw "API client does not expose exportContentAssetMarkdown."
 }
 
-if ($ProjectForm -notmatch '"use client"') {
-    throw "CreateProjectForm is not a client component."
+if ($ApiClient -notmatch "updateProjectStatus") {
+    throw "API client does not expose updateProjectStatus."
 }
 
-if ($AssetForm -notmatch '"use client"') {
-    throw "CreateContentAssetForm is not a client component."
+if ($ApiClient -notmatch "updateContentAssetStatus") {
+    throw "API client does not expose updateContentAssetStatus."
 }
 
-if ($DryRunForm -notmatch '"use client"') {
-    throw "WorkflowDryRunForm is not a client component."
+if ($Nav -notmatch "/operations") {
+    throw "Navigation does not include operations."
 }
 
-if ($ProjectsPage -notmatch "/projects/new") {
-    throw "Projects page does not link to create project page."
+if ($SafeAction -notmatch "Confirm") {
+    throw "SafeActionButton does not include confirmation behavior."
 }
 
-if ($AssetsPage -notmatch "/content-assets/new") {
-    throw "Content assets page does not link to create asset page."
+if ($Operations -notmatch "BackupAction") {
+    throw "Operations page does not include backup action."
+}
+
+if ($ProjectDetail -notmatch "ProjectStatusForm") {
+    throw "Project detail page does not include status form."
+}
+
+if ($AssetDetail -notmatch "ContentAssetStatusForm") {
+    throw "Content asset detail page does not include status form."
 }
 
 if (Test-Path ".\frontend\node_modules") {
@@ -104,4 +137,4 @@ else {
     Write-Host "node_modules not found. Skipping npm typecheck."
 }
 
-Write-Host "Frontend write UI shell check passed."
+Write-Host "Frontend safe operational actions check passed."

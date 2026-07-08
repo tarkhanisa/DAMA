@@ -642,3 +642,39 @@ Returns the first frontend contract for the future DAMA dashboard.
 GET /developer/runbook
 
 Returns the local operator runbook as structured JSON.
+
+## Search API
+
+Release Pack N adds read-only search endpoints.
+
+GET /search/projects
+
+Filters:
+
+- query
+- status
+- project_type
+- language
+- limit
+- offset
+
+GET /search/content-assets
+
+Filters:
+
+- query
+- project_id
+- status
+- content_type
+- source
+- limit
+- offset
+
+Response shape:
+
+    {
+      "total": 0,
+      "limit": 20,
+      "offset": 0,
+      "items": []
+    }

@@ -76,3 +76,32 @@ Added routes:
 Purpose:
 
 Allow safe creation of projects, safe creation of manual content assets, and safe workflow dry-run previews.
+
+## Release Pack N Routes
+
+Added routes:
+
+    /search
+    /search/projects
+    /search/content-assets
+    /content-assets/[assetId]
+
+Purpose:
+
+Expose search, filters, and content asset detail pages.
+
+## Release Pack O Routes
+
+Added route:
+
+    /operations
+
+Updated routes:
+
+    /projects/[projectId]
+    /content-assets/[assetId]
+    /maintenance
+
+Purpose:
+
+Expose confirmation-first safe operations for backup, export, and status changes.

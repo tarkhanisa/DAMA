@@ -24,6 +24,7 @@ export default async function ContentAssetsPage() {
       >
         <div className="actions">
           <a href="/content-assets/new">Create content asset</a>
+          <a href="/search/content-assets">Search assets</a>
         </div>
       </PageHeader>
 
@@ -59,7 +60,11 @@ export default async function ContentAssetsPage() {
             {
               key: "title",
               label: "Title",
-              render: (asset) => asset.title
+              render: (asset) => (
+                <a className="table-link" href={`/content-assets/${asset.id}`}>
+                  {asset.title}
+                </a>
+              )
             },
             {
               key: "content_type",

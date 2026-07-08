@@ -52,6 +52,32 @@ export type CreateContentAssetInput = {
   metadata?: Record<string, unknown>;
 };
 
+export type SearchResponse<T> = {
+  total: number;
+  limit: number;
+  offset: number;
+  items: T[];
+};
+
+export type ProjectSearchParams = {
+  query?: string;
+  status?: string;
+  project_type?: string;
+  language?: string;
+  limit?: number;
+  offset?: number;
+};
+
+export type ContentAssetSearchParams = {
+  query?: string;
+  project_id?: string;
+  status?: string;
+  content_type?: string;
+  source?: string;
+  limit?: number;
+  offset?: number;
+};
+
 export type ProjectSummary = {
   project: Project;
   total_assets: number;
@@ -95,6 +121,23 @@ export type BatchGenerateResponse = {
   generated_count: number;
   planned_outputs: PlannedOutput[];
   saved_content_assets: ContentAsset[];
+};
+
+export type ExportResult = {
+  export_type: string;
+  file_name: string;
+  file_path: string;
+  title: string;
+  created_at: string;
+  content: string;
+};
+
+export type BackupResult = {
+  backup_created: boolean;
+  source_path: string;
+  backup_path: string;
+  size_bytes: number;
+  created_at: string;
 };
 
 export type MaintenanceStatus = {
