@@ -49,3 +49,20 @@ Added components:
 - LinkCard
 
 The page now fetches dashboard data from the backend and displays operational summaries.
+
+## Projects and Content Assets UI
+
+Super Pack J adds application routes for project and content asset management.
+
+Added routes:
+
+- /
+- /projects
+- /projects/[projectId]
+- /content-assets
+
+Added shared UI:
+
+- AppNav
+- DataTable
+- StatusPill

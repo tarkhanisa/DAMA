@@ -8,20 +8,59 @@ export type DamaError = {
   };
 };
 
+export type Project = {
+  id: string;
+  name: string;
+  slug?: string;
+  project_type: string;
+  language?: string;
+  description?: string;
+  status: string;
+  content_types?: string[];
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type ContentAsset = {
+  id: string;
+  project_id: string;
+  content_type: string;
+  title: string;
+  body?: string;
+  status: string;
+  source: string;
+  metadata?: Record<string, unknown>;
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type ProjectSummary = {
+  project: Project;
+  total_assets: number;
+  assets_by_status: Record<string, number>;
+  assets_by_content_type: Record<string, number>;
+  recent_assets: ContentAsset[];
+};
+
+export type ProjectContentAssetsResponse = {
+  project_id: string;
+  content_assets: ContentAsset[];
+};
+
 export type DashboardSummary = {
   system: Record<string, unknown>;
   projects: {
     total: number;
     by_status: Record<string, number>;
     by_type: Record<string, number>;
-    recent: unknown[];
+    recent: Project[];
   };
   content_assets: {
     total: number;
     by_status: Record<string, number>;
     by_content_type: Record<string, number>;
     by_source: Record<string, number>;
-    recent: unknown[];
+    recent: ContentAsset[];
   };
   exports: {
     total_markdown_files: number;

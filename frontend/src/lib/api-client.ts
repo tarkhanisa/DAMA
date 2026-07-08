@@ -1,4 +1,11 @@
-import type { DashboardSummary, FrontendContract } from "./types";
+import type {
+  ContentAsset,
+  DashboardSummary,
+  FrontendContract,
+  Project,
+  ProjectContentAssetsResponse,
+  ProjectSummary
+} from "./types";
 
 export const DAMA_API_BASE_URL =
   process.env.NEXT_PUBLIC_DAMA_API_BASE_URL ?? "http://127.0.0.1:8000";
@@ -22,6 +29,26 @@ async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
   return data as T;
 }
 
+function normalizeListResponse<T>(data: unknown, possibleKeys: string[]): T[] {
+  if (Array.isArray(data)) {
+    return data as T[];
+  }
+
+  if (data && typeof data === "object") {
+    const record = data as Record<string, unknown>;
+
+    for (const key of possibleKeys) {
+      const value = record[key];
+
+      if (Array.isArray(value)) {
+        return value as T[];
+      }
+    }
+  }
+
+  return [];
+}
+
 export const damaApi = {
   dashboardSummary(): Promise<DashboardSummary> {
     return requestJson<DashboardSummary>("/dashboard/summary");
@@ -37,5 +64,34 @@ export const damaApi = {
 
   runbook(): Promise<unknown> {
     return requestJson<unknown>("/developer/runbook");
+  },
+
+  async projects(): Promise<Project[]> {
+    const data = await requestJson<unknown>("/projects");
+    return normalizeListResponse<Project>(data, ["projects", "items", "results"]);
+  },
+
+  project(projectId: string): Promise<Project> {
+    return requestJson<Project>(`/projects/${projectId}`);
+  },
+
+  projectSummary(projectId: string): Promise<ProjectSummary> {
+    return requestJson<ProjectSummary>(`/projects/${projectId}/summary`);
+  },
+
+  projectContentAssets(projectId: string): Promise<ProjectContentAssetsResponse> {
+    return requestJson<ProjectContentAssetsResponse>(
+      `/projects/${projectId}/content-assets`
+    );
+  },
+
+  async contentAssets(): Promise<ContentAsset[]> {
+    const data = await requestJson<unknown>("/content-assets");
+    return normalizeListResponse<ContentAsset>(data, [
+      "content_assets",
+      "assets",
+      "items",
+      "results"
+    ]);
   }
 };
