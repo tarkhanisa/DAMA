@@ -16,3 +16,5 @@ from .workflows import router as workflows_router
 from .exports import router as exports_router
 
 from .dashboard import router as dashboard_router
+
+from .maintenance import router as maintenance_router

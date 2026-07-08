@@ -572,3 +572,57 @@ True when the system has at least one project and one content asset.
 export_ready
 
 True when the system has at least one content asset.
+
+## Maintenance API
+
+The maintenance API provides local operational checks and database backup utilities.
+
+GET /maintenance/status
+
+Returns:
+
+- database path
+- database existence
+- database size
+- table row counts
+- export directory status
+- backup directory status
+- maintenance readiness flag
+
+POST /maintenance/database/backup
+
+Creates a timestamped local SQLite database backup.
+
+Current backup directory:
+
+backend/backups
+
+The backup directory is ignored by Git.
+
+## Standard Error Shape
+
+HTTP errors now use a standard shape:
+
+error.type
+
+Error category.
+
+error.status_code
+
+HTTP status code.
+
+error.message
+
+Human-readable message.
+
+error.path
+
+Request path.
+
+Validation errors use:
+
+error.type = validation_error
+
+error.details
+
+Validation detail list.

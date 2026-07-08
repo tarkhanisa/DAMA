@@ -24,3 +24,5 @@ backend/data/*.db-shm
 backend/data/*.db-wal
 
 backend/exports/
+
+backend/backups/

@@ -19,6 +19,13 @@ def api_index() -> dict[str, Any]:
                 "description": "Aggregated dashboard readiness and operational summary.",
                 "endpoints": ["GET /dashboard/summary"],
             },
+            "maintenance": {
+                "description": "Maintenance status, database status, and local database backup.",
+                "endpoints": [
+                    "GET /maintenance/status",
+                    "POST /maintenance/database/backup",
+                ],
+            },
             "models": {
                 "description": "Local AI model discovery.",
                 "endpoints": ["GET /models"],
