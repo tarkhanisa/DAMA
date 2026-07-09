@@ -1401,3 +1401,49 @@ Suggested scope:
 - save_output toggle
 - generated asset link
 - no batch execution from UI yet
+
+## Release Pack U Completed
+
+Name:
+
+AI Generation Operator UI
+
+Added files:
+
+- frontend/src/app/generate/page.tsx
+- frontend/src/components/generate-content-form.tsx
+- docs/ai-generation-operator.md
+
+Updated files:
+
+- frontend/src/components/app-nav.tsx
+- frontend/src/app/globals.css
+- scripts/frontend-check.ps1
+- README.md
+- docs/production-readiness.md
+- docs/project-status.md
+
+Added behavior:
+
+- safe single generation UI
+- project selector
+- content type selector
+- model selector
+- brief input
+- save_output toggle
+- result preview
+- saved asset link when available
+- fallback from content generation endpoint to workflow generation endpoint
+
+Next recommended Release Pack:
+
+Release Pack V: Project Workspace Polish
+
+Suggested scope:
+
+- project workspace tabs
+- assets inside project detail
+- generation shortcut inside project page
+- workflow dry-run shortcut
+- export shortcut
+- clearer operator flow per project

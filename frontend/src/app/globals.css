@@ -743,3 +743,95 @@ p {
   color: var(--muted);
   margin-top: 1rem;
 }
+
+/* Generation operator */
+.generation-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.generation-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.generation-form label {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 700;
+}
+
+.generation-form input,
+.generation-form select,
+.generation-form textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  padding: 0.8rem 0.9rem;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--text);
+  font: inherit;
+}
+
+.generation-form textarea {
+  resize: vertical;
+  min-height: 12rem;
+}
+
+.checkbox-row {
+  display: flex !important;
+  grid-template-columns: auto 1fr;
+  align-items: flex-start;
+  gap: 0.65rem !important;
+  font-weight: 500 !important;
+  color: var(--muted);
+}
+
+.checkbox-row input {
+  width: auto;
+  margin-top: 0.25rem;
+}
+
+.generation-form button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.9rem 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+  background: var(--text);
+  color: var(--surface);
+}
+
+.generation-form button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.form-error {
+  color: #9f3030;
+  font-weight: 700;
+}
+
+.generation-output {
+  min-height: 28rem;
+}
+
+.generated-output {
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-top: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--text);
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+  .generation-grid {
+    grid-template-columns: 1fr;
+  }
+}

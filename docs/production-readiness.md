@@ -106,3 +106,19 @@ Release Pack T adds:
 - runtime smoke test
 
 This improves operator visibility before deployment work.
+
+## AI Generation Operator UI
+
+Release Pack U adds:
+
+- `/generate` frontend page
+- single content generation form
+- project selector
+- content type selector
+- model selector
+- brief input
+- save_output toggle
+- generated output preview
+- saved asset link when available
+
+Batch generation remains intentionally disabled from this UI.

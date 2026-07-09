@@ -231,3 +231,15 @@ Frontend runtime dashboard:
     http://localhost:3000/runtime
 
 This dashboard is read-only and safe for operator diagnostics.
+
+## DAMA AI Generation UI
+
+Run backend and frontend:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dev-all.ps1
+
+Open:
+
+    http://localhost:3000/generate
+
+The generation page is single-run and safe. Batch execution is intentionally not exposed.

@@ -35,6 +35,8 @@ $RequiredFiles = @(
     ".\frontend\src\app\search\content-assets\page.tsx",
     ".\frontend\src\app\operations\page.tsx",
     ".\frontend\src\app\runtime\page.tsx",
+    ".\frontend\src\components\generate-content-form.tsx",
+    ".\frontend\src\app\generate\page.tsx",
     ".\frontend\src\app\exports\page.tsx",
     ".\frontend\src\app\maintenance\page.tsx",
     ".\frontend\src\app\globals.css",
@@ -144,6 +146,25 @@ $RuntimePage = Read-TextFile ".\frontend\src\app\runtime\page.tsx"
 
 if ($RuntimePage -notmatch "/runtime/health") {
     throw "Runtime page does not include runtime health fetch."
+}
+
+$GeneratePage = Read-TextFile ".\frontend\src\app\generate\page.tsx"
+$GenerateForm = Read-TextFile ".\frontend\src\components\generate-content-form.tsx"
+
+if ($GeneratePage -notmatch "GenerateContentForm") {
+    throw "Generate page does not include GenerateContentForm."
+}
+
+if ($GenerateForm -notmatch "save_output") {
+    throw "Generate form does not expose save_output."
+}
+
+if ($GenerateForm -notmatch "/content/generate") {
+    throw "Generate form does not call content generation endpoint."
+}
+
+if ($GenerateForm -notmatch "/workflows/projects/") {
+    throw "Generate form does not include workflow generation fallback."
 }
 
 Write-Host "Frontend production readiness check passed."
