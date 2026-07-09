@@ -1489,3 +1489,51 @@ Suggested scope:
 - add direct generate-for-this-project button
 - add recent outputs panel
 - add export shortcuts
+
+## Release Pack W Completed
+
+Name:
+
+Publishing Foundation + Channel Registry
+
+Added files:
+
+- backend/src/services/publishing_channel_service.py
+- backend/src/api/publishing.py
+- backend/tests/smoke_test_publishing.py
+- frontend/src/app/publishing/page.tsx
+- frontend/src/components/create-publishing-channel-form.tsx
+- docs/publishing-foundation.md
+
+Updated files:
+
+- backend/src/main.py
+- backend/src/api/__init__.py
+- frontend/src/components/app-nav.tsx
+- scripts/backend-check.ps1
+- scripts/frontend-check.ps1
+- docs/project-status.md
+
+Added behavior:
+
+- publishing channel registry
+- channel creation API
+- channel listing API
+- channel test placeholder API
+- Persian publishing page
+- safe no-secret channel registration
+
+Next recommended Release Pack:
+
+Release Pack X: Channel Variant Generator
+
+Suggested scope:
+
+- choose content asset
+- choose destination channels
+- generate adapted variants
+- WordPress version
+- Telegram version
+- Instagram caption version
+- LinkedIn version
+- manual review status

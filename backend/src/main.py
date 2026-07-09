@@ -24,6 +24,7 @@ from src.api.providers import router as providers_router
 from src.api.system import router as system_router
 from src.api.workflows import router as workflows_router
 from src.api.runtime import router as runtime_router
+from src.api.publishing import router as publishing_router
 
 
 app = FastAPI(
@@ -112,3 +113,5 @@ app.include_router(maintenance_router)
 app.include_router(developer_router)
 
 app.include_router(runtime_router)
+
+app.include_router(publishing_router)

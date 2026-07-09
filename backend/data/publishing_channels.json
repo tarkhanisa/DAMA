@@ -1,0 +1,28 @@
+[
+  {
+    "id": "c6137832-d042-4ceb-98bf-4ecaca2387bd",
+    "name": "DAMA Manual Review Channel",
+    "channel_type": "manual",
+    "status": "not_configured",
+    "target_url": "local-review",
+    "public_handle": "",
+    "notes": "Smoke test channel.",
+    "settings_public": {},
+    "secret_configured": false,
+    "created_at": "2026-07-09T19:48:05.887510+00:00",
+    "updated_at": "2026-07-09T19:48:05.887510+00:00"
+  },
+  {
+    "id": "32b20297-aadb-481d-a2fd-42d361264c24",
+    "name": "DAMA Manual Review Channel",
+    "channel_type": "manual",
+    "status": "not_configured",
+    "target_url": "local-review",
+    "public_handle": "",
+    "notes": "Smoke test channel.",
+    "settings_public": {},
+    "secret_configured": false,
+    "created_at": "2026-07-09T19:39:21.248246+00:00",
+    "updated_at": "2026-07-09T19:39:21.248246+00:00"
+  }
+]

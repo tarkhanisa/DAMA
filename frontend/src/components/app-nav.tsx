@@ -8,6 +8,7 @@ const navItems = [
   { href: "/projects", label: "پروژه‌ها" },
   { href: "/content-assets", label: "محتواها" },
   { href: "/generate", label: "تولید محتوا" },
+  { href: "/publishing", label: "انتشار" },
   { href: "/workflows", label: "جریان کار" },
   { href: "/search", label: "جستجو" },
   { href: "/runtime", label: "سلامت سیستم" },

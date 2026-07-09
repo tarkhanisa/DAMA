@@ -37,6 +37,8 @@ $RequiredFiles = @(
     ".\frontend\src\app\runtime\page.tsx",
     ".\frontend\src\components\generate-content-form.tsx",
     ".\frontend\src\app\generate\page.tsx",
+    ".\frontend\src\components\create-publishing-channel-form.tsx",
+    ".\frontend\src\app\publishing\page.tsx",
     ".\frontend\src\app\exports\page.tsx",
     ".\frontend\src\app\maintenance\page.tsx",
     ".\frontend\src\app\globals.css",
@@ -165,6 +167,17 @@ if ($GenerateForm -notmatch "/content/generate") {
 
 if ($GenerateForm -notmatch "/workflows/projects/") {
     throw "Generate form does not include workflow generation fallback."
+}
+
+$PublishingPage = Read-TextFile ".\frontend\src\app\publishing\page.tsx"
+$PublishingForm = Read-TextFile ".\frontend\src\components\create-publishing-channel-form.tsx"
+
+if ($PublishingPage -notmatch "CreatePublishingChannelForm") {
+    throw "Publishing page does not include channel creation form."
+}
+
+if ($PublishingForm -notmatch "/publishing/channels") {
+    throw "Publishing form does not call publishing channels endpoint."
 }
 
 Write-Host "Frontend production readiness check passed."
