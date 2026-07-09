@@ -34,6 +34,7 @@ $RequiredFiles = @(
     ".\frontend\src\app\search\projects\page.tsx",
     ".\frontend\src\app\search\content-assets\page.tsx",
     ".\frontend\src\app\operations\page.tsx",
+    ".\frontend\src\app\runtime\page.tsx",
     ".\frontend\src\app\exports\page.tsx",
     ".\frontend\src\app\maintenance\page.tsx",
     ".\frontend\src\app\globals.css",
@@ -137,6 +138,12 @@ if (Test-Path ".\frontend\node_modules") {
 }
 else {
     Write-Host "node_modules not found. Skipping npm typecheck."
+}
+
+$RuntimePage = Read-TextFile ".\frontend\src\app\runtime\page.tsx"
+
+if ($RuntimePage -notmatch "/runtime/health") {
+    throw "Runtime page does not include runtime health fetch."
 }
 
 Write-Host "Frontend production readiness check passed."

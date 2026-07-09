@@ -219,3 +219,15 @@ Run config baseline check:
 Create backend dependency snapshot:
 
     powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\backend-requirements-snapshot.ps1
+
+## DAMA Runtime Health
+
+Backend runtime health:
+
+    http://127.0.0.1:8000/runtime/health
+
+Frontend runtime dashboard:
+
+    http://localhost:3000/runtime
+
+This dashboard is read-only and safe for operator diagnostics.

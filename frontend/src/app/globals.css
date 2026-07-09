@@ -658,3 +658,88 @@ p {
   margin-top: 0;
   box-shadow: none;
 }
+
+/* Runtime health */
+.health-list {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.health-list > div {
+  display: grid;
+  gap: 0.35rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.health-list strong {
+  color: var(--text);
+}
+
+.health-list span {
+  color: var(--muted);
+  word-break: break-word;
+}
+
+.status-badge {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+}
+
+.status-ok {
+  background: rgba(49, 145, 87, 0.12);
+}
+
+.status-warning,
+.status-unknown {
+  background: rgba(220, 151, 49, 0.14);
+}
+
+.status-error {
+  background: rgba(200, 70, 70, 0.14);
+}
+
+.responsive-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.responsive-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.responsive-table th,
+.responsive-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.json-block {
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.note-list {
+  display: grid;
+  gap: 0.75rem;
+  color: var(--muted);
+}
+
+.muted-note {
+  color: var(--muted);
+  margin-top: 1rem;
+}

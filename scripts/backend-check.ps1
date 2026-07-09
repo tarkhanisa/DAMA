@@ -20,7 +20,8 @@ $SmokeTests = @(
     ".\backend\tests\smoke_test_dashboard.py",
     ".\backend\tests\smoke_test_maintenance.py",
     ".\backend\tests\smoke_test_developer.py",
-    ".\backend\tests\smoke_test_search.py"
+    ".\backend\tests\smoke_test_search.py",
+    ".\backend\tests\smoke_test_runtime.py"
 )
 
 if (-not (Test-Path $PythonPath)) {

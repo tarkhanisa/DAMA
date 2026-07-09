@@ -1353,3 +1353,51 @@ Suggested scope:
 - database backup status panel
 - environment status summary
 - no destructive actions
+
+## Release Pack T Completed
+
+Name:
+
+Runtime Health UI + Dev Operator Dashboard
+
+Added files:
+
+- backend/src/api/runtime.py
+- backend/tests/smoke_test_runtime.py
+- frontend/src/app/runtime/page.tsx
+- docs/runtime-health.md
+
+Updated files:
+
+- backend/src/main.py
+- backend/src/api/__init__.py
+- frontend/src/components/app-nav.tsx
+- frontend/src/app/globals.css
+- scripts/backend-check.ps1
+- scripts/frontend-check.ps1
+- README.md
+- docs/production-readiness.md
+- docs/project-status.md
+
+Added behavior:
+
+- GET /runtime/health
+- read-only runtime frontend page
+- Ollama reachability diagnostics
+- storage path diagnostics
+- safe public config summary
+- runtime smoke test
+
+Next recommended Release Pack:
+
+Release Pack U: AI Generation Operator UI
+
+Suggested scope:
+
+- safe single-content generation page
+- model list selector
+- project selector
+- content type selector
+- save_output toggle
+- generated asset link
+- no batch execution from UI yet

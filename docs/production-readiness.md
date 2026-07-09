@@ -93,3 +93,16 @@ Release Pack S adds:
 - backend requirements policy
 
 This improves local development safety and prepares the project for later deployment hardening.
+
+## Runtime Health
+
+Release Pack T adds:
+
+- backend runtime health endpoint
+- frontend runtime dashboard
+- Ollama reachability panel
+- storage path status panel
+- safe config visibility
+- runtime smoke test
+
+This improves operator visibility before deployment work.
