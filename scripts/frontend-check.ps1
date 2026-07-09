@@ -1,6 +1,5 @@
 $ErrorActionPreference = "Stop"
 
-
 function Read-TextFile {
     param(
         [Parameter(Mandatory=$true)]
@@ -10,15 +9,16 @@ function Read-TextFile {
     return [string]::Join("`n", (Get-Content -LiteralPath $Path))
 }
 
-
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
 $RequiredFiles = @(
     ".\frontend\README.md",
     ".\frontend\package.json",
+    ".\frontend\package-lock.json",
     ".\frontend\next.config.mjs",
     ".\frontend\tsconfig.json",
+    ".\frontend\next-env.d.ts",
     ".\frontend\src\app\layout.tsx",
     ".\frontend\src\app\page.tsx",
     ".\frontend\src\app\projects\page.tsx",
@@ -73,31 +73,33 @@ foreach ($File in $RequiredFiles) {
     }
 }
 
+$GitIgnore = Read-TextFile ".\.gitignore"
 $ApiClient = Read-TextFile ".\frontend\src\lib\api-client.ts"
 $Nav = Read-TextFile ".\frontend\src\components\app-nav.tsx"
 $SafeAction = Read-TextFile ".\frontend\src\components\safe-action-button.tsx"
 $Operations = Read-TextFile ".\frontend\src\app\operations\page.tsx"
 $ProjectDetail = Read-TextFile ".\frontend\src\app\projects\[projectId]\page.tsx"
 $AssetDetail = Read-TextFile ".\frontend\src\app\content-assets\[assetId]\page.tsx"
+$TsConfig = Read-TextFile ".\frontend\tsconfig.json"
+
+if ($GitIgnore -notmatch "frontend/tsconfig.tsbuildinfo") {
+    throw ".gitignore does not ignore frontend/tsconfig.tsbuildinfo."
+}
+
+if ($TsConfig -match '"incremental": true') {
+    throw "frontend tsconfig should not use incremental true in this repo."
+}
 
 if ($ApiClient -notmatch "backupDatabase") {
     throw "API client does not expose backupDatabase."
 }
 
-if ($ApiClient -notmatch "exportProjectBundle") {
-    throw "API client does not expose exportProjectBundle."
+if ($ApiClient -notmatch "searchProjects") {
+    throw "API client does not expose searchProjects."
 }
 
-if ($ApiClient -notmatch "exportContentAssetMarkdown") {
-    throw "API client does not expose exportContentAssetMarkdown."
-}
-
-if ($ApiClient -notmatch "updateProjectStatus") {
-    throw "API client does not expose updateProjectStatus."
-}
-
-if ($ApiClient -notmatch "updateContentAssetStatus") {
-    throw "API client does not expose updateContentAssetStatus."
+if ($ApiClient -notmatch "searchContentAssets") {
+    throw "API client does not expose searchContentAssets."
 }
 
 if ($Nav -notmatch "/operations") {
@@ -137,4 +139,4 @@ else {
     Write-Host "node_modules not found. Skipping npm typecheck."
 }
 
-Write-Host "Frontend safe operational actions check passed."
+Write-Host "Frontend production readiness check passed."

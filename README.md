@@ -155,3 +155,33 @@ Ship:
 Backup:
 
     powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dama.ps1 backup
+
+## DAMA Local Development
+
+Start backend:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dev-backend.ps1
+
+Start frontend:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dev-frontend.ps1
+
+Start both in separate PowerShell windows:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dev-all.ps1
+
+Backend:
+
+    http://127.0.0.1:8000
+
+Frontend:
+
+    http://localhost:3000
+
+API Docs:
+
+    http://127.0.0.1:8000/docs
+
+Run full ship checks and commit/push:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dama.ps1 ship "Your commit message"

@@ -1214,3 +1214,53 @@ Next latest / Next 16 produced an unclear local build-worker failure on Windows.
 Goal:
 
 Make frontend install, typecheck, and build reproducible before adding more UI features.
+
+## Release Pack Q Completed
+
+Name:
+
+Repo Cleanup + Production Readiness
+
+Added files:
+
+- scripts/dev-backend.ps1
+- scripts/dev-frontend.ps1
+- scripts/dev-all.ps1
+- scripts/repo-hygiene-check.ps1
+- docs/local-development.md
+- docs/production-readiness.md
+- docs/repo-hygiene.md
+
+Updated files:
+
+- .gitignore
+- README.md
+- frontend/tsconfig.json
+- scripts/frontend-check.ps1
+- docs/project-status.md
+
+Cleaned:
+
+- frontend/tsconfig.tsbuildinfo removed from working tree
+- frontend/tsconfig.tsbuildinfo ignored
+
+Added behavior:
+
+- local backend start script
+- local frontend start script
+- local full-stack start script
+- repo hygiene check
+- stronger frontend production-readiness check
+
+Next recommended Release Pack:
+
+Release Pack R: Dependency Audit + Security Baseline
+
+Suggested scope:
+
+- npm audit review
+- safe non-breaking npm audit handling
+- backend dependency freeze
+- requirements lock snapshot
+- security docs
+- no force upgrades without review
