@@ -28,3 +28,11 @@ Run:
 ## Note
 
 Generated runtime files should remain local and should not be committed.
+
+## Security Baseline Check
+
+Run:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\security-baseline-check.ps1
+
+This check verifies pinned frontend dependency policy, ignored runtime folders, and CORS baseline.

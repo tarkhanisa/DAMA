@@ -185,3 +185,19 @@ API Docs:
 Run full ship checks and commit/push:
 
     powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dama.ps1 ship "Your commit message"
+
+## DAMA Security and Dependency Checks
+
+Run repo hygiene check:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\repo-hygiene-check.ps1
+
+Run security baseline check:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\security-baseline-check.ps1
+
+Run dependency audit snapshot:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dependency-audit.ps1
+
+Do not run npm audit fix --force without review.

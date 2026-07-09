@@ -1,0 +1,21 @@
+﻿DAMA Dependency Audit Summary
+Generated locally
+
+Backend pip freeze:
+I:\DAMA\docs\dependency-snapshots\backend-pip-freeze.txt
+
+Frontend npm tree:
+I:\DAMA\docs\dependency-snapshots\frontend-npm-tree.txt
+npm ls exit code:
+0
+
+Frontend npm audit:
+I:\DAMA\docs\dependency-snapshots\frontend-npm-audit.txt
+npm audit exit code:
+0
+
+Audit policy:
+- No npm audit fix --force
+- No breaking dependency upgrades without review
+- Moderate issues are documented first
+- High/Critical issues should block release review

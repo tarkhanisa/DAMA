@@ -1264,3 +1264,47 @@ Suggested scope:
 - requirements lock snapshot
 - security docs
 - no force upgrades without review
+
+## Release Pack R Completed
+
+Name:
+
+Dependency Audit + Security Baseline
+
+Added files:
+
+- scripts/dependency-audit.ps1
+- scripts/security-baseline-check.ps1
+- docs/security-baseline.md
+- docs/dependency-policy.md
+- docs/dependency-snapshots/README.md
+
+Updated files:
+
+- scripts/dama-check.ps1
+- README.md
+- docs/production-readiness.md
+- docs/repo-hygiene.md
+- docs/project-status.md
+
+Added behavior:
+
+- security baseline check
+- dependency audit snapshot script
+- high/critical npm audit threshold
+- backend pip freeze snapshot generation
+- frontend dependency tree snapshot generation
+- pinned dependency policy docs
+- no-force audit policy
+
+Next recommended Release Pack:
+
+Release Pack S: Backend Requirements Lock + Config Hardening
+
+Suggested scope:
+
+- backend requirements freeze snapshot
+- config validation improvements
+- environment docs
+- .env.example review
+- production config checklist

@@ -66,3 +66,16 @@ Required later:
 - Deployment scripts
 - Security review
 - Dependency audit plan
+
+## Security Baseline
+
+Release Pack R adds:
+
+- security baseline check
+- dependency audit script
+- dependency snapshot folder
+- dependency policy
+- npm audit policy
+- no-force upgrade rule
+
+This does not make DAMA production-secure yet. It creates a safer local development baseline before deployment work.

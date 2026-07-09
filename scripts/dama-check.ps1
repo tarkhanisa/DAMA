@@ -22,4 +22,22 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host ""
+Write-Host ""
+Write-Host "Checking repo hygiene..."
+try {
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\scripts\repo-hygiene-check.ps1"
+}
+catch {
+    throw "Repo hygiene check failed."
+}
+
+Write-Host ""
+Write-Host "Checking security baseline..."
+try {
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\scripts\security-baseline-check.ps1"
+}
+catch {
+    throw "Security baseline check failed."
+}
+
 Write-Host "DAMA check completed."
