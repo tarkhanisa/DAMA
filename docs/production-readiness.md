@@ -79,3 +79,17 @@ Release Pack R adds:
 - no-force upgrade rule
 
 This does not make DAMA production-secure yet. It creates a safer local development baseline before deployment work.
+
+## Config Hardening
+
+Release Pack S adds:
+
+- .env.example
+- environment ignore rules
+- config baseline check
+- backend requirements snapshot script
+- configuration docs
+- environment checklist
+- backend requirements policy
+
+This improves local development safety and prepares the project for later deployment hardening.

@@ -40,4 +40,13 @@ catch {
     throw "Security baseline check failed."
 }
 
+Write-Host ""
+Write-Host "Checking config baseline..."
+try {
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\scripts\config-baseline-check.ps1"
+}
+catch {
+    throw "Config baseline check failed."
+}
+
 Write-Host "DAMA check completed."

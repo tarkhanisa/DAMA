@@ -201,3 +201,21 @@ Run dependency audit snapshot:
     powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dependency-audit.ps1
 
 Do not run npm audit fix --force without review.
+
+## DAMA Configuration
+
+Configuration example:
+
+    .env.example
+
+Copy locally if needed:
+
+    Copy-Item .\.env.example .\.env
+
+Run config baseline check:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\config-baseline-check.ps1
+
+Create backend dependency snapshot:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\backend-requirements-snapshot.ps1

@@ -44,3 +44,18 @@ Do not run:
     npm audit fix --force
 
 without reviewing the breaking changes first.
+
+## Configuration Safety
+
+Release Pack S adds a configuration baseline.
+
+Run:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\config-baseline-check.ps1
+
+This verifies:
+
+- safe `.env.example`
+- real env files are not tracked
+- frontend uses `NEXT_PUBLIC_DAMA_API_BASE_URL`
+- backend CORS baseline exists

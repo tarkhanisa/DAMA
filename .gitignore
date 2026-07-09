@@ -37,3 +37,12 @@ frontend/tsconfig.tsbuildinfo
 frontend/*.tsbuildinfo
 frontend/.turbo/
 # DAMA local runtime
+
+# Environment files
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+frontend/.env.*
+!frontend/.env.example
