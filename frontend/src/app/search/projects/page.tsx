@@ -8,7 +8,7 @@ import type { Project, SearchResponse } from "../../../lib/types";
 type SearchParams = Record<string, string | string[] | undefined>;
 
 type SearchProjectsPageProps = {
-  searchParams?: SearchParams | Promise<SearchParams>;
+  searchParams?: Promise<SearchParams>;
 };
 
 async function resolveSearchParams(
@@ -117,7 +117,7 @@ export default async function SearchProjectsPage({
             {
               key: "language",
               label: "Language",
-              render: (project) => project.language ?? "—"
+              render: (project) => project.language ?? ""
             },
             {
               key: "status",

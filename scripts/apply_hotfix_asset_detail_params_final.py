@@ -1,3 +1,10 @@
+﻿from pathlib import Path
+import shutil
+
+ROOT = Path("I:/DAMA")
+target = ROOT / "frontend/src/app/content-assets/[assetId]/page.tsx"
+
+content = r'''
 import { AssetBodyPreview } from "../../../components/asset-body-preview";
 import { ContentAssetStatusForm } from "../../../components/content-asset-status-form";
 import { ErrorPanel } from "../../../components/error-panel";
@@ -93,3 +100,28 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
     </main>
   );
 }
+'''.strip() + "\n"
+
+target.write_text(content, encoding="utf-8")
+
+written = target.read_text(encoding="utf-8")
+
+if "| Promise" in written:
+    raise RuntimeError("Patch failed: union params type still exists.")
+
+if "params: Promise" not in written:
+    raise RuntimeError("Patch failed: Promise params type not found.")
+
+if "resolveParams" in written:
+    raise RuntimeError("Patch failed: old resolveParams helper still exists.")
+
+next_cache = ROOT / "frontend/.next"
+if next_cache.exists():
+    shutil.rmtree(next_cache)
+    print("Removed frontend/.next cache.")
+
+print("Asset detail page patched and verified.")
+print("Current params type:")
+for line in written.splitlines():
+    if "params:" in line:
+        print(line)

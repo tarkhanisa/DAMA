@@ -1,5 +1,6 @@
 "use client";
 
+import type { FormEvent } from "react";
 import { useState } from "react";
 
 import { damaApi } from "../lib/api-client";
@@ -22,7 +23,7 @@ export function ProjectStatusForm({ projectId, currentStatus }: ProjectStatusFor
     message?: string;
   }>({ type: "idle" });
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setIsSubmitting(true);

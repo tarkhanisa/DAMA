@@ -124,7 +124,7 @@ if (Test-Path ".\frontend\node_modules") {
     Write-Host "node_modules found. Running frontend typecheck..."
     Push-Location ".\frontend"
     try {
-        npm run typecheck
+        npm.cmd run typecheck
         if ($LASTEXITCODE -ne 0) {
             throw "Frontend typecheck failed."
         }

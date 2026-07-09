@@ -1151,3 +1151,66 @@ Suggested scope:
 - fix real TypeScript/Next errors
 - run npm build if feasible
 - add lockfile if generated
+
+## Release Pack P Completed
+
+Name:
+
+Real Frontend Install + TypeScript Fix + Build Validation
+
+Added files:
+
+- scripts/frontend-real-build.ps1
+
+Updated files:
+
+- backend/src/main.py
+- frontend/src/components/page-header.tsx
+- frontend/src/components/search-filter-card.tsx
+- frontend/src/components/create-project-form.tsx
+- frontend/src/components/create-content-asset-form.tsx
+- frontend/src/components/workflow-dry-run-form.tsx
+- frontend/src/components/project-status-form.tsx
+- frontend/src/components/content-asset-status-form.tsx
+- frontend/src/app/projects/[projectId]/page.tsx
+- frontend/src/app/workflows/[projectId]/page.tsx
+- frontend/src/app/workflows/[projectId]/dry-run/page.tsx
+- docs/frontend-build-hardening.md
+- docs/project-status.md
+
+Added behavior:
+
+- local CORS support for frontend to backend API calls
+- TSX-safe ReactNode imports
+- FormEvent type imports for client components
+- Next dynamic route params compatibility
+- real frontend install/typecheck/build script
+
+Purpose:
+
+Move frontend validation from file-existence checks to real Next.js/TypeScript build validation.
+
+
+## Frontend Webpack Build Hotfix
+
+The frontend build script was stabilized by switching Next.js build/dev commands to Webpack:
+
+- next dev --webpack
+- next build --webpack
+
+Reason:
+
+Next.js 16.2 local Turbopack build failed with an unclear build worker error.
+
+
+## Frontend Stable Version Pin
+
+Frontend dependencies were stabilized by replacing floating latest versions with a Next 15 line.
+
+Reason:
+
+Next latest / Next 16 produced an unclear local build-worker failure on Windows.
+
+Goal:
+
+Make frontend install, typecheck, and build reproducible before adding more UI features.

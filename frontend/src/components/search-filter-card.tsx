@@ -1,6 +1,8 @@
+import type { ReactNode } from "react";
+
 type SearchFilterCardProps = {
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export function SearchFilterCard({ title, children }: SearchFilterCardProps) {

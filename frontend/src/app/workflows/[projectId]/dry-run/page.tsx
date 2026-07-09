@@ -4,9 +4,9 @@ import { damaApi } from "../../../../lib/api-client";
 import type { Project } from "../../../../lib/types";
 
 type WorkflowDryRunPageProps = {
-  params: {
+  params: Promise<{
     projectId: string;
-  };
+  }>;
 };
 
 async function loadProject(projectId: string): Promise<Project | null> {
@@ -18,7 +18,8 @@ async function loadProject(projectId: string): Promise<Project | null> {
 }
 
 export default async function WorkflowDryRunPage({ params }: WorkflowDryRunPageProps) {
-  const project = await loadProject(params.projectId);
+  const { projectId } = await params;
+  const project = await loadProject(projectId);
 
   return (
     <main className="page-shell">
@@ -28,7 +29,7 @@ export default async function WorkflowDryRunPage({ params }: WorkflowDryRunPageP
         lead="Preview planned batch generation outputs without creating content assets."
       />
 
-      <WorkflowDryRunForm projectId={params.projectId} />
+      <WorkflowDryRunForm projectId={projectId} />
     </main>
   );
 }

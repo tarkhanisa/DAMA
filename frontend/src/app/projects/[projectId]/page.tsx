@@ -9,9 +9,9 @@ import { DAMA_API_BASE_URL, damaApi } from "../../../lib/api-client";
 import type { Project, ProjectSummary } from "../../../lib/types";
 
 type ProjectDetailPageProps = {
-  params: {
+  params: Promise<{
     projectId: string;
-  };
+  }>;
 };
 
 async function loadProject(projectId: string): Promise<Project | null> {
@@ -31,9 +31,11 @@ async function loadProjectSummary(projectId: string): Promise<ProjectSummary | n
 }
 
 export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
+  const { projectId } = await params;
+
   const [project, summary] = await Promise.all([
-    loadProject(params.projectId),
-    loadProjectSummary(params.projectId)
+    loadProject(projectId),
+    loadProjectSummary(projectId)
   ]);
 
   if (!project) {

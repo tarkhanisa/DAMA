@@ -1,5 +1,6 @@
 import { ActionCard } from "../../../components/action-card";
 import { DataTable, StatusPill } from "../../../components/data-table";
+import { ErrorPanel } from "../../../components/error-panel";
 import { JsonPreview } from "../../../components/json-preview";
 import { PageHeader } from "../../../components/page-header";
 import { StatCard } from "../../../components/stat-card";
@@ -7,9 +8,9 @@ import { DAMA_API_BASE_URL, damaApi } from "../../../lib/api-client";
 import type { OutputPlanResponse, PlannedOutput, Project } from "../../../lib/types";
 
 type WorkflowProjectPageProps = {
-  params: {
+  params: Promise<{
     projectId: string;
-  };
+  }>;
 };
 
 async function loadProject(projectId: string): Promise<Project | null> {
@@ -29,21 +30,21 @@ async function loadOutputPlan(projectId: string): Promise<OutputPlanResponse | n
 }
 
 export default async function WorkflowProjectPage({ params }: WorkflowProjectPageProps) {
+  const { projectId } = await params;
+
   const [project, outputPlan] = await Promise.all([
-    loadProject(params.projectId),
-    loadOutputPlan(params.projectId)
+    loadProject(projectId),
+    loadOutputPlan(projectId)
   ]);
 
   if (!project) {
     return (
       <main className="page-shell">
-        <section className="panel">
-          <div className="panel-heading">
-            <p className="eyebrow">Workflow</p>
-            <h1>Project not found</h1>
-          </div>
-          <p className="empty-state">The selected workflow project could not be loaded.</p>
-        </section>
+        <ErrorPanel
+          eyebrow="Workflow"
+          title="Project not found"
+          message="The selected workflow project could not be loaded."
+        />
       </main>
     );
   }

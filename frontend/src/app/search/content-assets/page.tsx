@@ -8,7 +8,7 @@ import type { ContentAsset, SearchResponse } from "../../../lib/types";
 type SearchParams = Record<string, string | string[] | undefined>;
 
 type SearchContentAssetsPageProps = {
-  searchParams?: SearchParams | Promise<SearchParams>;
+  searchParams?: Promise<SearchParams>;
 };
 
 async function resolveSearchParams(
