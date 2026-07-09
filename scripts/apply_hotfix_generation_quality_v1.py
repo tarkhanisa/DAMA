@@ -1,3 +1,11 @@
+﻿from pathlib import Path
+
+ROOT = Path("I:/DAMA")
+
+target = ROOT / "frontend/src/components/generate-content-form.tsx"
+
+target.write_text(
+r'''
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
@@ -611,3 +619,8 @@ export function GenerateContentForm({
     </div>
   );
 }
+'''.strip() + "\n",
+encoding="utf-8"
+)
+
+print("GenerateContentForm improved for output extraction and quality prompting.")

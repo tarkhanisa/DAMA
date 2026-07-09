@@ -70,9 +70,17 @@ function normalizeProjects(payload: unknown): ProjectOption[] {
 
 function normalizeContentTypes(payload: unknown): ContentTypeOption[] {
   const record = asRecord(payload);
-  const source = Array.isArray(payload)
+  const directSource = Array.isArray(payload)
     ? payload
     : asArray(record.items ?? record.content_types ?? record.types ?? record.data);
+
+  const source =
+    directSource.length > 0
+      ? directSource
+      : Object.entries(record).map(([key, value]) => ({
+          key,
+          ...(typeof value === "object" && value !== null ? value : {})
+        }));
 
   return source
     .map((item) => {
@@ -85,11 +93,21 @@ function normalizeContentTypes(payload: unknown): ContentTypeOption[] {
 
       const value = asRecord(item);
       const key = String(value.key ?? value.id ?? value.name ?? "");
-      const label = String(value.label ?? value.name ?? value.title ?? key);
+      const rawLabel = String(value.label ?? value.name ?? value.title ?? key);
+
+      const labelMap: Record<string, string> = {
+        general: "عمومی",
+        article: "مقاله",
+        summary: "خلاصه",
+        pitch: "پیچ / معرفی سرمایه‌گذاری",
+        blog_post: "پست وبلاگ",
+        product_description: "توضیح محصول",
+        social_post: "پست شبکه اجتماعی"
+      };
 
       return {
         key,
-        label,
+        label: labelMap[key] ?? rawLabel,
         description:
           typeof value.description === "string" ? value.description : undefined
       };
@@ -135,13 +153,22 @@ async function loadProjects(): Promise<ProjectOption[]> {
 async function loadContentTypes(): Promise<ContentTypeOption[]> {
   try {
     const payload = await getJson(`${API_BASE_URL}/content/types`);
-    return normalizeContentTypes(payload);
+    const normalized = normalizeContentTypes(payload);
+
+    return normalized.length > 0
+      ? normalized
+      : [
+          { key: "general", label: "عمومی" },
+          { key: "article", label: "مقاله" },
+          { key: "summary", label: "خلاصه" },
+          { key: "pitch", label: "پیچ / معرفی سرمایه‌گذاری" }
+        ];
   } catch {
     return [
-      { key: "general", label: "General" },
-      { key: "article", label: "Article" },
-      { key: "summary", label: "Summary" },
-      { key: "pitch", label: "Pitch" }
+      { key: "general", label: "عمومی" },
+      { key: "article", label: "مقاله" },
+      { key: "summary", label: "خلاصه" },
+      { key: "pitch", label: "پیچ / معرفی سرمایه‌گذاری" }
     ];
   }
 }
@@ -165,21 +192,21 @@ export default async function GeneratePage() {
   return (
     <main className="page-shell">
       <PageHeader
-        eyebrow="AI Operator"
-        title="Generate content"
-        lead="Run one safe AI content generation at a time. Batch execution remains intentionally disabled from this page."
+        eyebrow="تولید محتوا"
+        title="تولید محتوای باکیفیت"
+        lead="اینجا فقط یک خروجی در هر بار تولید می‌شود تا کنترل کیفیت حفظ شود. برای نتیجه بهتر، هدف، مخاطب، لحن و قالب خروجی را دقیق انتخاب کن."
       >
         <div className="actions">
-          <a href={`${API_BASE_URL}/docs`}>API Docs</a>
-          <a href="/content-assets">Content Assets</a>
+          <a href="/projects/new">ساخت پروژه</a>
+          <a href="/content-assets">محتواهای ذخیره‌شده</a>
         </div>
       </PageHeader>
 
       <section className="stats-grid">
-        <StatCard label="Projects" value={projects.length} helper="Available project options" />
-        <StatCard label="Content Types" value={contentTypes.length} helper="Available content types" />
-        <StatCard label="Models" value={models.length || "Default"} helper="Ollama model options" />
-        <StatCard label="Mode" value="Single" helper="No batch execution" />
+        <StatCard label="پروژه‌ها" value={projects.length} helper="پروژه‌های قابل انتخاب" />
+        <StatCard label="نوع محتوا" value={contentTypes.length} helper="قالب‌های محتوایی" />
+        <StatCard label="مدل‌ها" value={models.length || "پیش‌فرض"} helper="مدل‌های Ollama" />
+        <StatCard label="حالت" value="تکی" helper="تولید دسته‌ای فعلاً غیرفعال است" />
       </section>
 
       <GenerateContentForm

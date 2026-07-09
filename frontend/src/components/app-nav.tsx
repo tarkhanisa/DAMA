@@ -4,23 +4,23 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
-  { href: "/", label: "Dashboard" },
-  { href: "/projects", label: "Projects" },
-  { href: "/content-assets", label: "Content" },
-  { href: "/generate", label: "Generate" },
-  { href: "/workflows", label: "Workflows" },
-  { href: "/search", label: "Search" },
-  { href: "/runtime", label: "Runtime" },
-  { href: "/operations", label: "Operations" },
-  { href: "/exports", label: "Exports" },
-  { href: "/maintenance", label: "Maintenance" }
+  { href: "/", label: "داشبورد" },
+  { href: "/projects", label: "پروژه‌ها" },
+  { href: "/content-assets", label: "محتواها" },
+  { href: "/generate", label: "تولید محتوا" },
+  { href: "/workflows", label: "جریان کار" },
+  { href: "/search", label: "جستجو" },
+  { href: "/runtime", label: "سلامت سیستم" },
+  { href: "/operations", label: "عملیات" },
+  { href: "/exports", label: "خروجی‌ها" },
+  { href: "/maintenance", label: "نگهداری" }
 ];
 
 export function AppNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="app-nav" aria-label="DAMA navigation">
+    <nav className="app-nav" aria-label="ناوبری دامامدیا">
       {navItems.map((item) => {
         const isActive =
           item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);

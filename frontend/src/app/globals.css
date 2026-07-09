@@ -835,3 +835,125 @@ p {
     grid-template-columns: 1fr;
   }
 }
+
+/* Persian simple operator UX */
+html,
+body {
+  direction: rtl;
+}
+
+body {
+  text-align: right;
+}
+
+.app-nav {
+  direction: rtl;
+}
+
+.actions,
+.stats-grid,
+.simple-start-grid,
+.generation-grid,
+.two-column {
+  direction: rtl;
+}
+
+pre,
+code,
+.json-block,
+.generated-output {
+  direction: rtl;
+  text-align: right;
+}
+
+.responsive-table table {
+  direction: rtl;
+}
+
+.responsive-table th,
+.responsive-table td {
+  text-align: right;
+}
+
+.simple-start-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.simple-start-card {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.35rem;
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.62);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.simple-start-card span {
+  display: inline-flex;
+  width: 2.2rem;
+  height: 2.2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--text);
+  color: var(--surface);
+  font-weight: 900;
+}
+
+.simple-start-card strong {
+  font-size: 1.1rem;
+}
+
+.simple-start-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.simple-help-panel {
+  margin-top: 1rem;
+}
+
+.simple-steps {
+  display: grid;
+  gap: 0.75rem;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.quality-help {
+  display: grid;
+  gap: 0.75rem;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.quality-help h3 {
+  color: var(--text);
+  margin: 0;
+}
+
+.quality-help p {
+  margin: 0;
+}
+
+.quality-help ul {
+  display: grid;
+  gap: 0.5rem;
+}
+
+@media (max-width: 1100px) {
+  .simple-start-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .simple-start-grid {
+    grid-template-columns: 1fr;
+  }
+}

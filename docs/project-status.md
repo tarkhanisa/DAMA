@@ -1447,3 +1447,45 @@ Suggested scope:
 - workflow dry-run shortcut
 - export shortcut
 - clearer operator flow per project
+
+## Release Pack V Completed
+
+Name:
+
+Persian Simple UX + Quality Generation
+
+Added files:
+
+- docs/persian-simple-ux-and-quality-generation.md
+
+Updated files:
+
+- frontend/src/components/app-nav.tsx
+- frontend/src/app/page.tsx
+- frontend/src/app/projects/page.tsx
+- frontend/src/app/generate/page.tsx
+- frontend/src/components/generate-content-form.tsx
+- frontend/src/app/globals.css
+- docs/project-status.md
+
+Added behavior:
+
+- Persian operator navigation
+- Persian simple dashboard
+- Persian project list
+- Persian generation form
+- quality-focused prompt wrapper
+- audience/tone/purpose/output-format fields
+- safer high-quality generation defaults
+
+Next recommended Release Pack:
+
+Release Pack W: Project Workspace Polish
+
+Suggested scope:
+
+- make each project page simpler and Persian
+- show project assets inside project page
+- add direct generate-for-this-project button
+- add recent outputs panel
+- add export shortcuts
