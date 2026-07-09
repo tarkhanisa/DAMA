@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 
 from src.services.publishing_channel_service import (
     create_channel,
@@ -10,6 +10,12 @@ from src.services.publishing_channel_service import (
     list_channels,
     test_channel,
     update_channel,
+)
+from src.services.publishing_variant_service import (
+    create_variants_plan,
+    get_variant,
+    list_variants,
+    update_variant_status,
 )
 
 
@@ -54,3 +60,41 @@ def api_test_channel(channel_id: str) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail="Publishing channel not found.")
 
     return result
+
+
+@router.get("/variants")
+def api_list_variants(
+    content_asset_id: str | None = Query(default=None),
+    channel_id: str | None = Query(default=None),
+    status: str | None = Query(default=None),
+) -> dict[str, Any]:
+    return list_variants(
+        content_asset_id=content_asset_id,
+        channel_id=channel_id,
+        status=status,
+    )
+
+
+@router.post("/variants/plan")
+def api_create_variants_plan(payload: dict[str, Any]) -> dict[str, Any]:
+    return create_variants_plan(payload)
+
+
+@router.get("/variants/{variant_id}")
+def api_get_variant(variant_id: str) -> dict[str, Any]:
+    variant = get_variant(variant_id)
+
+    if not variant:
+        raise HTTPException(status_code=404, detail="Publishing variant not found.")
+
+    return variant
+
+
+@router.patch("/variants/{variant_id}/status")
+def api_update_variant_status(variant_id: str, payload: dict[str, Any]) -> dict[str, Any]:
+    variant = update_variant_status(variant_id, str(payload.get("status") or "draft"))
+
+    if not variant:
+        raise HTTPException(status_code=404, detail="Publishing variant not found.")
+
+    return variant

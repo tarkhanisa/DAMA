@@ -1537,3 +1537,49 @@ Suggested scope:
 - Instagram caption version
 - LinkedIn version
 - manual review status
+
+## Release Pack X Completed
+
+Name:
+
+Channel Variant Generator
+
+Added files:
+
+- backend/src/services/publishing_variant_service.py
+- backend/tests/smoke_test_publishing_variants.py
+- frontend/src/app/publishing/variants/page.tsx
+- frontend/src/components/create-publishing-variants-form.tsx
+
+Updated files:
+
+- backend/src/api/publishing.py
+- frontend/src/components/app-nav.tsx
+- frontend/src/app/globals.css
+- scripts/backend-check.ps1
+- scripts/frontend-check.ps1
+- docs/publishing-foundation.md
+- docs/project-status.md
+
+Added behavior:
+
+- list publishing variants
+- create channel-specific variant plan
+- update variant status
+- Persian variant-generation UI
+- one content asset to many channel variants
+- no real publishing yet
+
+Next recommended Release Pack:
+
+Release Pack Y: AI Variant Enhancer
+
+Suggested scope:
+
+- use local AI to improve each channel variant
+- channel-specific prompt templates
+- WordPress SEO draft fields
+- Telegram message polish
+- Instagram caption polish
+- LinkedIn professional rewrite
+- still no automatic publishing

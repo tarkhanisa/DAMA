@@ -1,3 +1,11 @@
+﻿from pathlib import Path
+
+ROOT = Path("I:/DAMA")
+
+target = ROOT / "scripts/dama-check.ps1"
+
+target.write_text(
+r'''
 $ErrorActionPreference = "Stop"
 
 $Root = Split-Path -Parent $PSScriptRoot
@@ -36,3 +44,8 @@ Invoke-DamaCheckScript -Label "Checking config baseline..." -ScriptPath ".\scrip
 
 Write-Host ""
 Write-Host "DAMA check completed."
+'''.strip() + "\n",
+encoding="utf-8"
+)
+
+print("scripts/dama-check.ps1 hardened to stop on child check failures.")

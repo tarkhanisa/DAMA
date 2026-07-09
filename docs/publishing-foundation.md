@@ -61,3 +61,34 @@ One master content asset becomes:
 - Instagram caption version
 - LinkedIn post version
 - Manual review version
+
+## Channel Variants
+
+Release Pack X adds publishing variants.
+
+A single content asset can now be adapted into channel-specific variants.
+
+Endpoint:
+
+    POST /publishing/variants/plan
+
+Input:
+
+- content_asset_id
+- source_title
+- source_body
+- channel_ids
+
+Output:
+
+- one draft variant per selected channel
+
+Current adaptation mode:
+
+    rule_based
+
+Future adaptation mode:
+
+    ai_enhanced
+
+No real publishing happens in this step.

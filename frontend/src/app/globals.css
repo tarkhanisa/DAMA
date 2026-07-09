@@ -957,3 +957,38 @@ code,
     grid-template-columns: 1fr;
   }
 }
+
+/* Publishing variants */
+.channel-checkbox-list {
+  display: grid;
+  gap: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.variant-preview-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.variant-preview-card {
+  display: grid;
+  gap: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.variant-preview-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.variant-preview-card h3 {
+  margin: 0;
+}

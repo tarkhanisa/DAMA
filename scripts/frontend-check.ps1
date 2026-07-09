@@ -39,6 +39,8 @@ $RequiredFiles = @(
     ".\frontend\src\app\generate\page.tsx",
     ".\frontend\src\components\create-publishing-channel-form.tsx",
     ".\frontend\src\app\publishing\page.tsx",
+    ".\frontend\src\components\create-publishing-variants-form.tsx",
+    ".\frontend\src\app\publishing\variants\page.tsx",
     ".\frontend\src\app\exports\page.tsx",
     ".\frontend\src\app\maintenance\page.tsx",
     ".\frontend\src\app\globals.css",
@@ -178,6 +180,17 @@ if ($PublishingPage -notmatch "CreatePublishingChannelForm") {
 
 if ($PublishingForm -notmatch "/publishing/channels") {
     throw "Publishing form does not call publishing channels endpoint."
+}
+
+$PublishingVariantsPage = Read-TextFile ".\frontend\src\app\publishing\variants\page.tsx"
+$PublishingVariantsForm = Read-TextFile ".\frontend\src\components\create-publishing-variants-form.tsx"
+
+if ($PublishingVariantsPage -notmatch "CreatePublishingVariantsForm") {
+    throw "Publishing variants page does not include variant form."
+}
+
+if ($PublishingVariantsForm -notmatch "/publishing/variants/plan") {
+    throw "Publishing variants form does not call variant plan endpoint."
 }
 
 Write-Host "Frontend production readiness check passed."
