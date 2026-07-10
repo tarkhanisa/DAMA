@@ -123,6 +123,7 @@ export default async function PublishingAttemptsPage() {
                 <th>Mode</th>
                 <th>زمان</th>
                 <th>پیام</th>
+                <th>جزئیات</th>
               </tr>
             </thead>
             <tbody>
@@ -139,11 +140,14 @@ export default async function PublishingAttemptsPage() {
                     <td>{attempt.mode}</td>
                     <td>{attempt.created_at}</td>
                     <td>{attempt.error || String(attempt.response?.wordpress_link ?? "")}</td>
+                    <td>
+                      <a href={`/publishing/attempts/${attempt.id}`}>مشاهده</a>
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={6}>هنوز تلاش انتشاری ثبت نشده است.</td>
+                  <td colSpan={7}>هنوز تلاش انتشاری ثبت نشده است.</td>
                 </tr>
               )}
             </tbody>

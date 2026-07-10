@@ -58,3 +58,16 @@ git status --short
 
 Write-Host ""
 Write-Host "Backend check completed."
+
+$WordPressFlowPolishSmokeTest = Join-Path (Split-Path -Parent $PSScriptRoot) "backend\tests\smoke_test_wordpress_flow_polish.py"
+$WordPressFlowPolishPython = Join-Path (Split-Path -Parent $PSScriptRoot) "backend\.venv\Scripts\python.exe"
+
+if (Test-Path $WordPressFlowPolishSmokeTest) {
+    Write-Host ""
+    Write-Host "Running .\backend\tests\smoke_test_wordpress_flow_polish.py..."
+    & $WordPressFlowPolishPython $WordPressFlowPolishSmokeTest
+    if ($LASTEXITCODE -ne 0) {
+        throw "Smoke test failed: .\backend\tests\smoke_test_wordpress_flow_polish.py"
+    }
+}
+

@@ -170,3 +170,21 @@ Safety rules:
 - No token is entered through the frontend panel.
 - Only approved / ready_for_publish WordPress variants can create drafts.
 - Direct publish is not enabled.
+
+## WordPress Draft Flow Polish
+
+Release Pack AC improves WordPress draft attempt diagnostics.
+
+Added behavior:
+
+- publishing attempt detail page
+- direct WordPress draft link when a real draft is created
+- cleaner WordPress HTTP error formatting
+- SEO title and meta description stored in request preview
+- optional SEO meta sending through `DAMA_WORDPRESS_SEND_SEO_META`
+
+Important:
+
+SEO meta sending is disabled by default because WordPress may reject unregistered meta fields.
+
+Direct publish is still not enabled.

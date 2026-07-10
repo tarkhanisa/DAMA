@@ -1720,3 +1720,46 @@ Suggested scope:
 - post category/tag draft fields
 - SEO field placeholders
 - no direct publish yet
+
+## Release Pack AC Completed
+
+Name:
+
+Real WordPress Draft Flow Polish
+
+Added files:
+
+- backend/tests/smoke_test_wordpress_flow_polish.py
+- frontend/src/app/publishing/attempts/[attemptId]/page.tsx
+
+Updated files:
+
+- backend/src/services/wordpress_draft_connector_service.py
+- frontend/src/components/create-wordpress-draft-action.tsx
+- frontend/src/app/publishing/attempts/page.tsx
+- frontend/src/app/globals.css
+- scripts/backend-check.ps1
+- scripts/frontend-check.ps1
+- .env.example
+- docs/publishing-foundation.md
+- docs/project-status.md
+
+Added behavior:
+
+- attempt detail page
+- WordPress draft link support
+- improved connector error details
+- SEO title / meta description request preview
+- optional SEO meta sending flag
+
+Next recommended Release Pack:
+
+Release Pack AD: Real WordPress Draft Test Setup
+
+Suggested scope:
+
+- step-by-step real WordPress env setup
+- WordPress application password checklist
+- real authentication test
+- one real draft creation flow
+- no direct publish yet

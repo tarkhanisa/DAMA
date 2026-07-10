@@ -44,6 +44,7 @@ $RequiredFiles = @(
     ".\frontend\src\app\publishing\variants\page.tsx",
     ".\frontend\src\components\review-publishing-variant-form.tsx",
     ".\frontend\src\app\publishing\attempts\page.tsx",
+    ".\frontend\src\app\publishing\attempts\[attemptId]\page.tsx",
     ".\frontend\src\components\create-wordpress-draft-action.tsx",
     ".\frontend\src\app\publishing\variants\[variantId]\page.tsx",
     ".\frontend\src\app\exports\page.tsx",
@@ -236,6 +237,26 @@ if ($WordPressDraftAction -notmatch "dry_run") {
 
 if ($PublishingAttemptsPage -notmatch "/publishing/attempts") {
     throw "Publishing attempts page does not call attempts endpoint."
+}
+
+$PublishingAttemptDetailPage = Read-TextFile ".\frontend\src\app\publishing\attempts\[attemptId]\page.tsx"
+$WordPressDraftAction = Read-TextFile ".\frontend\src\components\create-wordpress-draft-action.tsx"
+$PublishingAttemptsPage = Read-TextFile ".\frontend\src\app\publishing\attempts\page.tsx"
+
+if ($PublishingAttemptDetailPage -notmatch "wordpress_link") {
+    throw "Publishing attempt detail page is missing WordPress draft link support."
+}
+
+if ($WordPressDraftAction -notmatch "seo_title") {
+    throw "WordPress draft action is missing SEO title field."
+}
+
+if ($WordPressDraftAction -notmatch "meta_description") {
+    throw "WordPress draft action is missing meta description field."
+}
+
+if ($PublishingAttemptsPage -notmatch "/publishing/attempts/") {
+    throw "Publishing attempts page does not link to attempt detail page."
 }
 
 Write-Host "Frontend production readiness check passed."
