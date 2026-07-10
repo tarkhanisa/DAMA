@@ -62,3 +62,15 @@ Run:
 Real secrets must not be committed.
 
 Use `.env.example` only for safe defaults and documentation.
+
+## WordPress Draft Connector
+
+For real WordPress draft creation, set local environment variables:
+
+    DAMA_WORDPRESS_BASE_URL=https://your-site.com
+    DAMA_WORDPRESS_USERNAME=your-wordpress-username
+    DAMA_WORDPRESS_APP_PASSWORD=your-wordpress-application-password
+
+The connector creates drafts only.
+
+It does not publish directly.

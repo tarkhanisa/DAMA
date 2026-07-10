@@ -16,8 +16,13 @@ from src.services.publishing_variant_service import (
     create_variants_plan,
     get_variant,
     list_variants,
-    update_variant_status,
     review_variant,
+    update_variant_status,
+)
+from src.services.wordpress_draft_connector_service import (
+    create_wordpress_draft_from_variant,
+    get_publish_attempt,
+    list_publish_attempts,
 )
 
 
@@ -112,7 +117,6 @@ def api_enhance_variant(variant_id: str, payload: dict[str, Any]) -> dict[str, A
     return result
 
 
-
 @router.patch("/variants/{variant_id}/review")
 def api_review_variant(variant_id: str, payload: dict[str, Any]) -> dict[str, Any]:
     variant = review_variant(variant_id, payload)
@@ -121,3 +125,36 @@ def api_review_variant(variant_id: str, payload: dict[str, Any]) -> dict[str, An
         raise HTTPException(status_code=404, detail="Publishing variant not found.")
 
     return variant
+
+
+@router.post("/variants/{variant_id}/wordpress/draft")
+def api_create_wordpress_draft(variant_id: str, payload: dict[str, Any]) -> dict[str, Any]:
+    result = create_wordpress_draft_from_variant(variant_id, payload)
+
+    if not result:
+        raise HTTPException(status_code=404, detail="Publishing variant not found.")
+
+    return result
+
+
+@router.get("/attempts")
+def api_list_publish_attempts(
+    variant_id: str | None = Query(default=None),
+    channel_id: str | None = Query(default=None),
+    status: str | None = Query(default=None),
+) -> dict[str, Any]:
+    return list_publish_attempts(
+        variant_id=variant_id,
+        channel_id=channel_id,
+        status=status,
+    )
+
+
+@router.get("/attempts/{attempt_id}")
+def api_get_publish_attempt(attempt_id: str) -> dict[str, Any]:
+    attempt = get_publish_attempt(attempt_id)
+
+    if not attempt:
+        raise HTTPException(status_code=404, detail="Publishing attempt not found.")
+
+    return attempt

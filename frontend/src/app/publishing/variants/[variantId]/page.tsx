@@ -1,5 +1,6 @@
 import { ErrorPanel } from "../../../../components/error-panel";
 import { PageHeader } from "../../../../components/page-header";
+import { CreateWordPressDraftAction } from "../../../../components/create-wordpress-draft-action";
 import { ReviewPublishingVariantForm } from "../../../../components/review-publishing-variant-form";
 import { StatCard } from "../../../../components/stat-card";
 

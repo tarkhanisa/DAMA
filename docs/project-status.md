@@ -1673,3 +1673,50 @@ Suggested scope:
 - create draft post from approved variant
 - store publish attempt
 - no automatic publish yet
+
+## Release Pack AA Completed
+
+Name:
+
+WordPress Draft Connector
+
+Added files:
+
+- backend/src/services/wordpress_draft_connector_service.py
+- backend/tests/smoke_test_wordpress_draft_connector.py
+- frontend/src/components/create-wordpress-draft-action.tsx
+- frontend/src/app/publishing/attempts/page.tsx
+
+Updated files:
+
+- backend/src/api/publishing.py
+- frontend/src/app/publishing/variants/[variantId]/page.tsx
+- frontend/src/components/app-nav.tsx
+- scripts/backend-check.ps1
+- scripts/frontend-check.ps1
+- .env.example
+- docs/publishing-foundation.md
+- docs/configuration.md
+- docs/project-status.md
+
+Added behavior:
+
+- WordPress draft connector
+- dry-run mode
+- real WordPress draft mode through environment variables
+- publishing attempts log
+- frontend action on variant detail page
+- publishing attempts page
+
+Next recommended Release Pack:
+
+Release Pack AB: WordPress Config Helper + Draft Validation
+
+Suggested scope:
+
+- WordPress connection test endpoint
+- safer config diagnostics
+- better error messages
+- post category/tag draft fields
+- SEO field placeholders
+- no direct publish yet

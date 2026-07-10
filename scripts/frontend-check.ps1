@@ -43,6 +43,8 @@ $RequiredFiles = @(
     ".\frontend\src\components\enhance-publishing-variant-action.tsx",
     ".\frontend\src\app\publishing\variants\page.tsx",
     ".\frontend\src\components\review-publishing-variant-form.tsx",
+    ".\frontend\src\app\publishing\attempts\page.tsx",
+    ".\frontend\src\components\create-wordpress-draft-action.tsx",
     ".\frontend\src\app\publishing\variants\[variantId]\page.tsx",
     ".\frontend\src\app\exports\page.tsx",
     ".\frontend\src\app\maintenance\page.tsx",
@@ -219,6 +221,21 @@ if ($PublishingVariantReviewForm -notmatch "/review") {
 
 if ($PublishingVariantReviewForm -notmatch "approved") {
     throw "Publishing variant review form is missing approved status."
+}
+
+$WordPressDraftAction = Read-TextFile ".\frontend\src\components\create-wordpress-draft-action.tsx"
+$PublishingAttemptsPage = Read-TextFile ".\frontend\src\app\publishing\attempts\page.tsx"
+
+if ($WordPressDraftAction -notmatch "/wordpress/draft") {
+    throw "WordPress draft action is missing connector endpoint."
+}
+
+if ($WordPressDraftAction -notmatch "dry_run") {
+    throw "WordPress draft action must support dry_run mode."
+}
+
+if ($PublishingAttemptsPage -notmatch "/publishing/attempts") {
+    throw "Publishing attempts page does not call attempts endpoint."
 }
 
 Write-Host "Frontend production readiness check passed."

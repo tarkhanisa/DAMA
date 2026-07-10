@@ -46,3 +46,8 @@ backend/.env.*
 !backend/.env.example
 frontend/.env.*
 !frontend/.env.example
+
+# DAMA runtime data - never commit
+backend/data/**
+backend/exports/**
+backend/backups/**

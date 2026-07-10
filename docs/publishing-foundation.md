@@ -138,3 +138,35 @@ The review workflow allows the operator to:
 - mark a variant as ready for publish
 
 This still does not perform real publishing.
+
+## WordPress Draft Connector
+
+Release Pack AA adds the first real external publishing connector.
+
+Endpoint:
+
+    POST /publishing/variants/{variant_id}/wordpress/draft
+
+Modes:
+
+- dry_run
+- wordpress
+
+Dry-run mode does not send any request to WordPress.
+
+WordPress mode creates a post with:
+
+    status = draft
+
+Required environment variables:
+
+    DAMA_WORDPRESS_BASE_URL
+    DAMA_WORDPRESS_USERNAME
+    DAMA_WORDPRESS_APP_PASSWORD
+
+Safety rules:
+
+- No WordPress password is stored in the database.
+- No token is entered through the frontend panel.
+- Only approved / ready_for_publish WordPress variants can create drafts.
+- Direct publish is not enabled.
