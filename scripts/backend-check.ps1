@@ -71,3 +71,15 @@ if (Test-Path $WordPressFlowPolishSmokeTest) {
     }
 }
 
+$LocalEnvLoaderSmokeTest = Join-Path (Split-Path -Parent $PSScriptRoot) "backend\tests\smoke_test_local_env_loader.py"
+$LocalEnvLoaderPython = Join-Path (Split-Path -Parent $PSScriptRoot) "backend\.venv\Scripts\python.exe"
+
+if (Test-Path $LocalEnvLoaderSmokeTest) {
+    Write-Host ""
+    Write-Host "Running .\backend\tests\smoke_test_local_env_loader.py..."
+    & $LocalEnvLoaderPython $LocalEnvLoaderSmokeTest
+    if ($LASTEXITCODE -ne 0) {
+        throw "Smoke test failed: .\backend\tests\smoke_test_local_env_loader.py"
+    }
+}
+

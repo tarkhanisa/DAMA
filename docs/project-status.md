@@ -1763,3 +1763,47 @@ Suggested scope:
 - real authentication test
 - one real draft creation flow
 - no direct publish yet
+
+## Release Pack AD Completed
+
+Name:
+
+Backend Local Env Loader + Real WordPress Test Checklist
+
+Added files:
+
+- backend/src/core/__init__.py
+- backend/src/core/env_loader.py
+- backend/tests/smoke_test_local_env_loader.py
+- backend/.env.local.example
+- docs/real-wordpress-draft-test.md
+
+Updated files:
+
+- backend/src/main.py
+- scripts/backend-check.ps1
+- .gitignore
+- .env.example
+- docs/configuration.md
+- docs/project-status.md
+
+Added behavior:
+
+- backend loads local env files automatically
+- WordPress credentials can be stored locally in backend/.env.local
+- local env files are ignored by git
+- smoke test validates env loading
+- real WordPress draft checklist added
+
+Next recommended Release Pack:
+
+Release Pack AE: Real WordPress Draft Test Run
+
+Suggested scope:
+
+- choose target WordPress site
+- create Application Password
+- configure backend/.env.local
+- test /publishing/wordpress
+- create one real WordPress draft
+- no direct publish yet

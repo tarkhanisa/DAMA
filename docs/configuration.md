@@ -74,3 +74,22 @@ For real WordPress draft creation, set local environment variables:
 The connector creates drafts only.
 
 It does not publish directly.
+
+## Local Env Loader
+
+Backend now loads local env files automatically.
+
+Load order:
+
+    .env.local
+    .env
+    backend/.env.local
+    backend/.env
+
+Existing system environment variables are not overwritten.
+
+Recommended file for local development:
+
+    backend/.env.local
+
+Never commit real secrets.

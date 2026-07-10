@@ -51,3 +51,16 @@ frontend/.env.*
 backend/data/**
 backend/exports/**
 backend/backups/**
+
+# DAMA local env files
+.env
+.env.local
+backend/.env
+backend/.env.local
+frontend/.env
+frontend/.env.local
+
+# Keep examples
+!.env.example
+!backend/.env.local.example
+!frontend/.env.example

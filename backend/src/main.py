@@ -1,4 +1,9 @@
 from __future__ import annotations
+
+from src.core.env_loader import load_local_env
+
+load_local_env()
+
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 
