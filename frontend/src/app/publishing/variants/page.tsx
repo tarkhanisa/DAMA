@@ -1,4 +1,5 @@
 import { CreatePublishingVariantsForm } from "../../../components/create-publishing-variants-form";
+import { EnhancePublishingVariantAction } from "../../../components/enhance-publishing-variant-action";
 import { PageHeader } from "../../../components/page-header";
 import { StatCard } from "../../../components/stat-card";
 
@@ -201,6 +202,7 @@ export default async function PublishingVariantsPage() {
                 <th>کانال</th>
                 <th>نوع</th>
                 <th>وضعیت</th>
+                <th>اقدام</th>
               </tr>
             </thead>
             <tbody>
@@ -215,11 +217,17 @@ export default async function PublishingVariantsPage() {
                         {variant.status}
                       </span>
                     </td>
+                    <td>
+                      <EnhancePublishingVariantAction
+                        apiBaseUrl={API_BASE_URL}
+                        variantId={variant.id}
+                      />
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={4}>هنوز نسخهای ساخته نشده است.</td>
+                  <td colSpan={5}>هنوز نسخهای ساخته نشده است.</td>
                 </tr>
               )}
             </tbody>

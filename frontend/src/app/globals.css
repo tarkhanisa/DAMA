@@ -992,3 +992,43 @@ code,
 .variant-preview-card h3 {
   margin: 0;
 }
+
+/* AI variant enhancer */
+.enhance-variant-action {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 14rem;
+}
+
+.enhance-variant-action label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.enhance-variant-action input,
+.enhance-variant-action select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  padding: 0.55rem 0.7rem;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--text);
+  font: inherit;
+}
+
+.enhance-variant-action button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.6rem 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  background: var(--text);
+  color: var(--surface);
+}
+
+.enhance-variant-action button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

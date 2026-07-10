@@ -40,6 +40,7 @@ $RequiredFiles = @(
     ".\frontend\src\components\create-publishing-channel-form.tsx",
     ".\frontend\src\app\publishing\page.tsx",
     ".\frontend\src\components\create-publishing-variants-form.tsx",
+    ".\frontend\src\components\enhance-publishing-variant-action.tsx",
     ".\frontend\src\app\publishing\variants\page.tsx",
     ".\frontend\src\app\exports\page.tsx",
     ".\frontend\src\app\maintenance\page.tsx",
@@ -191,6 +192,16 @@ if ($PublishingVariantsPage -notmatch "CreatePublishingVariantsForm") {
 
 if ($PublishingVariantsForm -notmatch "/publishing/variants/plan") {
     throw "Publishing variants form does not call variant plan endpoint."
+}
+
+$PublishingEnhancerAction = Read-TextFile ".\frontend\src\components\enhance-publishing-variant-action.tsx"
+
+if ($PublishingEnhancerAction -notmatch "/publishing/variants/") {
+    throw "Publishing variant enhancer action is missing variant endpoint."
+}
+
+if ($PublishingEnhancerAction -notmatch "/enhance") {
+    throw "Publishing variant enhancer action is missing enhance endpoint."
 }
 
 Write-Host "Frontend production readiness check passed."

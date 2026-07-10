@@ -11,6 +11,7 @@ from src.services.publishing_channel_service import (
     test_channel,
     update_channel,
 )
+from src.services.publishing_variant_ai_service import enhance_variant
 from src.services.publishing_variant_service import (
     create_variants_plan,
     get_variant,
@@ -98,3 +99,13 @@ def api_update_variant_status(variant_id: str, payload: dict[str, Any]) -> dict[
         raise HTTPException(status_code=404, detail="Publishing variant not found.")
 
     return variant
+
+
+@router.post("/variants/{variant_id}/enhance")
+def api_enhance_variant(variant_id: str, payload: dict[str, Any]) -> dict[str, Any]:
+    result = enhance_variant(variant_id, payload)
+
+    if not result:
+        raise HTTPException(status_code=404, detail="Publishing variant not found.")
+
+    return result

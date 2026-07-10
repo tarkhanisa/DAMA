@@ -1583,3 +1583,47 @@ Suggested scope:
 - Instagram caption polish
 - LinkedIn professional rewrite
 - still no automatic publishing
+
+## Release Pack Y Completed
+
+Name:
+
+AI Variant Enhancer
+
+Added files:
+
+- backend/src/services/publishing_variant_ai_service.py
+- backend/tests/smoke_test_publishing_ai_enhancer.py
+- frontend/src/components/enhance-publishing-variant-action.tsx
+
+Updated files:
+
+- backend/src/api/publishing.py
+- frontend/src/app/publishing/variants/page.tsx
+- frontend/src/app/globals.css
+- scripts/backend-check.ps1
+- scripts/frontend-check.ps1
+- docs/publishing-foundation.md
+- docs/project-status.md
+
+Added behavior:
+
+- enhance publishing variant endpoint
+- dry-run enhancement
+- Ollama enhancement mode
+- channel-specific rewrite prompts
+- safe fallback when Ollama is unavailable
+- frontend action to enhance a variant
+
+Next recommended Release Pack:
+
+Release Pack Z: Publishing Review + Approval Workflow
+
+Suggested scope:
+
+- variant detail page
+- approve/reject variant
+- ready_for_publish status
+- review notes
+- compare source vs variant
+- no real publishing yet

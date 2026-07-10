@@ -92,3 +92,22 @@ Future adaptation mode:
     ai_enhanced
 
 No real publishing happens in this step.
+
+## AI Variant Enhancer
+
+Release Pack Y adds an enhancement endpoint for publishing variants.
+
+Endpoint:
+
+    POST /publishing/variants/{variant_id}/enhance
+
+Modes:
+
+- dry_run
+- ollama
+
+Dry-run mode is safe and does not require Ollama.
+
+Ollama mode tries to rewrite the variant for the selected channel. If Ollama is unreachable, the backend falls back to a safe dry-run enhancement and records the error.
+
+This step still does not publish anything.
