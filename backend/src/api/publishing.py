@@ -17,6 +17,7 @@ from src.services.publishing_variant_service import (
     get_variant,
     list_variants,
     update_variant_status,
+    review_variant,
 )
 
 
@@ -109,3 +110,14 @@ def api_enhance_variant(variant_id: str, payload: dict[str, Any]) -> dict[str, A
         raise HTTPException(status_code=404, detail="Publishing variant not found.")
 
     return result
+
+
+
+@router.patch("/variants/{variant_id}/review")
+def api_review_variant(variant_id: str, payload: dict[str, Any]) -> dict[str, Any]:
+    variant = review_variant(variant_id, payload)
+
+    if not variant:
+        raise HTTPException(status_code=404, detail="Publishing variant not found.")
+
+    return variant

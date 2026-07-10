@@ -111,3 +111,30 @@ Dry-run mode is safe and does not require Ollama.
 Ollama mode tries to rewrite the variant for the selected channel. If Ollama is unreachable, the backend falls back to a safe dry-run enhancement and records the error.
 
 This step still does not publish anything.
+
+## Publishing Review Workflow
+
+Release Pack Z adds human review and approval for publishing variants.
+
+Endpoint:
+
+    PATCH /publishing/variants/{variant_id}/review
+
+Review statuses:
+
+- draft
+- ready_for_review
+- approved
+- ready_for_publish
+- rejected
+
+The review workflow allows the operator to:
+
+- compare source content with channel variant
+- edit variant title
+- edit variant body
+- write review notes
+- approve or reject a variant
+- mark a variant as ready for publish
+
+This still does not perform real publishing.

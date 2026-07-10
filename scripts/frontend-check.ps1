@@ -42,6 +42,8 @@ $RequiredFiles = @(
     ".\frontend\src\components\create-publishing-variants-form.tsx",
     ".\frontend\src\components\enhance-publishing-variant-action.tsx",
     ".\frontend\src\app\publishing\variants\page.tsx",
+    ".\frontend\src\components\review-publishing-variant-form.tsx",
+    ".\frontend\src\app\publishing\variants\[variantId]\page.tsx",
     ".\frontend\src\app\exports\page.tsx",
     ".\frontend\src\app\maintenance\page.tsx",
     ".\frontend\src\app\globals.css",
@@ -202,6 +204,21 @@ if ($PublishingEnhancerAction -notmatch "/publishing/variants/") {
 
 if ($PublishingEnhancerAction -notmatch "/enhance") {
     throw "Publishing variant enhancer action is missing enhance endpoint."
+}
+
+$PublishingVariantDetailPage = Read-TextFile ".\frontend\src\app\publishing\variants\[variantId]\page.tsx"
+$PublishingVariantReviewForm = Read-TextFile ".\frontend\src\components\review-publishing-variant-form.tsx"
+
+if ($PublishingVariantDetailPage -notmatch "ReviewPublishingVariantForm") {
+    throw "Publishing variant detail page does not include review form."
+}
+
+if ($PublishingVariantReviewForm -notmatch "/review") {
+    throw "Publishing variant review form is missing review endpoint."
+}
+
+if ($PublishingVariantReviewForm -notmatch "approved") {
+    throw "Publishing variant review form is missing approved status."
 }
 
 Write-Host "Frontend production readiness check passed."

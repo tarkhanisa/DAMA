@@ -202,6 +202,7 @@ export default async function PublishingVariantsPage() {
                 <th>کانال</th>
                 <th>نوع</th>
                 <th>وضعیت</th>
+                <th>بازبینی</th>
                 <th>اقدام</th>
               </tr>
             </thead>
@@ -218,6 +219,9 @@ export default async function PublishingVariantsPage() {
                       </span>
                     </td>
                     <td>
+                      <a href={`/publishing/variants/${variant.id}`}>بازبینی</a>
+                    </td>
+                    <td>
                       <EnhancePublishingVariantAction
                         apiBaseUrl={API_BASE_URL}
                         variantId={variant.id}
@@ -227,7 +231,7 @@ export default async function PublishingVariantsPage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5}>هنوز نسخهای ساخته نشده است.</td>
+                  <td colSpan={6}>هنوز نسخهای ساخته نشده است.</td>
                 </tr>
               )}
             </tbody>

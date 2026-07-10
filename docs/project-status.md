@@ -1627,3 +1627,49 @@ Suggested scope:
 - review notes
 - compare source vs variant
 - no real publishing yet
+
+## Release Pack Z Completed
+
+Name:
+
+Publishing Review + Approval Workflow
+
+Added files:
+
+- backend/tests/smoke_test_publishing_review.py
+- frontend/src/app/publishing/variants/[variantId]/page.tsx
+- frontend/src/components/review-publishing-variant-form.tsx
+
+Updated files:
+
+- backend/src/services/publishing_variant_service.py
+- backend/src/api/publishing.py
+- frontend/src/app/publishing/variants/page.tsx
+- scripts/backend-check.ps1
+- scripts/frontend-check.ps1
+- docs/publishing-foundation.md
+- docs/project-status.md
+
+Added behavior:
+
+- review publishing variant endpoint
+- variant detail page
+- compare source vs channel variant
+- edit variant title/body
+- approve/reject variant
+- ready_for_publish status
+- review notes
+- review history
+
+Next recommended Release Pack:
+
+Release Pack AA: WordPress Draft Connector
+
+Suggested scope:
+
+- WordPress channel configuration shape
+- no secret in database
+- manual environment-based application password support
+- create draft post from approved variant
+- store publish attempt
+- no automatic publish yet

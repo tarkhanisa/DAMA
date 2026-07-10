@@ -19,6 +19,7 @@ ALLOWED_VARIANT_STATUSES = {
     "draft",
     "ready_for_review",
     "approved",
+    "ready_for_publish",
     "rejected",
     "scheduled",
     "published",
@@ -323,6 +324,52 @@ def update_variant_status(variant_id: str, status: str) -> dict[str, Any] | None
         updated["updated_at"] = utc_now()
         variants[index] = updated
         write_variants(variants)
+        return updated
+
+    return None
+
+
+
+def review_variant(variant_id: str, payload: dict[str, Any]) -> dict[str, Any] | None:
+    variants = read_variants()
+    status = normalize_status(str(payload.get("status") or "ready_for_review"))
+
+    for index, variant in enumerate(variants):
+        if variant.get("id") != variant_id:
+            continue
+
+        updated = dict(variant)
+
+        if "variant_title" in payload:
+            updated["variant_title"] = clean_text(str(payload.get("variant_title") or ""))
+
+        if "variant_body" in payload:
+            updated["variant_body"] = clean_text(str(payload.get("variant_body") or ""))
+
+        updated["status"] = status
+        updated["review_notes"] = clean_text(str(payload.get("review_notes") or ""))
+        updated["reviewed_by"] = clean_text(str(payload.get("reviewed_by") or "operator"))
+        updated["reviewed_at"] = utc_now()
+        updated["updated_at"] = utc_now()
+
+        history = updated.get("review_history")
+        if not isinstance(history, list):
+            history = []
+
+        history.append(
+            {
+                "status": status,
+                "review_notes": updated["review_notes"],
+                "reviewed_by": updated["reviewed_by"],
+                "reviewed_at": updated["reviewed_at"],
+            }
+        )
+
+        updated["review_history"] = history
+
+        variants[index] = updated
+        write_variants(variants)
+
         return updated
 
     return None
