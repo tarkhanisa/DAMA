@@ -188,3 +188,31 @@ Important:
 SEO meta sending is disabled by default because WordPress may reject unregistered meta fields.
 
 Direct publish is still not enabled.
+
+## Telegram Preview / Test Send
+
+Release Pack AF adds Telegram connector foundation.
+
+Endpoints:
+
+    GET /publishing/telegram/config
+    POST /publishing/telegram/test
+    POST /publishing/variants/{variant_id}/telegram/preview
+    POST /publishing/variants/{variant_id}/telegram/send-test
+
+Modes:
+
+- dry_run
+- telegram
+
+Environment variables:
+
+    DAMA_TELEGRAM_BOT_TOKEN
+    DAMA_TELEGRAM_DEFAULT_CHAT_ID
+
+Safety:
+
+- Dry-run is the default.
+- Bot token is never shown in the UI.
+- Real send requires Bot Token and chat_id.
+- Public scheduled publishing is not enabled yet.

@@ -1807,3 +1807,54 @@ Suggested scope:
 - test /publishing/wordpress
 - create one real WordPress draft
 - no direct publish yet
+
+## Release Pack AF Completed
+
+Name:
+
+Telegram Preview / Test Send
+
+Added files:
+
+- backend/src/services/telegram_connector_service.py
+- backend/tests/smoke_test_telegram_connector.py
+- frontend/src/app/publishing/telegram/page.tsx
+- frontend/src/components/telegram-connection-test-action.tsx
+- frontend/src/components/telegram-preview-test-send-action.tsx
+
+Updated files:
+
+- backend/src/api/publishing.py
+- frontend/src/app/publishing/variants/[variantId]/page.tsx
+- frontend/src/components/app-nav.tsx
+- frontend/src/app/globals.css
+- scripts/backend-check.ps1
+- scripts/frontend-check.ps1
+- backend/.env.local.example
+- .env.example
+- docs/configuration.md
+- docs/publishing-foundation.md
+- docs/project-status.md
+
+Added behavior:
+
+- Telegram config status endpoint
+- Telegram dry-run/real bot test endpoint
+- Telegram preview for publishing variants
+- Telegram dry-run send-test attempt
+- Telegram real send-test path
+- frontend Telegram status page
+- variant detail action for Telegram preview/test send
+
+Next recommended Release Pack:
+
+Release Pack AG: Telegram Real Test Setup
+
+Suggested scope:
+
+- create Telegram bot
+- configure backend/.env.local
+- dry-run from UI
+- real getMe test
+- send one real test message to private test channel/group
+- no scheduled public publishing yet

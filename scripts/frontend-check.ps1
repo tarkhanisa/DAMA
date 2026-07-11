@@ -259,4 +259,24 @@ if ($PublishingAttemptsPage -notmatch "/publishing/attempts/") {
     throw "Publishing attempts page does not link to attempt detail page."
 }
 
+$TelegramPage = Read-TextFile ".\frontend\src\app\publishing\telegram\page.tsx"
+$TelegramTestAction = Read-TextFile ".\frontend\src\components\telegram-connection-test-action.tsx"
+$TelegramVariantAction = Read-TextFile ".\frontend\src\components\telegram-preview-test-send-action.tsx"
+
+if ($TelegramPage -notmatch "/publishing/telegram/config") {
+    throw "Telegram page does not call config endpoint."
+}
+
+if ($TelegramTestAction -notmatch "/publishing/telegram/test") {
+    throw "Telegram connection test action does not call test endpoint."
+}
+
+if ($TelegramVariantAction -notmatch "/telegram/preview") {
+    throw "Telegram variant action is missing preview endpoint."
+}
+
+if ($TelegramVariantAction -notmatch "/telegram/send-test") {
+    throw "Telegram variant action is missing send-test endpoint."
+}
+
 Write-Host "Frontend production readiness check passed."

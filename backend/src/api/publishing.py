@@ -36,6 +36,13 @@ from src.services.wordpress_draft_connector_service import (
 )
 
 
+from src.services.telegram_connector_service import (
+    preview_telegram_variant,
+    send_telegram_test_from_variant,
+    telegram_config_status,
+    test_telegram_connection,
+)
+
 router = APIRouter(prefix="/publishing", tags=["publishing"])
 
 
@@ -222,3 +229,34 @@ def api_get_publish_attempt(attempt_id: str) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail="Publishing attempt not found.")
 
     return attempt
+
+
+
+@router.get("/telegram/config")
+def api_telegram_config() -> dict[str, Any]:
+    return telegram_config_status()
+
+
+@router.post("/telegram/test")
+def api_telegram_test(payload: dict[str, Any]) -> dict[str, Any]:
+    return test_telegram_connection(payload)
+
+
+@router.post("/variants/{variant_id}/telegram/preview")
+def api_preview_telegram_variant(variant_id: str, payload: dict[str, Any]) -> dict[str, Any]:
+    result = preview_telegram_variant(variant_id, payload)
+
+    if not result:
+        raise HTTPException(status_code=404, detail="Publishing variant not found.")
+
+    return result
+
+
+@router.post("/variants/{variant_id}/telegram/send-test")
+def api_send_telegram_test(variant_id: str, payload: dict[str, Any]) -> dict[str, Any]:
+    result = send_telegram_test_from_variant(variant_id, payload)
+
+    if not result:
+        raise HTTPException(status_code=404, detail="Publishing variant not found.")
+
+    return result

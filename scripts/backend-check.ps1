@@ -83,3 +83,15 @@ if (Test-Path $LocalEnvLoaderSmokeTest) {
     }
 }
 
+$TelegramConnectorSmokeTest = Join-Path (Split-Path -Parent $PSScriptRoot) "backend\tests\smoke_test_telegram_connector.py"
+$TelegramConnectorPython = Join-Path (Split-Path -Parent $PSScriptRoot) "backend\.venv\Scripts\python.exe"
+
+if (Test-Path $TelegramConnectorSmokeTest) {
+    Write-Host ""
+    Write-Host "Running .\backend\tests\smoke_test_telegram_connector.py..."
+    & $TelegramConnectorPython $TelegramConnectorSmokeTest
+    if ($LASTEXITCODE -ne 0) {
+        throw "Smoke test failed: .\backend\tests\smoke_test_telegram_connector.py"
+    }
+}
+

@@ -10,6 +10,8 @@ const navItems = [
   { href: "/generate", label: "تولید محتوا" },
   { href: "/publishing", label: "انتشار" },
   { href: "/publishing/variants", label: "نسخه‌سازی" },
+  { href: "/publishing/wordpress", label: "وردپرس" },
+  { href: "/publishing/telegram", label: "تلگرام" },
   { href: "/publishing/attempts", label: "گزارش انتشار" },
   { href: "/workflows", label: "جریان کار" },
   { href: "/search", label: "جستجو" },

@@ -93,3 +93,20 @@ Recommended file for local development:
     backend/.env.local
 
 Never commit real secrets.
+
+## Telegram Connector
+
+For Telegram real test sending, set:
+
+    DAMA_TELEGRAM_BOT_TOKEN=123456:your-bot-token
+    DAMA_TELEGRAM_DEFAULT_CHAT_ID=@your_test_channel
+
+For channel sending:
+
+1. Create a bot with BotFather.
+2. Add bot as admin to the target channel.
+3. Use channel username as chat_id, for example:
+
+       @your_channel
+
+Never commit real bot tokens.
