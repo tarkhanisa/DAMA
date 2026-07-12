@@ -2,6 +2,12 @@ import { CreatePublishingQueueItemForm } from "../../../components/create-publis
 import { PageHeader } from "../../../components/page-header";
 import { RunPublishingQueueItemAction } from "../../../components/run-publishing-queue-item-action";
 import { StatCard } from "../../../components/stat-card";
+import {
+  labelAttemptStatus,
+  labelConnector,
+  labelMode,
+  labelQueueStatus
+} from "../../../lib/persian-copy";
 
 export const dynamic = "force-dynamic";
 
@@ -116,70 +122,79 @@ async function loadVariants(): Promise<PublishingVariantOption[]> {
   }
 }
 
-function statusLabel(status: string): string {
-  const labels: Record<string, string> = {
-    queued: "در صف",
-    running: "در حال اجرا",
-    dry_run_completed: "Dry-run انجام شد",
-    sent: "ارسال/ساخت انجام شد",
-    failed: "خطا",
-    blocked: "مسدود",
-    cancelled: "لغو شده"
-  };
-
-  return labels[status] ?? status;
-}
-
 export default async function PublishingQueuePage() {
   const [queue, variants] = await Promise.all([loadQueue(), loadVariants()]);
 
   const queuedCount = queue.filter((item) => item.status === "queued").length;
-  const sentCount = queue.filter((item) => item.status === "sent").length;
+  const doneCount = queue.filter((item) => item.status === "sent" || item.status === "dry_run_completed").length;
   const failedCount = queue.filter((item) => item.status === "failed" || item.status === "blocked").length;
 
   return (
     <main className="page-shell">
       <PageHeader
         eyebrow="صف انتشار"
-        title="Publishing Queue"
-        lead="اینجا نسخه‌های آماده انتشار را به صف اضافه می‌کنی و اجرای connectorها را دستی انجام می‌دهی."
+        title="صف انتشار کنترل‌شده"
+        lead="نسخه‌های آماده را اینجا وارد صف کن. اجرای واقعی همیشه دستی است و پیشنهاد می‌شود اول اجرای آزمایشی انجام شود."
       >
         <div className="actions">
           <a href="/publishing/variants">نسخه‌ها</a>
-          <a href="/publishing/attempts">گزارش انتشار</a>
+          <a href="/publishing/attempts">گزارش‌ها</a>
         </div>
       </PageHeader>
 
       <section className="stats-grid">
-        <StatCard label="همه آیتم‌ها" value={queue.length} helper="همه صف" />
+        <StatCard label="همه آیتم‌ها" value={queue.length} helper="کل صف فعلی" />
         <StatCard label="در صف" value={queuedCount} helper="منتظر اجرا" />
-        <StatCard label="انجام‌شده" value={sentCount} helper="Draft یا Test Sent" />
-        <StatCard label="خطادار" value={failedCount} helper="نیازمند بررسی" />
+        <StatCard label="انجام‌شده" value={doneCount} helper="موفق یا آزمایشی" />
+        <StatCard label="نیازمند بررسی" value={failedCount} helper="خطا یا مسدود شده" />
+      </section>
+
+      <section className="dashboard-flow compact-flow" aria-label="مسیر صف انتشار">
+        <div className="flow-card">
+          <span className="flow-number">۱</span>
+          <strong>نسخه آماده</strong>
+          <p>متن کانالی تأیید شده باشد.</p>
+        </div>
+
+        <span className="flow-arrow">←</span>
+
+        <div className="flow-card">
+          <span className="flow-number">۲</span>
+          <strong>افزودن به صف</strong>
+          <p>مقصد و نوع اجرا را انتخاب کن.</p>
+        </div>
+
+        <span className="flow-arrow">←</span>
+
+        <div className="flow-card">
+          <span className="flow-number">۳</span>
+          <strong>اجرای دستی</strong>
+          <p>اول آزمایشی، بعد واقعی.</p>
+        </div>
       </section>
 
       <section className="two-column">
         <CreatePublishingQueueItemForm apiBaseUrl={API_BASE_URL} variants={variants} />
 
-        <section className="panel">
+        <section className="panel quiet-panel">
           <div className="panel-heading">
-            <p className="eyebrow">راهنما</p>
-            <h2>روش امن استفاده</h2>
+            <p className="eyebrow">راهنمای ساده</p>
+            <h2>چطور اشتباه نکنم؟</h2>
           </div>
 
           <ol className="simple-steps">
-            <li>اول variant را در صفحه بازبینی روی آماده انتشار بگذار.</li>
-            <li>بعد آن را به صف اضافه کن.</li>
-            <li>اول Mode را Dry-run بگذار.</li>
-            <li>اگر dry-run درست بود، بعداً mode واقعی را انتخاب کن.</li>
-            <li>هر اجرا یک publishing attempt ثبت می‌کند.</li>
+            <li>برای تست، نوع اجرا را «اجرای آزمایشی امن» بگذار.</li>
+            <li>برای وردپرس واقعی، فقط پیش‌نویس ساخته می‌شود.</li>
+            <li>برای تلگرام واقعی، فعلاً فقط پیام تست ارسال می‌شود.</li>
+            <li>هر اجرا در گزارش‌ها ثبت می‌شود.</li>
           </ol>
         </section>
       </section>
 
       <section className="panel">
         <div className="panel-heading">
-          <p className="eyebrow">لیست صف</p>
-          <h2>آخرین آیتم‌ها</h2>
+          <p className="eyebrow">آیتم‌های صف</p>
+          <h2>آخرین کارهای آماده اجرا</h2>
         </div>
 
         <div className="responsive-table">
@@ -187,12 +202,12 @@ export default async function PublishingQueuePage() {
             <thead>
               <tr>
                 <th>وضعیت</th>
-                <th>عنوان</th>
+                <th>نسخه</th>
                 <th>کانال</th>
-                <th>Connector</th>
-                <th>Mode</th>
-                <th>آخرین Attempt</th>
-                <th>اجرا</th>
+                <th>مقصد</th>
+                <th>نوع اجرا</th>
+                <th>آخرین نتیجه</th>
+                <th>عملیات</th>
               </tr>
             </thead>
             <tbody>
@@ -201,20 +216,20 @@ export default async function PublishingQueuePage() {
                   <tr key={item.id}>
                     <td>
                       <span className={`status-badge status-${item.status}`}>
-                        {statusLabel(item.status)}
+                        {labelQueueStatus(item.status)}
                       </span>
                     </td>
-                    <td>{item.variant_title || ""}</td>
-                    <td>{item.channel_name || item.channel_type || ""}</td>
-                    <td>{item.connector}</td>
-                    <td>{item.mode}</td>
+                    <td>{item.variant_title || "بدون عنوان"}</td>
+                    <td>{item.channel_name || labelConnector(item.channel_type)}</td>
+                    <td>{labelConnector(item.connector)}</td>
+                    <td>{labelMode(item.mode)}</td>
                     <td>
                       {item.latest_attempt_id ? (
                         <a href={`/publishing/attempts/${item.latest_attempt_id}`}>
-                          {item.latest_attempt_status || "attempt"}
+                          {labelAttemptStatus(item.latest_attempt_status)}
                         </a>
                       ) : (
-                        ""
+                        "—"
                       )}
                     </td>
                     <td>
@@ -228,7 +243,7 @@ export default async function PublishingQueuePage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={7}>هنوز آیتمی در صف انتشار ثبت نشده است.</td>
+                  <td colSpan={7}>فعلاً چیزی در صف انتشار نیست.</td>
                 </tr>
               )}
             </tbody>

@@ -1,0 +1,276 @@
+# Frontend Persian Copy Audit
+
+This report lists suspicious English UI terms that may still need Persian wording.
+
+Total findings: 270
+
+- `frontend/src/app/exports/page.tsx:53` — `Ready` — `label="Export Ready"`
+- `frontend/src/app/exports/page.tsx:54` — `Ready` — `value={summary?.readiness.export_ready ? "Ready" : "Pending"}`
+- `frontend/src/app/generate/page.tsx:20` — `Mode` — `type ModelOption = {`
+- `frontend/src/app/generate/page.tsx:118` — `Mode` — `function normalizeModels(payload: unknown): ModelOption[] {`
+- `frontend/src/app/generate/page.tsx:176` — `Mode` — `async function loadModels(): Promise<ModelOption[]> {`
+- `frontend/src/app/generate/page.tsx:179` — `Mode` — `return normalizeModels(payload);`
+- `frontend/src/app/generate/page.tsx:189` — `Mode` — `loadModels()`
+- `frontend/src/app/maintenance/page.tsx:56` — `Ready` — `value={status.database.exists ? "Ready" : "Missing"}`
+- `frontend/src/app/maintenance/page.tsx:71` — `Ready` — `value={status.maintenance_ready ? "Ready" : "Pending"}`
+- `frontend/src/app/maintenance/page.tsx:85` — `Run` — `description="Run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\dama.ps1 backup"`
+- `frontend/src/app/maintenance/page.tsx:90` — `Run` — `description="Run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\dama.ps1 check"`
+- `frontend/src/app/operations/page.tsx:37` — `Run` — `lead="Run confirmation-first backup and export actions. No delete operations are available here."`
+- `frontend/src/app/page.tsx:3` — `Queue` — `import { labelAttemptStatus, labelQueueStatus, labelReady } from "../lib/persian-copy";`
+- `frontend/src/app/page.tsx:10` — `Run` — `type RuntimeItem = Record<string, unknown>;`
+- `frontend/src/app/page.tsx:12` — `Run` — `function asRecord(value: unknown): RuntimeItem {`
+- `frontend/src/app/page.tsx:13` — `Run` — `return value !== null && typeof value === "object" ? (value as RuntimeItem) : {};`
+- `frontend/src/app/page.tsx:16` — `Run` — `function getItems(payload: unknown): RuntimeItem[] {`
+- `frontend/src/app/page.tsx:46` — `Ready` — `const wordpressReady = Boolean(asRecord(wordpressConfig).ready);`
+- `frontend/src/app/page.tsx:47` — `Ready` — `const telegramReady = Boolean(asRecord(telegramConfig).ready);`
+- `frontend/src/app/page.tsx:51` — `Queue` — `const latestQueueStatus = labelQueueStatus(String(queueItems[0]?.status ?? ""));`
+- `frontend/src/app/page.tsx:52` — `Attempt` — `const latestAttemptStatus = labelAttemptStatus(String(attempts[0]?.status ?? ""));`
+- `frontend/src/app/page.tsx:78` — `Ready` — `<span className={wordpressReady ? "connection-pill is-ready" : "connection-pill"}>`
+- `frontend/src/app/page.tsx:79` — `Ready` — `وردپرس: {labelReady(wordpressReady)}`
+- `frontend/src/app/page.tsx:81` — `Ready` — `<span className={telegramReady ? "connection-pill is-ready" : "connection-pill"}>`
+- `frontend/src/app/page.tsx:82` — `Ready` — `تلگرام: {labelReady(telegramReady)}`
+- `frontend/src/app/page.tsx:120` — `Ready` — `<StatCard label="وردپرس" value={labelReady(wordpressReady)} helper="ساخت پیش‌نویس کنترل‌شده" />`
+- `frontend/src/app/page.tsx:121` — `Ready` — `<StatCard label="تلگرام" value={labelReady(telegramReady)} helper="ارسال تست کنترل‌شده" />`
+- `frontend/src/app/page.tsx:122` — `Queue` — `<StatCard label="آخرین صف" value={latestQueueStatus} helper={`${queueItems.length} آیتم ثبت‌شده`} />`
+- `frontend/src/app/page.tsx:123` — `Attempt` — `<StatCard label="آخرین گزارش" value={latestAttemptStatus} helper={`${attempts.length} گزارش ثبت‌شده`} />`
+- `frontend/src/app/projects/[projectId]/page.tsx:67` — `dry-run` — `<a href={`/workflows/${project.id}/dry-run`}>`
+- `frontend/src/app/projects/[projectId]/page.tsx:68` — `Run` — `Dry Run`
+- `frontend/src/app/publishing/attempts/[attemptId]/page.tsx:10` — `Attempt` — `type AttemptDetailPageProps = {`
+- `frontend/src/app/publishing/attempts/[attemptId]/page.tsx:16` — `Attempt` — `type PublishingAttempt = {`
+- `frontend/src/app/publishing/attempts/[attemptId]/page.tsx:44` — `Attempt` — `async function loadAttempt(attemptId: string): Promise<PublishingAttempt | null> {`
+- `frontend/src/app/publishing/attempts/[attemptId]/page.tsx:54` — `Attempt` — `return (await response.json()) as PublishingAttempt;`
+- `frontend/src/app/publishing/attempts/[attemptId]/page.tsx:62` — `Dry-run` — `dry_run: "Dry-run",`
+- `frontend/src/app/publishing/attempts/[attemptId]/page.tsx:63` — `Draft` — `draft_created: "Draft ساخته شد",`
+- `frontend/src/app/publishing/attempts/[attemptId]/page.tsx:72` — `Attempt` — `export default async function PublishingAttemptDetailPage({`
+- `frontend/src/app/publishing/attempts/[attemptId]/page.tsx:74` — `Attempt` — `}: AttemptDetailPageProps) {`
+- `frontend/src/app/publishing/attempts/[attemptId]/page.tsx:76` — `Attempt` — `const attempt = await loadAttempt(attemptId);`
+- `frontend/src/app/publishing/attempts/[attemptId]/page.tsx:103` — `Draft` — `lead="این صفحه گزارش دقیق یک تلاش انتشار یا ساخت Draft را نشان می‌دهد."`
+- `frontend/src/app/publishing/attempts/[attemptId]/page.tsx:115` — `Draft` — `<StatCard label="WordPress Post" value={wordpressPostId || ""} helper="شناسه Draft در وردپرس" />`
+- `frontend/src/app/publishing/attempts/[attemptId]/page.tsx:121` — `Draft` — `<p className="eyebrow">Draft ساخته شد</p>`
+- `frontend/src/app/publishing/attempts/[attemptId]/page.tsx:130` — `Draft` — `باز کردن Draft وردپرس`
+- `frontend/src/app/publishing/attempts/[attemptId]/page.tsx:196` — `Connector` — `<h2>پاسخ Connector</h2>`
+- `frontend/src/app/publishing/attempts/page.tsx:9` — `Attempt` — `type PublishingAttempt = {`
+- `frontend/src/app/publishing/attempts/page.tsx:28` — `Attempt` — `function normalizeAttempts(payload: unknown): PublishingAttempt[] {`
+- `frontend/src/app/publishing/attempts/page.tsx:56` — `Attempt` — `async function loadAttempts(): Promise<PublishingAttempt[]> {`
+- `frontend/src/app/publishing/attempts/page.tsx:66` — `Attempt` — `return normalizeAttempts(await response.json());`
+- `frontend/src/app/publishing/attempts/page.tsx:74` — `Dry-run` — `dry_run: "Dry-run",`
+- `frontend/src/app/publishing/attempts/page.tsx:75` — `Draft` — `draft_created: "Draft ساخته شد",`
+- `frontend/src/app/publishing/attempts/page.tsx:84` — `Attempt` — `export default async function PublishingAttemptsPage() {`
+- `frontend/src/app/publishing/attempts/page.tsx:85` — `Attempt` — `const attempts = await loadAttempts();`
+- `frontend/src/app/publishing/attempts/page.tsx:87` — `Run` — `const dryRunCount = attempts.filter((item) => item.status === "dry_run").length;`
+- `frontend/src/app/publishing/attempts/page.tsx:95` — `dry-run` — `lead="اینجا تلاش‌های ساخت پیش‌نویس، dry-run و خطاهای اتصال ثبت می‌شوند."`
+- `frontend/src/app/publishing/attempts/page.tsx:105` — `Draft` — `<StatCard label="Draft ساخته‌شده" value={draftCount} helper="اتصال واقعی موفق" />`
+- `frontend/src/app/publishing/attempts/page.tsx:106` — `Dry-run` — `<StatCard label="Dry-run" value={dryRunCount} helper="تست امن بدون انتشار" />`
+- `frontend/src/app/publishing/attempts/page.tsx:122` — `Connector` — `<th>Connector</th>`
+- `frontend/src/app/publishing/attempts/page.tsx:123` — `Mode` — `<th>Mode</th>`
+- `frontend/src/app/publishing/page.tsx:6` — `Publish` — `export default function PublishingHomePage() {`
+- `frontend/src/app/publishing/page.tsx:22` — `Draft` — `<StatCard label="وردپرس" value="Draft" helper="بدون Publish مستقیم" />`
+- `frontend/src/app/publishing/queue/page.tsx:1` — `Queue` — `import { CreatePublishingQueueItemForm } from "../../../components/create-publishing-queue-item-form";`
+- `frontend/src/app/publishing/queue/page.tsx:3` — `Queue` — `import { RunPublishingQueueItemAction } from "../../../components/run-publishing-queue-item-action";`
+- `frontend/src/app/publishing/queue/page.tsx:6` — `Attempt` — `labelAttemptStatus,`
+- `frontend/src/app/publishing/queue/page.tsx:7` — `Connector` — `labelConnector,`
+- `frontend/src/app/publishing/queue/page.tsx:8` — `Mode` — `labelMode,`
+- `frontend/src/app/publishing/queue/page.tsx:9` — `Queue` — `labelQueueStatus`
+- `frontend/src/app/publishing/queue/page.tsx:17` — `Queue` — `type PublishingQueueItem = {`
+- `frontend/src/app/publishing/queue/page.tsx:32` — `Publish` — `type PublishingVariantOption = {`
+- `frontend/src/app/publishing/queue/page.tsx:46` — `Queue` — `function normalizeQueue(payload: unknown): PublishingQueueItem[] {`
+- `frontend/src/app/publishing/queue/page.tsx:72` — `Publish` — `function normalizeVariants(payload: unknown): PublishingVariantOption[] {`
+- `frontend/src/app/publishing/queue/page.tsx:93` — `Queue` — `async function loadQueue(): Promise<PublishingQueueItem[]> {`
+- `frontend/src/app/publishing/queue/page.tsx:103` — `Queue` — `return normalizeQueue(await response.json());`
+- `frontend/src/app/publishing/queue/page.tsx:109` — `Publish` — `async function loadVariants(): Promise<PublishingVariantOption[]> {`
+- `frontend/src/app/publishing/queue/page.tsx:125` — `Queue` — `export default async function PublishingQueuePage() {`
+- `frontend/src/app/publishing/queue/page.tsx:126` — `Queue` — `const [queue, variants] = await Promise.all([loadQueue(), loadVariants()]);`
+- `frontend/src/app/publishing/queue/page.tsx:177` — `Queue` — `<CreatePublishingQueueItemForm apiBaseUrl={API_BASE_URL} variants={variants} />`
+- `frontend/src/app/publishing/queue/page.tsx:219` — `Queue` — `{labelQueueStatus(item.status)}`
+- `frontend/src/app/publishing/queue/page.tsx:223` — `Connector` — `<td>{item.channel_name || labelConnector(item.channel_type)}</td>`
+- `frontend/src/app/publishing/queue/page.tsx:224` — `Connector` — `<td>{labelConnector(item.connector)}</td>`
+- `frontend/src/app/publishing/queue/page.tsx:225` — `Mode` — `<td>{labelMode(item.mode)}</td>`
+- `frontend/src/app/publishing/queue/page.tsx:229` — `Attempt` — `{labelAttemptStatus(item.latest_attempt_status)}`
+- `frontend/src/app/publishing/queue/page.tsx:236` — `Queue` — `<RunPublishingQueueItemAction`
+- `frontend/src/app/publishing/telegram/page.tsx:3` — `Telegram` — `import { TelegramConnectionTestAction } from "../../../components/telegram-connection-test-action";`
+- `frontend/src/app/publishing/telegram/page.tsx:10` — `Telegram` — `type TelegramConfig = {`
+- `frontend/src/app/publishing/telegram/page.tsx:20` — `Telegram` — `async function loadConfig(): Promise<TelegramConfig> {`
+- `frontend/src/app/publishing/telegram/page.tsx:30` — `Telegram` — `return (await response.json()) as TelegramConfig;`
+- `frontend/src/app/publishing/telegram/page.tsx:39` — `Telegram` — `message: "Telegram config could not be loaded."`
+- `frontend/src/app/publishing/telegram/page.tsx:44` — `Publish` — `export default async function TelegramPublishingPage() {`
+- `frontend/src/app/publishing/telegram/page.tsx:90` — `Telegram` — `<TelegramConnectionTestAction apiBaseUrl={API_BASE_URL} />`
+- `frontend/src/app/publishing/telegram/page.tsx:104` — `Dry-run` — `<li>اول Dry-run بزن؛ بعد تست واقعی.</li>`
+- `frontend/src/app/publishing/variants/[variantId]/page.tsx:3` — `Draft` — `import { CreateWordPressDraftAction } from "../../../../components/create-wordpress-draft-action";`
+- `frontend/src/app/publishing/variants/[variantId]/page.tsx:4` — `Telegram` — `import { TelegramPreviewTestSendAction } from "../../../../components/telegram-preview-test-send-action";`
+- `frontend/src/app/publishing/variants/[variantId]/page.tsx:5` — `Publish` — `import { ReviewPublishingVariantForm } from "../../../../components/review-publishing-variant-form";`
+- `frontend/src/app/publishing/variants/[variantId]/page.tsx:19` — `Publish` — `type PublishingVariant = {`
+- `frontend/src/app/publishing/variants/[variantId]/page.tsx:38` — `Publish` — `async function loadVariant(variantId: string): Promise<PublishingVariant | null> {`
+- `frontend/src/app/publishing/variants/[variantId]/page.tsx:48` — `Publish` — `return (await response.json()) as PublishingVariant;`
+- `frontend/src/app/publishing/variants/[variantId]/page.tsx:84` — `Publish` — `export default async function PublishingVariantDetailPage({`
+- `frontend/src/app/publishing/variants/[variantId]/page.tsx:118` — `dry-run` — `<StatCard label="روش آمادهسازی" value={variant.adaptation_mode || "rule_based"} helper="rule-based / AI / dry-run" />`
+- `frontend/src/app/publishing/variants/[variantId]/page.tsx:132` — `Publish` — `<ReviewPublishingVariantForm`
+- `frontend/src/app/publishing/variants/page.tsx:1` — `Publish` — `import { CreatePublishingVariantsForm } from "../../../components/create-publishing-variants-form";`
+- `frontend/src/app/publishing/variants/page.tsx:2` — `Publish` — `import { EnhancePublishingVariantAction } from "../../../components/enhance-publishing-variant-action";`
+- `frontend/src/app/publishing/variants/page.tsx:19` — `Publish` — `type PublishingChannel = {`
+- `frontend/src/app/publishing/variants/page.tsx:26` — `Publish` — `type PublishingVariant = {`
+- `frontend/src/app/publishing/variants/page.tsx:79` — `Publish` — `function normalizeChannels(payload: unknown): PublishingChannel[] {`
+- `frontend/src/app/publishing/variants/page.tsx:97` — `Publish` — `function normalizeVariants(payload: unknown): PublishingVariant[] {`
+- `frontend/src/app/publishing/variants/page.tsx:127` — `Publish` — `async function loadChannels(): Promise<PublishingChannel[]> {`
+- `frontend/src/app/publishing/variants/page.tsx:135` — `Publish` — `async function loadVariants(): Promise<PublishingVariant[]> {`
+- `frontend/src/app/publishing/variants/page.tsx:158` — `Publish` — `export default async function PublishingVariantsPage() {`
+- `frontend/src/app/publishing/variants/page.tsx:181` — `Publish` — `<StatCard label="نسخههای ساختهشده" value={variants.length} helper="Publishing Variants" />`
+- `frontend/src/app/publishing/variants/page.tsx:185` — `Publish` — `<CreatePublishingVariantsForm`
+- `frontend/src/app/publishing/variants/page.tsx:225` — `Publish` — `<EnhancePublishingVariantAction`
+- `frontend/src/app/publishing/wordpress/page.tsx:3` — `WordPress` — `import { WordPressConnectionTestAction } from "../../../components/wordpress-connection-test-action";`
+- `frontend/src/app/publishing/wordpress/page.tsx:10` — `WordPress` — `type WordPressConfig = {`
+- `frontend/src/app/publishing/wordpress/page.tsx:23` — `WordPress` — `async function loadConfig(): Promise<WordPressConfig> {`
+- `frontend/src/app/publishing/wordpress/page.tsx:33` — `WordPress` — `return (await response.json()) as WordPressConfig;`
+- `frontend/src/app/publishing/wordpress/page.tsx:45` — `WordPress` — `message: "WordPress config could not be loaded."`
+- `frontend/src/app/publishing/wordpress/page.tsx:50` — `Publish` — `export default async function WordPressPublishingPage() {`
+- `frontend/src/app/publishing/wordpress/page.tsx:100` — `WordPress` — `<WordPressConnectionTestAction apiBaseUrl={API_BASE_URL} />`
+- `frontend/src/app/publishing/wordpress/page.tsx:112` — `WordPress` — `DAMA_WORDPRESS_APP_PASSWORD=Application-Password-WordPress`}`
+- `frontend/src/app/runtime/page.tsx:6` — `Run` — `type RuntimeStorageItem = {`
+- `frontend/src/app/runtime/page.tsx:15` — `Run` — `type RuntimeHealth = {`
+- `frontend/src/app/runtime/page.tsx:25` — `Run` — `storage: RuntimeStorageItem[];`
+- `frontend/src/app/runtime/page.tsx:45` — `Run` — `function fallbackHealth(message: string): RuntimeHealth {`
+- `frontend/src/app/runtime/page.tsx:77` — `Run` — `async function loadRuntimeHealth(): Promise<RuntimeHealth> {`
+- `frontend/src/app/runtime/page.tsx:87` — `Run` — `return (await response.json()) as RuntimeHealth;`
+- `frontend/src/app/runtime/page.tsx:97` — `Run` — `export default async function RuntimePage() {`
+- `frontend/src/app/runtime/page.tsx:98` — `Run` — `const health = await loadRuntimeHealth();`
+- `frontend/src/app/runtime/page.tsx:103` — `Run` — `eyebrow="Runtime"`
+- `frontend/src/app/runtime/page.tsx:108` — `Run` — `<a href={`${API_BASE_URL}/runtime/health`}>Raw Runtime JSON</a>`
+- `frontend/src/app/runtime/page.tsx:114` — `Run` — `<StatCard label="Overall" value={health.status} helper="Runtime status" />`
+- `frontend/src/app/runtime/page.tsx:126` — `Mode` — `label="Models"`
+- `frontend/src/app/runtime/page.tsx:179` — `Mode` — `<strong>Models</strong>`
+- `frontend/src/app/settings/page.tsx:3` — `Ready` — `import { labelReady } from "../../lib/persian-copy";`
+- `frontend/src/app/settings/page.tsx:10` — `Connector` — `type ConnectorConfig = {`
+- `frontend/src/app/settings/page.tsx:15` — `Connector` — `async function loadConfig(path: string): Promise<ConnectorConfig> {`
+- `frontend/src/app/settings/page.tsx:25` — `Connector` — `return (await response.json()) as ConnectorConfig;`
+- `frontend/src/app/settings/page.tsx:51` — `Ready` — `<StatCard label="وردپرس" value={labelReady(Boolean(wordpress.ready))} helper={wordpress.message ?? "ساخت پیش‌نویس"} />`
+- `frontend/src/app/settings/page.tsx:52` — `Ready` — `<StatCard label="تلگرام" value={labelReady(Boolean(telegram.ready))} helper={telegram.message ?? "ارسال پیام تست"} />`
+- `frontend/src/app/workflows/[projectId]/dry-run/page.tsx:2` — `dry-run` — `import { WorkflowDryRunForm } from "../../../../components/workflow-dry-run-form";`
+- `frontend/src/app/workflows/[projectId]/dry-run/page.tsx:6` — `Run` — `type WorkflowDryRunPageProps = {`
+- `frontend/src/app/workflows/[projectId]/dry-run/page.tsx:20` — `Run` — `export default async function WorkflowDryRunPage({ params }: WorkflowDryRunPageProps) {`
+- `frontend/src/app/workflows/[projectId]/dry-run/page.tsx:27` — `Run` — `eyebrow="Workflow Dry Run"`
+- `frontend/src/app/workflows/[projectId]/dry-run/page.tsx:32` — `Run` — `<WorkflowDryRunForm projectId={projectId} />`
+- `frontend/src/app/workflows/[projectId]/page.tsx:65` — `dry-run` — `<a href={`/workflows/${project.id}/dry-run`}>`
+- `frontend/src/app/workflows/[projectId]/page.tsx:66` — `Run` — `Dry Run UI`
+- `frontend/src/app/workflows/[projectId]/page.tsx:83` — `Draft` — `title="Create Draft Assets"`
+- `frontend/src/app/workflows/[projectId]/page.tsx:89` — `Run` — `title="Batch Dry Run UI"`
+- `frontend/src/app/workflows/[projectId]/page.tsx:91` — `dry-run` — `href={`/workflows/${project.id}/dry-run`}`
+- `frontend/src/app/workflows/page.tsx:36` — `Draft` — `label="Draft"`
+- `frontend/src/app/workflows/page.tsx:38` — `Draft` — `helper="Draft workflows"`
+- `frontend/src/app/workflows/page.tsx:42` — `Ready` — `value="Ready"`
+- `frontend/src/app/workflows/page.tsx:54` — `Draft` — `title="Draft Assets"`
+- `frontend/src/app/workflows/page.tsx:59` — `Run` — `title="Batch Dry Run"`
+- `frontend/src/app/workflows/page.tsx:60` — `dry-run` — `description="Backend supports dry-run planning before AI generation."`
+- `frontend/src/components/create-publishing-channel-form.tsx:5` — `Publish` — `type CreatePublishingChannelFormProps = {`
+- `frontend/src/components/create-publishing-channel-form.tsx:20` — `Publish` — `export function CreatePublishingChannelForm({`
+- `frontend/src/components/create-publishing-channel-form.tsx:22` — `Publish` — `}: CreatePublishingChannelFormProps) {`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:4` — `Connector` — `import { friendlyErrorMessage, labelConnector, labelMode } from "../lib/persian-copy";`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:6` — `Publish` — `type PublishingVariantOption = {`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:14` — `Queue` — `type CreatePublishingQueueItemFormProps = {`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:16` — `Publish` — `variants: PublishingVariantOption[];`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:19` — `Queue` — `export function CreatePublishingQueueItemForm({`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:22` — `Queue` — `}: CreatePublishingQueueItemFormProps) {`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:24` — `Connector` — `const [connector, setConnector] = useState(variants[0]?.channel_type ?? "telegram");`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:25` — `Mode` — `const [mode, setMode] = useState("dry_run");`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:36` — `Connector` — `setConnector(selected.channel_type);`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:92` — `Connector` — `{variant.variant_title || "بدون عنوان"} — {variant.channel_name || labelConnector(variant.channel_type)}`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:103` — `Connector` — `<select value={connector} onChange={(event) => setConnector(event.target.value)}>`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:104` — `Connector` — `<option value="wordpress">{labelConnector("wordpress")}</option>`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:105` — `Connector` — `<option value="telegram">{labelConnector("telegram")}</option>`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:111` — `Mode` — `<select value={mode} onChange={(event) => setMode(event.target.value)}>`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:112` — `Mode` — `<option value="dry_run">{labelMode("dry_run")}</option>`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:113` — `Mode` — `<option value="wordpress">{labelMode("wordpress")}</option>`
+- `frontend/src/components/create-publishing-queue-item-form.tsx:114` — `Mode` — `<option value="telegram">{labelMode("telegram")}</option>`
+- `frontend/src/components/create-publishing-variants-form.tsx:13` — `Publish` — `type PublishingChannel = {`
+- `frontend/src/components/create-publishing-variants-form.tsx:20` — `Publish` — `type PublishingVariant = {`
+- `frontend/src/components/create-publishing-variants-form.tsx:33` — `Publish` — `type CreatePublishingVariantsFormProps = {`
+- `frontend/src/components/create-publishing-variants-form.tsx:36` — `Publish` — `channels: PublishingChannel[];`
+- `frontend/src/components/create-publishing-variants-form.tsx:54` — `Publish` — `export function CreatePublishingVariantsForm({`
+- `frontend/src/components/create-publishing-variants-form.tsx:58` — `Publish` — `}: CreatePublishingVariantsFormProps) {`
+- `frontend/src/components/create-publishing-variants-form.tsx:65` — `Publish` — `const [createdVariants, setCreatedVariants] = useState<PublishingVariant[]>([]);`
+- `frontend/src/components/create-wordpress-draft-action.tsx:5` — `Draft` — `type CreateWordPressDraftActionProps = {`
+- `frontend/src/components/create-wordpress-draft-action.tsx:19` — `Draft` — `export function CreateWordPressDraftAction({`
+- `frontend/src/components/create-wordpress-draft-action.tsx:24` — `Draft` — `}: CreateWordPressDraftActionProps) {`
+- `frontend/src/components/create-wordpress-draft-action.tsx:25` — `Mode` — `const [mode, setMode] = useState("dry_run");`
+- `frontend/src/components/create-wordpress-draft-action.tsx:36` — `Attempt` — `const [attemptLink, setAttemptLink] = useState("");`
+- `frontend/src/components/create-wordpress-draft-action.tsx:61` — `Attempt` — `setAttemptLink("");`
+- `frontend/src/components/create-wordpress-draft-action.tsx:86` — `Draft` — `? "این نسخه برای Draft واقعی آماده است."`
+- `frontend/src/components/create-wordpress-draft-action.tsx:87` — `Dry-run` — `: "این نسخه برای Dry-run آماده است؛ env وردپرس هنوز برای Draft واقعی کامل نیست."`
+- `frontend/src/components/create-wordpress-draft-action.tsx:99` — `Draft` — `async function handleCreateDraft() {`
+- `frontend/src/components/create-wordpress-draft-action.tsx:103` — `Attempt` — `setAttemptLink("");`
+- `frontend/src/components/create-wordpress-draft-action.tsx:123` — `Attempt` — `setAttemptLink(`/publishing/attempts/${attemptId}`);`
+- `frontend/src/components/create-wordpress-draft-action.tsx:137` — `Dry-run` — `setMessage("Dry-run انجام شد. هیچ چیزی روی وردپرس ساخته نشد.");`
+- `frontend/src/components/create-wordpress-draft-action.tsx:157` — `Draft` — `این نسخه برای وردپرس نیست؛ بنابراین ساخت Draft وردپرس روی آن فعال نیست.`
+- `frontend/src/components/create-wordpress-draft-action.tsx:170` — `Mode` — `<select value={mode} onChange={(event) => setMode(event.target.value)}>`
+- `frontend/src/components/create-wordpress-draft-action.tsx:171` — `Dry-run` — `<option value="dry_run">Dry-run امن</option>`
+- `frontend/src/components/create-wordpress-draft-action.tsx:172` — `Draft` — `<option value="wordpress">ساخت Draft واقعی در وردپرس</option>`
+- `frontend/src/components/create-wordpress-draft-action.tsx:235` — `Draft` — `placeholder="مثلاً Draft برای بازبینی سردبیر"`
+- `frontend/src/components/create-wordpress-draft-action.tsx:244` — `Draft` — `{isValidating ? "در حال بررسی..." : "اعتبارسنجی Draft"}`
+- `frontend/src/components/create-wordpress-draft-action.tsx:249` — `Draft` — `onClick={handleCreateDraft}`
+- `frontend/src/components/enhance-publishing-variant-action.tsx:5` — `Publish` — `type EnhancePublishingVariantActionProps = {`
+- `frontend/src/components/enhance-publishing-variant-action.tsx:10` — `Publish` — `export function EnhancePublishingVariantAction({`
+- `frontend/src/components/enhance-publishing-variant-action.tsx:13` — `Publish` — `}: EnhancePublishingVariantActionProps) {`
+- `frontend/src/components/enhance-publishing-variant-action.tsx:14` — `Mode` — `const [mode, setMode] = useState("dry_run");`
+- `frontend/src/components/enhance-publishing-variant-action.tsx:48` — `dry-run` — `: "نسخه با حالت امن dry-run آماده بازبینی شد. صفحه را refresh کن."`
+- `frontend/src/components/enhance-publishing-variant-action.tsx:61` — `Mode` — `<select value={mode} onChange={(event) => setMode(event.target.value)}>`
+- `frontend/src/components/enhance-publishing-variant-action.tsx:62` — `Dry-run` — `<option value="dry_run">Dry-run امن</option>`
+- `frontend/src/components/generate-content-form.tsx:18` — `Mode` — `type ModelOption = {`
+- `frontend/src/components/generate-content-form.tsx:27` — `Mode` — `models: ModelOption[];`
+- `frontend/src/components/generate-content-form.tsx:257` — `Mode` — `const [model, setModel] = useState(models[0]?.name ?? "");`
+- `frontend/src/components/generate-content-form.tsx:427` — `Mode` — `<select value={model} onChange={(event) => setModel(event.target.value)}>`
+- `frontend/src/components/readiness-panel.tsx:32` — `Ready` — `<span>{value ? "Ready" : "Pending"}</span>`
+- `frontend/src/components/review-publishing-variant-form.tsx:5` — `Publish` — `type ReviewPublishingVariantFormProps = {`
+- `frontend/src/components/review-publishing-variant-form.tsx:14` — `Publish` — `export function ReviewPublishingVariantForm({`
+- `frontend/src/components/review-publishing-variant-form.tsx:21` — `Publish` — `}: ReviewPublishingVariantFormProps) {`
+- `frontend/src/components/run-publishing-queue-item-action.tsx:4` — `Queue` — `import { friendlyErrorMessage, labelQueueStatus } from "../lib/persian-copy";`
+- `frontend/src/components/run-publishing-queue-item-action.tsx:6` — `Queue` — `type RunPublishingQueueItemActionProps = {`
+- `frontend/src/components/run-publishing-queue-item-action.tsx:12` — `Queue` — `export function RunPublishingQueueItemAction({`
+- `frontend/src/components/run-publishing-queue-item-action.tsx:16` — `Queue` — `}: RunPublishingQueueItemActionProps) {`
+- `frontend/src/components/run-publishing-queue-item-action.tsx:17` — `Run` — `const [isRunning, setIsRunning] = useState(false);`
+- `frontend/src/components/run-publishing-queue-item-action.tsx:20` — `Run` — `const canRun = !["running", "sent", "cancelled"].includes(status);`
+- `frontend/src/components/run-publishing-queue-item-action.tsx:22` — `Run` — `async function handleRun() {`
+- `frontend/src/components/run-publishing-queue-item-action.tsx:23` — `Run` — `setIsRunning(true);`
+- `frontend/src/components/run-publishing-queue-item-action.tsx:43` — `Queue` — `setMessage(`نتیجه اجرا: ${labelQueueStatus(nextStatus)}`);`
+- `frontend/src/components/run-publishing-queue-item-action.tsx:47` — `Run` — `setIsRunning(false);`
+- `frontend/src/components/run-publishing-queue-item-action.tsx:53` — `Run` — `<button type="button" onClick={handleRun} disabled={isRunning || !canRun}>`
+- `frontend/src/components/run-publishing-queue-item-action.tsx:54` — `Run` — `{isRunning ? "در حال اجرا..." : "اجرای آیتم"}`
+- `frontend/src/components/safe-action-button.tsx:22` — `Run` — `const [isRunning, setIsRunning] = useState(false);`
+- `frontend/src/components/safe-action-button.tsx:30` — `Run` — `setIsRunning(true);`
+- `frontend/src/components/safe-action-button.tsx:48` — `Run` — `setIsRunning(false);`
+- `frontend/src/components/safe-action-button.tsx:60` — `Run` — `<button type="button" disabled={isRunning} onClick={runAction}>`
+- `frontend/src/components/safe-action-button.tsx:61` — `Run` — `{isRunning ? "Running..." : confirmLabel}`
+- `frontend/src/components/safe-action-button.tsx:66` — `Run` — `disabled={isRunning}`
+- `frontend/src/components/telegram-connection-test-action.tsx:5` — `Telegram` — `type TelegramConnectionTestActionProps = {`
+- `frontend/src/components/telegram-connection-test-action.tsx:9` — `Telegram` — `export function TelegramConnectionTestAction({`
+- `frontend/src/components/telegram-connection-test-action.tsx:11` — `Telegram` — `}: TelegramConnectionTestActionProps) {`
+- `frontend/src/components/telegram-connection-test-action.tsx:12` — `Mode` — `const [mode, setMode] = useState("dry_run");`
+- `frontend/src/components/telegram-connection-test-action.tsx:51` — `Mode` — `<select value={mode} onChange={(event) => setMode(event.target.value)}>`
+- `frontend/src/components/telegram-connection-test-action.tsx:52` — `Dry-run` — `<option value="dry_run">Dry-run امن</option>`
+- `frontend/src/components/telegram-preview-test-send-action.tsx:5` — `Telegram` — `type TelegramPreviewTestSendActionProps = {`
+- `frontend/src/components/telegram-preview-test-send-action.tsx:12` — `Telegram` — `export function TelegramPreviewTestSendAction({`
+- `frontend/src/components/telegram-preview-test-send-action.tsx:17` — `Telegram` — `}: TelegramPreviewTestSendActionProps) {`
+- `frontend/src/components/telegram-preview-test-send-action.tsx:18` — `Mode` — `const [mode, setMode] = useState("dry_run");`
+- `frontend/src/components/telegram-preview-test-send-action.tsx:25` — `Attempt` — `const [attemptLink, setAttemptLink] = useState("");`
+- `frontend/src/components/telegram-preview-test-send-action.tsx:46` — `Attempt` — `setAttemptLink("");`
+- `frontend/src/components/telegram-preview-test-send-action.tsx:81` — `Attempt` — `setAttemptLink("");`
+- `frontend/src/components/telegram-preview-test-send-action.tsx:101` — `Attempt` — `setAttemptLink(`/publishing/attempts/${attemptId}`);`
+- `frontend/src/components/telegram-preview-test-send-action.tsx:114` — `Dry-run` — `setMessage("Dry-run انجام شد. هیچ پیامی به تلگرام ارسال نشد.");`
+- `frontend/src/components/telegram-preview-test-send-action.tsx:147` — `Mode` — `<select value={mode} onChange={(event) => setMode(event.target.value)}>`
+- `frontend/src/components/telegram-preview-test-send-action.tsx:148` — `Dry-run` — `<option value="dry_run">Dry-run امن</option>`
+- `frontend/src/components/wordpress-connection-test-action.tsx:5` — `WordPress` — `type WordPressConnectionTestActionProps = {`
+- `frontend/src/components/wordpress-connection-test-action.tsx:9` — `WordPress` — `export function WordPressConnectionTestAction({`
+- `frontend/src/components/wordpress-connection-test-action.tsx:11` — `WordPress` — `}: WordPressConnectionTestActionProps) {`
+- `frontend/src/components/wordpress-connection-test-action.tsx:12` — `Mode` — `const [mode, setMode] = useState("dry_run");`
+- `frontend/src/components/wordpress-connection-test-action.tsx:51` — `Mode` — `<select value={mode} onChange={(event) => setMode(event.target.value)}>`
+- `frontend/src/components/wordpress-connection-test-action.tsx:52` — `Dry-run` — `<option value="dry_run">Dry-run امن</option>`
+- `frontend/src/components/workflow-dry-run-form.tsx:10` — `Run` — `type WorkflowDryRunFormProps = {`
+- `frontend/src/components/workflow-dry-run-form.tsx:14` — `Run` — `export function WorkflowDryRunForm({ projectId }: WorkflowDryRunFormProps) {`
+- `frontend/src/components/workflow-dry-run-form.tsx:15` — `Mode` — `const [model, setModel] = useState("qwen2.5-coder:7b");`
+- `frontend/src/components/workflow-dry-run-form.tsx:33` — `Run` — `const response = await damaApi.batchGenerateDryRun(projectId, {`
+- `frontend/src/components/workflow-dry-run-form.tsx:62` — `Mode` — `Model`
+- `frontend/src/components/workflow-dry-run-form.tsx:66` — `Mode` — `onChange={(event) => setModel(event.target.value)}`
+- `frontend/src/components/workflow-dry-run-form.tsx:100` — `Run` — `{isSubmitting ? "Running..." : "Run dry run"}`
+- `frontend/src/components/workflow-dry-run-form.tsx:108` — `Run` — `<p className="eyebrow">Dry Run Result</p>`
+- `frontend/src/components/workflow-dry-run-form.tsx:116` — `Run` — `Run a dry run to preview planned outputs before generation.`
+- `frontend/src/lib/api-client.ts:3` — `Run` — `BatchGenerateDryRunInput,`
+- `frontend/src/lib/api-client.ts:155` — `Run` — `batchGenerateDryRun(`
+- `frontend/src/lib/api-client.ts:157` — `Run` — `input: BatchGenerateDryRunInput`
+- `frontend/src/lib/types.ts:109` — `Run` — `export type BatchGenerateDryRunInput = {`

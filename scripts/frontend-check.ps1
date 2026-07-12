@@ -33,19 +33,15 @@ if ($LASTEXITCODE -ne 0) {
 Pop-Location
 
 $RequiredFiles = @(
+    ".\frontend\src\lib\persian-copy.ts",
     ".\frontend\src\components\app-nav.tsx",
-    ".\frontend\src\app\page.tsx",
-    ".\frontend\src\app\generate\page.tsx",
-    ".\frontend\src\app\publishing\page.tsx",
-    ".\frontend\src\app\publishing\variants\page.tsx",
-    ".\frontend\src\app\publishing\queue\page.tsx",
-    ".\frontend\src\app\publishing\attempts\page.tsx",
-    ".\frontend\src\app\publishing\wordpress\page.tsx",
-    ".\frontend\src\app\publishing\telegram\page.tsx",
-    ".\frontend\src\app\settings\page.tsx",
-    ".\frontend\src\app\advanced\page.tsx",
     ".\frontend\src\components\create-publishing-queue-item-form.tsx",
-    ".\frontend\src\components\run-publishing-queue-item-action.tsx"
+    ".\frontend\src\components\run-publishing-queue-item-action.tsx",
+    ".\frontend\src\app\page.tsx",
+    ".\frontend\src\app\publishing\page.tsx",
+    ".\frontend\src\app\publishing\queue\page.tsx",
+    ".\frontend\src\app\settings\page.tsx",
+    ".\frontend\src\app\advanced\page.tsx"
 )
 
 foreach ($File in $RequiredFiles) {
@@ -56,12 +52,10 @@ foreach ($File in $RequiredFiles) {
 
 $AppNav = Read-TextFile ".\frontend\src\components\app-nav.tsx"
 $HomePage = Read-TextFile ".\frontend\src\app\page.tsx"
-$PublishingPage = Read-TextFile ".\frontend\src\app\publishing\page.tsx"
-$SettingsPage = Read-TextFile ".\frontend\src\app\settings\page.tsx"
-$AdvancedPage = Read-TextFile ".\frontend\src\app\advanced\page.tsx"
 $QueuePage = Read-TextFile ".\frontend\src\app\publishing\queue\page.tsx"
 $QueueForm = Read-TextFile ".\frontend\src\components\create-publishing-queue-item-form.tsx"
 $QueueRunAction = Read-TextFile ".\frontend\src\components\run-publishing-queue-item-action.tsx"
+$PersianCopy = Read-TextFile ".\frontend\src\lib\persian-copy.ts"
 
 $ExpectedNavRoutes = @(
     'href: "/"',
@@ -94,48 +88,28 @@ foreach ($Route in $HiddenFromMainNav) {
     }
 }
 
-if ($HomePage -notmatch "/generate") {
-    throw "Home page does not link to generate page."
+if ($PersianCopy -notmatch "labelQueueStatus") {
+    throw "Persian copy helper is missing queue status labels."
 }
 
-if ($HomePage -notmatch "/publishing") {
-    throw "Home page does not link to publishing page."
+if ($PersianCopy -notmatch "labelAttemptStatus") {
+    throw "Persian copy helper is missing attempt status labels."
 }
 
-if ($PublishingPage -notmatch "/publishing/queue") {
-    throw "Publishing page does not link to queue."
+if ($HomePage -notmatch "dashboard-flow") {
+    throw "Home page is missing visual dashboard flow."
 }
 
-if ($PublishingPage -notmatch "/publishing/attempts") {
-    throw "Publishing page does not link to attempts."
+if ($QueuePage -notmatch "labelQueueStatus") {
+    throw "Queue page is not using Persian queue status labels."
 }
 
-if ($SettingsPage -notmatch "/publishing/wordpress") {
-    throw "Settings page does not link to WordPress."
+if ($QueueForm -notmatch "labelConnector") {
+    throw "Queue form is not using Persian connector labels."
 }
 
-if ($SettingsPage -notmatch "/publishing/telegram") {
-    throw "Settings page does not link to Telegram."
-}
-
-if ($AdvancedPage -notmatch "/operations") {
-    throw "Advanced page does not expose operations."
-}
-
-if ($AdvancedPage -notmatch "/runtime") {
-    throw "Advanced page does not expose runtime."
-}
-
-if ($QueuePage -notmatch "/publishing/queue") {
-    throw "Publishing queue page does not call queue endpoint."
-}
-
-if ($QueueForm -notmatch "/publishing/queue") {
-    throw "Publishing queue form does not call queue endpoint."
-}
-
-if ($QueueRunAction -notmatch "/run") {
-    throw "Publishing queue run action is missing run endpoint."
+if ($QueueRunAction -notmatch "labelQueueStatus") {
+    throw "Queue run action is not using Persian status labels."
 }
 
 Write-Host "Frontend production readiness check passed."

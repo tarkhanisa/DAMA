@@ -1,5 +1,6 @@
 import { PageHeader } from "../../components/page-header";
 import { StatCard } from "../../components/stat-card";
+import { labelReady } from "../../lib/persian-copy";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +24,7 @@ async function loadConfig(path: string): Promise<ConnectorConfig> {
 
     return (await response.json()) as ConnectorConfig;
   } catch {
-    return { ready: false, message: "Backend در دسترس نیست." };
+    return { ready: false, message: "سرور محلی در دسترس نیست." };
   }
 }
 
@@ -37,37 +38,37 @@ export default async function SettingsPage() {
     <main className="page-shell">
       <PageHeader
         eyebrow="تنظیمات"
-        title="تنظیمات ساده اتصال‌ها"
-        lead="اینجا فقط وضعیت کلی اتصال‌های مهم را می‌بینی. جزئیات فنی در صفحه خود هر اتصال است."
+        title="تنظیمات اتصال‌ها"
+        lead="اینجا فقط وضعیت کلی اتصال‌های مهم را می‌بینی. اطلاعات محرمانه نمایش داده نمی‌شود."
       >
         <div className="actions">
-          <a href="/publishing/wordpress">وردپرس</a>
-          <a href="/publishing/telegram">تلگرام</a>
+          <a href="/publishing/wordpress">بررسی وردپرس</a>
+          <a href="/publishing/telegram">بررسی تلگرام</a>
         </div>
       </PageHeader>
 
       <section className="stats-grid">
-        <StatCard label="وردپرس" value={wordpress.ready ? "آماده" : "نیازمند بررسی"} helper={wordpress.message ?? ""} />
-        <StatCard label="تلگرام" value={telegram.ready ? "آماده" : "نیازمند بررسی"} helper={telegram.message ?? ""} />
-        <StatCard label="حالت امن" value="فعال" helper="Dry-run پیش‌فرض است" />
-        <StatCard label="Secretها" value="مخفی" helper="در UI نمایش داده نمی‌شوند" />
+        <StatCard label="وردپرس" value={labelReady(Boolean(wordpress.ready))} helper={wordpress.message ?? "ساخت پیش‌نویس"} />
+        <StatCard label="تلگرام" value={labelReady(Boolean(telegram.ready))} helper={telegram.message ?? "ارسال پیام تست"} />
+        <StatCard label="حالت امن" value="فعال" helper="اجرای آزمایشی پیش‌فرض است" />
+        <StatCard label="اطلاعات محرمانه" value="مخفی" helper="توکن‌ها در پنل نمایش داده نمی‌شوند" />
       </section>
 
       <section className="operator-grid">
         <a className="operator-card" href="/publishing/wordpress">
-          <span>W</span>
+          <span>۱</span>
           <strong>وردپرس</strong>
-          <p>وضعیت Application Password و ساخت Draft را بررسی کن.</p>
+          <p>وضعیت اتصال و ساخت پیش‌نویس را بررسی کن.</p>
         </a>
 
         <a className="operator-card" href="/publishing/telegram">
-          <span>T</span>
+          <span>۲</span>
           <strong>تلگرام</strong>
-          <p>وضعیت Bot Token و ارسال تست تلگرام را بررسی کن.</p>
+          <p>وضعیت ربات و ارسال پیام تست را بررسی کن.</p>
         </a>
 
         <a className="operator-card" href="/advanced">
-          <span></span>
+          <span>۳</span>
           <strong>پیشرفته</strong>
           <p>صفحات فنی، سلامت سیستم و ابزارهای نگهداری.</p>
         </a>

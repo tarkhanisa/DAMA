@@ -1124,3 +1124,135 @@ code,
 .app-nav a {
   white-space: nowrap;
 }
+
+/* Persian UX polish dashboard schematic */
+.dashboard-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
+  gap: 1rem;
+  align-items: center;
+  margin: 1.25rem 0;
+  padding: 1.4rem;
+  border: 1px solid var(--border);
+  border-radius: 1.6rem;
+  background:
+    radial-gradient(circle at top right, rgba(35, 74, 112, 0.12), transparent 34%),
+    rgba(255, 255, 255, 0.72);
+  box-shadow: var(--shadow);
+}
+
+.dashboard-hero h2 {
+  margin: 0.2rem 0 0.55rem;
+}
+
+.dashboard-hero p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.connection-strip {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.connection-pill {
+  display: inline-flex;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.connection-pill.is-ready {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.dashboard-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  gap: 0.8rem;
+  align-items: stretch;
+  margin: 1.25rem 0;
+}
+
+.dashboard-flow.compact-flow {
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+}
+
+.flow-card {
+  display: grid;
+  gap: 0.55rem;
+  min-height: 10rem;
+  padding: 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 1.35rem;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--text);
+  text-decoration: none;
+  box-shadow: var(--shadow);
+}
+
+.flow-card strong {
+  font-size: 1.04rem;
+}
+
+.flow-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.primary-flow-card {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(35, 74, 112, 0.35);
+}
+
+.flow-number {
+  display: inline-flex;
+  width: 2.2rem;
+  height: 2.2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(16, 25, 39, 0.08);
+  font-weight: 900;
+}
+
+.flow-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+.quiet-panel {
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.compact-action button {
+  padding-inline: 0.85rem;
+  min-height: 2.5rem;
+}
+
+@media (max-width: 960px) {
+  .dashboard-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-flow,
+  .dashboard-flow.compact-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .flow-arrow {
+    transform: rotate(-90deg);
+    min-height: 1rem;
+  }
+}

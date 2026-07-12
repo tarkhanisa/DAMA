@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { friendlyErrorMessage, labelQueueStatus } from "../lib/persian-copy";
 
 type RunPublishingQueueItemActionProps = {
   apiBaseUrl: string;
@@ -34,23 +35,23 @@ export function RunPublishingQueueItemAction({
       const payload = await response.json();
 
       if (!response.ok) {
-        setMessage(`خطا در اجرای صف: HTTP ${response.status}`);
+        setMessage(friendlyErrorMessage(`HTTP ${response.status}`));
         return;
       }
 
-      const nextStatus = payload.item?.status ?? "unknown";
-      setMessage(`اجرا انجام شد: ${nextStatus}`);
+      const nextStatus = String(payload.item?.status ?? "unknown");
+      setMessage(`نتیجه اجرا: ${labelQueueStatus(nextStatus)}`);
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "خطای ناشناخته");
+      setMessage(friendlyErrorMessage(error instanceof Error ? error.message : "خطای ناشناخته"));
     } finally {
       setIsRunning(false);
     }
   }
 
   return (
-    <div className="enhance-variant-action">
+    <div className="enhance-variant-action compact-action">
       <button type="button" onClick={handleRun} disabled={isRunning || !canRun}>
-        {isRunning ? "در حال اجرا..." : "اجرای صف"}
+        {isRunning ? "در حال اجرا..." : "اجرای آیتم"}
       </button>
 
       {message ? <p className="form-message">{message}</p> : null}

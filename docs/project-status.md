@@ -1948,3 +1948,39 @@ Suggested scope:
 - create variants
 - add to queue
 - run dry-run batch
+
+## Release Pack AI-1 Completed
+
+Name:
+
+Persian UX Polish + Visual Dashboard Schematic
+
+Added files:
+
+- frontend/src/lib/persian-copy.ts
+- scripts/audit_frontend_persian_copy.py
+
+Updated files:
+
+- frontend/src/app/page.tsx
+- frontend/src/app/publishing/queue/page.tsx
+- frontend/src/app/settings/page.tsx
+- frontend/src/components/create-publishing-queue-item-form.tsx
+- frontend/src/components/run-publishing-queue-item-action.tsx
+- frontend/src/app/globals.css
+- scripts/frontend-check.ps1
+- docs/project-status.md
+
+Added behavior:
+
+- centralized Persian copy helpers
+- visual schematic dashboard flow
+- clearer daily operator dashboard
+- Persian labels for queue status, attempt status, connectors and run modes
+- clearer publishing queue page
+- clearer queue form buttons and messages
+- frontend copy audit report for remaining English UI copy
+
+Next recommended step:
+
+Use docs/frontend-copy-audit.md to polish remaining WordPress, Telegram, variants and attempt pages.

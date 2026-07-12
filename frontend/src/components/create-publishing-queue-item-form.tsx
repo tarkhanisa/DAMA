@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { friendlyErrorMessage, labelConnector, labelMode } from "../lib/persian-copy";
 
 type PublishingVariantOption = {
   id: string;
@@ -63,13 +64,13 @@ export function CreatePublishingQueueItemForm({
       const payload = await response.json();
 
       if (!response.ok) {
-        setMessage(payload.detail ?? `خطا: HTTP ${response.status}`);
+        setMessage(friendlyErrorMessage(String(payload.detail ?? `HTTP ${response.status}`)));
         return;
       }
 
-      setMessage("آیتم به صف انتشار اضافه شد. صفحه را refresh کن.");
+      setMessage("آیتم با موفقیت به صف انتشار اضافه شد. برای دیدن آن صفحه را تازه‌سازی کن.");
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "خطای ناشناخته");
+      setMessage(friendlyErrorMessage(error instanceof Error ? error.message : "خطای ناشناخته"));
     } finally {
       setIsSaving(false);
     }
@@ -78,8 +79,8 @@ export function CreatePublishingQueueItemForm({
   return (
     <form className="panel generation-form" onSubmit={handleSubmit}>
       <div className="panel-heading">
-        <p className="eyebrow">صف انتشار</p>
-        <h2>افزودن نسخه به صف</h2>
+        <p className="eyebrow">افزودن به صف</p>
+        <h2>یک نسخه را برای انتشار آماده کن</h2>
       </div>
 
       <label>
@@ -88,58 +89,58 @@ export function CreatePublishingQueueItemForm({
           {variants.length > 0 ? (
             variants.map((variant) => (
               <option key={variant.id} value={variant.id}>
-                {variant.variant_title || "بدون عنوان"}  {variant.channel_name || variant.channel_type}  {variant.status}
+                {variant.variant_title || "بدون عنوان"} — {variant.channel_name || labelConnector(variant.channel_type)}
               </option>
             ))
           ) : (
-            <option value="">نسخه آماده‌ای وجود ندارد</option>
+            <option value="">فعلاً نسخه آماده‌ای وجود ندارد</option>
           )}
         </select>
       </label>
 
       <label>
-        Connector
+        مقصد انتشار
         <select value={connector} onChange={(event) => setConnector(event.target.value)}>
-          <option value="wordpress">WordPress</option>
-          <option value="telegram">Telegram</option>
+          <option value="wordpress">{labelConnector("wordpress")}</option>
+          <option value="telegram">{labelConnector("telegram")}</option>
         </select>
       </label>
 
       <label>
-        Mode
+        نوع اجرا
         <select value={mode} onChange={(event) => setMode(event.target.value)}>
-          <option value="dry_run">Dry-run امن</option>
-          <option value="wordpress">WordPress Draft واقعی</option>
-          <option value="telegram">Telegram تست واقعی</option>
+          <option value="dry_run">{labelMode("dry_run")}</option>
+          <option value="wordpress">{labelMode("wordpress")}</option>
+          <option value="telegram">{labelMode("telegram")}</option>
         </select>
       </label>
 
       <label>
-        Chat ID برای تلگرام
+        شناسه گفت‌وگوی تلگرام
         <input
           value={chatId}
           onChange={(event) => setChatId(event.target.value)}
-          placeholder="@channel_username یا خالی برای default"
+          placeholder="مثلاً @channel_username؛ اگر تنظیم پیش‌فرض داری، خالی بگذار"
         />
       </label>
 
       <label>
-        یادداشت
+        یادداشت کوتاه
         <input
           value={notes}
           onChange={(event) => setNotes(event.target.value)}
-          placeholder="مثلاً انتشار تست یا ارسال برای بازبینی"
+          placeholder="مثلاً: تست قبل از انتشار"
         />
       </label>
 
       <p className="muted-note">
-        حالت پیش‌فرض Dry-run است. برای اجرای واقعی، connector و mode باید عمداً انتخاب شود.
+        پیشنهاد امن: همیشه اول «اجرای آزمایشی امن» را انجام بده، بعد اجرای واقعی.
       </p>
 
       {message ? <p className="form-message">{message}</p> : null}
 
       <button type="submit" disabled={isSaving || !variantId}>
-        {isSaving ? "در حال افزودن..." : "افزودن به صف"}
+        {isSaving ? "در حال افزودن..." : "افزودن به صف انتشار"}
       </button>
     </form>
   );
