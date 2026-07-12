@@ -3,129 +3,65 @@ import { StatCard } from "../components/stat-card";
 
 export const dynamic = "force-dynamic";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_DAMA_API_BASE_URL ?? "http://127.0.0.1:8000";
-
-type DashboardStats = {
-  projects: number;
-  contentAssets: number;
-  backendStatus: string;
-};
-
-function asRecord(value: unknown): Record<string, unknown> {
-  return value !== null && typeof value === "object"
-    ? (value as Record<string, unknown>)
-    : {};
-}
-
-async function loadStats(): Promise<DashboardStats> {
-  try {
-    const [dashboardResponse, projectsResponse, assetsResponse] = await Promise.all([
-      fetch(`${API_BASE_URL}/dashboard/summary`, { cache: "no-store" }),
-      fetch(`${API_BASE_URL}/projects`, { cache: "no-store" }),
-      fetch(`${API_BASE_URL}/content-assets`, { cache: "no-store" })
-    ]);
-
-    const dashboard = dashboardResponse.ok ? asRecord(await dashboardResponse.json()) : {};
-    const projectsPayload = projectsResponse.ok ? await projectsResponse.json() : [];
-    const assetsPayload = assetsResponse.ok ? await assetsResponse.json() : [];
-
-    const projectsRecord = asRecord(projectsPayload);
-    const assetsRecord = asRecord(assetsPayload);
-
-    const projectItems = Array.isArray(projectsPayload)
-      ? projectsPayload
-      : Array.isArray(projectsRecord.items)
-        ? projectsRecord.items
-        : Array.isArray(projectsRecord.projects)
-          ? projectsRecord.projects
-          : [];
-
-    const assetItems = Array.isArray(assetsPayload)
-      ? assetsPayload
-      : Array.isArray(assetsRecord.items)
-        ? assetsRecord.items
-        : Array.isArray(assetsRecord.assets)
-          ? assetsRecord.assets
-          : [];
-
-    return {
-      projects: Number(dashboard.projects_count ?? dashboard.project_count ?? projectItems.length),
-      contentAssets: Number(
-        dashboard.content_assets_count ?? dashboard.asset_count ?? assetItems.length
-      ),
-      backendStatus: "وصل است"
-    };
-  } catch {
-    return {
-      projects: 0,
-      contentAssets: 0,
-      backendStatus: "نیاز به بررسی"
-    };
-  }
-}
-
-export default async function DashboardPage() {
-  const stats = await loadStats();
-
+export default function HomePage() {
   return (
     <main className="page-shell">
       <PageHeader
-        eyebrow="داشبورد دامامدیا"
-        title="از اینجا شروع کن"
-        lead="این پنل برای مدیریت پروژه‌ها، تولید محتوای باکیفیت، ذخیره خروجی‌ها و بررسی سلامت سیستم ساخته شده است."
+        eyebrow="DAMA"
+        title="داشبورد ساده عملیات محتوا"
+        lead="از اینجا مسیر روزمره را شروع کن: تولید محتوا، آماده‌سازی انتشار، و بررسی نتیجه‌ها."
       >
         <div className="actions">
-          <a href="/projects/new">ساخت پروژه جدید</a>
           <a href="/generate">تولید محتوا</a>
+          <a href="/publishing">انتشار</a>
         </div>
       </PageHeader>
 
       <section className="stats-grid">
-        <StatCard label="پروژه‌ها" value={stats.projects} helper="پرونده‌های کاری داخل سیستم" />
-        <StatCard label="محتواها" value={stats.contentAssets} helper="خروجی‌ها و دارایی‌های ذخیره‌شده" />
-        <StatCard label="وضعیت بک‌اند" value={stats.backendStatus} helper="ارتباط پنل با FastAPI" />
-        <StatCard label="حالت استفاده" value="محلی" helper="نسخه توسعه روی کامپیوتر شما" />
+        <StatCard label="مسیر اصلی" value="تولید  انتشار" helper="برای کار روزمره" />
+        <StatCard label="وردپرس" value="Draft" helper="ساخت پیش‌نویس واقعی" />
+        <StatCard label="تلگرام" value="Test Send" helper="ارسال تست واقعی" />
+        <StatCard label="صف انتشار" value="دستی" helper="ایمن و قابل کنترل" />
       </section>
 
-      <section className="simple-start-grid">
-        <a className="simple-start-card" href="/projects/new">
+      <section className="operator-grid">
+        <a className="operator-card primary-operator-card" href="/generate">
           <span></span>
-          <strong>اول پروژه بساز</strong>
-          <p>مثلاً گرگران، اورماشاپ یا دامامدیا. هر تولید محتوا بهتر است داخل یک پروژه واقعی ذخیره شود.</p>
+          <strong>تولید محتوا</strong>
+          <p>متن مادر را بساز یا محتوای آماده را وارد کن.</p>
         </a>
 
-        <a className="simple-start-card" href="/generate">
+        <a className="operator-card" href="/publishing/variants">
           <span></span>
-          <strong>بعد محتوا تولید کن</strong>
-          <p>پروژه را انتخاب کن، brief بده، سطح کیفیت را تعیین کن و خروجی را ذخیره کن.</p>
+          <strong>نسخه‌سازی</strong>
+          <p>برای وردپرس، تلگرام و کانال‌های دیگر نسخه جدا بساز.</p>
         </a>
 
-        <a className="simple-start-card" href="/content-assets">
+        <a className="operator-card" href="/publishing/queue">
           <span></span>
-          <strong>خروجی‌ها را ببین</strong>
-          <p>محتواهای تولیدشده اینجا ذخیره می‌شوند و بعداً قابل ویرایش، خروجی‌گرفتن و استفاده هستند.</p>
+          <strong>صف انتشار</strong>
+          <p>نسخه‌های تأییدشده را وارد صف کن و دستی اجرا کن.</p>
         </a>
 
-        <a className="simple-start-card" href="/runtime">
+        <a className="operator-card" href="/publishing/attempts">
           <span></span>
-          <strong>سلامت سیستم را چک کن</strong>
-          <p>اگر تولید محتوا درست کار نکرد، اول وضعیت بک‌اند و Ollama را در این بخش ببین.</p>
+          <strong>گزارش‌ها</strong>
+          <p>نتیجه Draft وردپرس، پیام تلگرام و خطاها را ببین.</p>
         </a>
       </section>
 
-      <section className="panel simple-help-panel">
+      <section className="panel">
         <div className="panel-heading">
-          <p className="eyebrow">راهنمای سریع</p>
-          <h2>برای تست اول چه کار کنم؟</h2>
+          <p className="eyebrow">اصل کار</p>
+          <h2>مسیر پیشنهادی روزانه</h2>
         </div>
 
         <ol className="simple-steps">
-          <li>روی «ساخت پروژه جدید» بزن.</li>
-          <li>یک پروژه واقعی مثل «محتوای سایت گرگران» بساز.</li>
-          <li>از منوی بالا وارد «تولید محتوا» شو.</li>
-          <li>پروژه، نوع محتوا، مخاطب و لحن را انتخاب کن.</li>
-          <li>brief را بنویس و دکمه «تولید محتوا» را بزن.</li>
+          <li>اول محتوا را تولید کن.</li>
+          <li>بعد برای کانال‌ها نسخه بساز.</li>
+          <li>نسخه را بازبینی و تأیید کن.</li>
+          <li>آن را به صف انتشار اضافه کن.</li>
+          <li>اول Dry-run بزن؛ بعد اجرای واقعی.</li>
         </ol>
       </section>
     </main>

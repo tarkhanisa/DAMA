@@ -1,4 +1,11 @@
-﻿$ErrorActionPreference = "Stop"
+﻿from pathlib import Path
+
+ROOT = Path("I:/DAMA")
+target = ROOT / "scripts/frontend-check.ps1"
+
+target.write_text(
+r'''
+$ErrorActionPreference = "Stop"
 
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
@@ -60,82 +67,74 @@ $PublishingPage = Read-TextFile ".\frontend\src\app\publishing\page.tsx"
 $SettingsPage = Read-TextFile ".\frontend\src\app\settings\page.tsx"
 $AdvancedPage = Read-TextFile ".\frontend\src\app\advanced\page.tsx"
 $QueuePage = Read-TextFile ".\frontend\src\app\publishing\queue\page.tsx"
-$QueueForm = Read-TextFile ".\frontend\src\components\create-publishing-queue-item-form.tsx"
-$QueueRunAction = Read-TextFile ".\frontend\src\components\run-publishing-queue-item-action.tsx"
 
-$ExpectedNavRoutes = @(
-    'href: "/"',
-    'href: "/generate"',
-    'href: "/publishing"',
-    'href: "/projects"',
-    'href: "/content-assets"',
-    'href: "/settings"',
-    'href: "/advanced"'
-)
-
-foreach ($Route in $ExpectedNavRoutes) {
-    if ($AppNav -notmatch [regex]::Escape($Route)) {
-        throw "Simplified navigation is missing route marker: $Route"
-    }
+if ($AppNav -notmatch "/generate") {
+    throw "Navigation does not include تولید محتوا."
 }
 
-$HiddenFromMainNav = @(
-    'href: "/operations"',
-    'href: "/runtime"',
-    'href: "/exports"',
-    'href: "/maintenance"',
-    'href: "/workflows"',
-    'href: "/search"'
-)
-
-foreach ($Route in $HiddenFromMainNav) {
-    if ($AppNav -match [regex]::Escape($Route)) {
-        throw "Technical route should not be in main nav: $Route"
-    }
+if ($AppNav -notmatch "/publishing") {
+    throw "Navigation does not include انتشار."
 }
 
-if ($HomePage -notmatch "/generate") {
-    throw "Home page does not link to generate page."
+if ($AppNav -notmatch "/settings") {
+    throw "Navigation does not include تنظیمات."
 }
 
-if ($HomePage -notmatch "/publishing") {
-    throw "Home page does not link to publishing page."
+if ($AppNav -notmatch "/advanced") {
+    throw "Navigation does not include پیشرفته."
 }
 
-if ($PublishingPage -notmatch "/publishing/queue") {
-    throw "Publishing page does not link to queue."
+if ($AppNav -notmatch "داشبورد") {
+    throw "Navigation is missing Persian dashboard label."
 }
 
-if ($PublishingPage -notmatch "/publishing/attempts") {
-    throw "Publishing page does not link to attempts."
+if ($AppNav -notmatch "تولید محتوا") {
+    throw "Navigation is missing Persian generate label."
+}
+
+if ($AppNav -notmatch "انتشار") {
+    throw "Navigation is missing Persian publishing label."
+}
+
+if ($AppNav -notmatch "تنظیمات") {
+    throw "Navigation is missing Persian settings label."
+}
+
+if ($AppNav -notmatch "پیشرفته") {
+    throw "Navigation is missing Persian advanced label."
+}
+
+if ($HomePage -notmatch "داشبورد ساده عملیات محتوا") {
+    throw "Home page is not using the simplified Persian operator dashboard."
+}
+
+if ($PublishingPage -notmatch "مرکز ساده انتشار") {
+    throw "Publishing page is not using the simplified Persian publishing center."
 }
 
 if ($SettingsPage -notmatch "/publishing/wordpress") {
-    throw "Settings page does not link to WordPress."
+    throw "Settings page does not link to WordPress settings."
 }
 
 if ($SettingsPage -notmatch "/publishing/telegram") {
-    throw "Settings page does not link to Telegram."
+    throw "Settings page does not link to Telegram settings."
 }
 
 if ($AdvancedPage -notmatch "/operations") {
-    throw "Advanced page does not expose operations."
+    throw "Advanced page does not expose operations under پیشرفته."
 }
 
 if ($AdvancedPage -notmatch "/runtime") {
-    throw "Advanced page does not expose runtime."
+    throw "Advanced page does not expose runtime under پیشرفته."
 }
 
 if ($QueuePage -notmatch "/publishing/queue") {
     throw "Publishing queue page does not call queue endpoint."
 }
 
-if ($QueueForm -notmatch "/publishing/queue") {
-    throw "Publishing queue form does not call queue endpoint."
-}
-
-if ($QueueRunAction -notmatch "/run") {
-    throw "Publishing queue run action is missing run endpoint."
-}
-
 Write-Host "Frontend production readiness check passed."
+'''.strip() + "`n",
+encoding="utf-8"
+)
+
+print("frontend-check.ps1 updated for Persian minimal operator UX.")

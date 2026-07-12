@@ -1904,3 +1904,47 @@ Suggested scope:
 - add all to queue
 - run dry-run batch
 - no fully automatic public publishing yet
+
+## Release Pack AI-0 Completed
+
+Name:
+
+Persian Minimal Operator UX + Runtime Cleanup
+
+Added files:
+
+- frontend/src/app/settings/page.tsx
+- frontend/src/app/advanced/page.tsx
+- scripts/cleanup_operator_runtime_data.py
+
+Updated files:
+
+- frontend/src/components/app-nav.tsx
+- frontend/src/app/page.tsx
+- frontend/src/app/publishing/page.tsx
+- frontend/src/app/globals.css
+- scripts/frontend-check.ps1
+- docs/project-status.md
+
+Added behavior:
+
+- simplified Persian navigation
+- cleaner daily dashboard
+- simplified publishing center
+- settings page for WordPress and Telegram
+- advanced section for technical pages
+- safe runtime cleanup script with backup
+- clean default WordPress and Telegram channels
+
+Next recommended Release Pack:
+
+Release Pack AI: Multi-channel Publish Dashboard
+
+Suggested scope:
+
+- one central workflow page
+- choose content asset
+- choose channels
+- create variants
+- add to queue
+- run dry-run batch

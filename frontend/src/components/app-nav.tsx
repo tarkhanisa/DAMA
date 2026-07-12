@@ -5,28 +5,19 @@ import { usePathname } from "next/navigation";
 
 const navItems = [
   { href: "/", label: "داشبورد" },
-  { href: "/projects", label: "پروژه‌ها" },
-  { href: "/content-assets", label: "محتواها" },
   { href: "/generate", label: "تولید محتوا" },
   { href: "/publishing", label: "انتشار" },
-  { href: "/publishing/variants", label: "نسخه‌سازی" },
-  { href: "/publishing/queue", label: "صف انتشار" },
-  { href: "/publishing/wordpress", label: "وردپرس" },
-  { href: "/publishing/telegram", label: "تلگرام" },
-  { href: "/publishing/attempts", label: "گزارش انتشار" },
-  { href: "/workflows", label: "جریان کار" },
-  { href: "/search", label: "جستجو" },
-  { href: "/runtime", label: "سلامت سیستم" },
-  { href: "/operations", label: "عملیات" },
-  { href: "/exports", label: "خروجی‌ها" },
-  { href: "/maintenance", label: "نگهداری" }
+  { href: "/projects", label: "پروژه‌ها" },
+  { href: "/content-assets", label: "محتواها" },
+  { href: "/settings", label: "تنظیمات" },
+  { href: "/advanced", label: "پیشرفته" }
 ];
 
 export function AppNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="app-nav" aria-label="ناوبری دامامدیا">
+    <nav className="app-nav" aria-label="ناوبری اصلی DAMA">
       {navItems.map((item) => {
         const isActive =
           item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);

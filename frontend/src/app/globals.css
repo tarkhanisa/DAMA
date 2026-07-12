@@ -1061,3 +1061,66 @@ code,
   margin-top: 1rem;
   background: rgba(255, 255, 255, 0.55);
 }
+
+/* Minimal Persian operator UX */
+.operator-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+.operator-card {
+  display: grid;
+  gap: 0.55rem;
+  align-content: start;
+  min-height: 9rem;
+  padding: 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 1.35rem;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--text);
+  text-decoration: none;
+  box-shadow: var(--shadow);
+}
+
+.operator-card span {
+  display: inline-flex;
+  width: 2.1rem;
+  height: 2.1rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(16, 25, 39, 0.08);
+  font-weight: 900;
+}
+
+.operator-card strong {
+  font-size: 1.05rem;
+}
+
+.operator-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.primary-operator-card {
+  border-color: rgba(35, 74, 112, 0.35);
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.simple-steps {
+  margin: 0;
+  padding-inline-start: 1.25rem;
+  line-height: 2.1;
+  color: var(--muted);
+}
+
+.app-nav {
+  gap: 0.35rem;
+}
+
+.app-nav a {
+  white-space: nowrap;
+}

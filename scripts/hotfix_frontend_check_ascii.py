@@ -1,4 +1,10 @@
-﻿$ErrorActionPreference = "Stop"
+﻿from pathlib import Path
+
+ROOT = Path("I:/DAMA")
+target = ROOT / "scripts/frontend-check.ps1"
+
+content = r'''
+$ErrorActionPreference = "Stop"
 
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
@@ -139,3 +145,8 @@ if ($QueueRunAction -notmatch "/run") {
 }
 
 Write-Host "Frontend production readiness check passed."
+'''
+
+target.write_text(content.strip() + "\n", encoding="utf-8-sig")
+
+print("frontend-check.ps1 rewritten as ASCII-only PowerShell with UTF-8 BOM.")
