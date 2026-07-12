@@ -175,7 +175,7 @@ def telegram_api_request(method: str, payload: dict[str, Any] | None = None) -> 
         method="POST",
     )
 
-    with urlopen(request, timeout=45) as response:
+    with urlopen(request, timeout=float(os.getenv("DAMA_TELEGRAM_TIMEOUT_SECONDS", "8"))) as response:
         raw = response.read().decode("utf-8")
         result = json.loads(raw) if raw else {}
 
