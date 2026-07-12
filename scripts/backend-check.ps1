@@ -95,3 +95,15 @@ if (Test-Path $TelegramConnectorSmokeTest) {
     }
 }
 
+$PublishingQueueSmokeTest = Join-Path (Split-Path -Parent $PSScriptRoot) "backend\tests\smoke_test_publishing_queue.py"
+$PublishingQueuePython = Join-Path (Split-Path -Parent $PSScriptRoot) "backend\.venv\Scripts\python.exe"
+
+if (Test-Path $PublishingQueueSmokeTest) {
+    Write-Host ""
+    Write-Host "Running .\backend\tests\smoke_test_publishing_queue.py..."
+    & $PublishingQueuePython $PublishingQueueSmokeTest
+    if ($LASTEXITCODE -ne 0) {
+        throw "Smoke test failed: .\backend\tests\smoke_test_publishing_queue.py"
+    }
+}
+

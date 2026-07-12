@@ -216,3 +216,41 @@ Safety:
 - Bot token is never shown in the UI.
 - Real send requires Bot Token and chat_id.
 - Public scheduled publishing is not enabled yet.
+
+## Publishing Queue
+
+Release Pack AH adds a manual publishing queue.
+
+Endpoints:
+
+    GET /publishing/queue
+    POST /publishing/queue
+    GET /publishing/queue/{queue_id}
+    POST /publishing/queue/{queue_id}/run
+    POST /publishing/queue/{queue_id}/cancel
+
+Supported connectors:
+
+- wordpress
+- telegram
+
+Default mode:
+
+- dry_run
+
+Queue statuses:
+
+- queued
+- running
+- dry_run_completed
+- sent
+- failed
+- blocked
+- cancelled
+
+Safety:
+
+- Queue execution is manual.
+- Dry-run is the default.
+- Real WordPress and Telegram modes must be intentionally selected.
+- Every run creates a publishing attempt.

@@ -43,6 +43,14 @@ from src.services.telegram_connector_service import (
     test_telegram_connection,
 )
 
+from src.services.publishing_queue_service import (
+    cancel_queue_item,
+    create_queue_item,
+    get_queue_item,
+    list_queue,
+    run_queue_item,
+)
+
 router = APIRouter(prefix="/publishing", tags=["publishing"])
 
 
@@ -258,5 +266,59 @@ def api_send_telegram_test(variant_id: str, payload: dict[str, Any]) -> dict[str
 
     if not result:
         raise HTTPException(status_code=404, detail="Publishing variant not found.")
+
+    return result
+
+
+
+@router.get("/queue")
+def api_list_publishing_queue(
+    status: str | None = Query(default=None),
+    connector: str | None = Query(default=None),
+    variant_id: str | None = Query(default=None),
+) -> dict[str, Any]:
+    return list_queue(
+        status=status,
+        connector=connector,
+        variant_id=variant_id,
+    )
+
+
+@router.post("/queue")
+def api_create_publishing_queue_item(payload: dict[str, Any]) -> dict[str, Any]:
+    result = create_queue_item(payload)
+
+    if not result.get("ok"):
+        raise HTTPException(status_code=404, detail=result.get("error") or "Queue item could not be created.")
+
+    return result
+
+
+@router.get("/queue/{queue_id}")
+def api_get_publishing_queue_item(queue_id: str) -> dict[str, Any]:
+    item = get_queue_item(queue_id)
+
+    if not item:
+        raise HTTPException(status_code=404, detail="Publishing queue item not found.")
+
+    return item
+
+
+@router.post("/queue/{queue_id}/run")
+def api_run_publishing_queue_item(queue_id: str, payload: dict[str, Any]) -> dict[str, Any]:
+    result = run_queue_item(queue_id, payload)
+
+    if not result:
+        raise HTTPException(status_code=404, detail="Publishing queue item not found.")
+
+    return result
+
+
+@router.post("/queue/{queue_id}/cancel")
+def api_cancel_publishing_queue_item(queue_id: str) -> dict[str, Any]:
+    result = cancel_queue_item(queue_id)
+
+    if not result:
+        raise HTTPException(status_code=404, detail="Publishing queue item not found.")
 
     return result

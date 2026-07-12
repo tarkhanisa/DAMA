@@ -1858,3 +1858,49 @@ Suggested scope:
 - real getMe test
 - send one real test message to private test channel/group
 - no scheduled public publishing yet
+
+## Release Pack AH Completed
+
+Name:
+
+Publishing Queue
+
+Added files:
+
+- backend/src/services/publishing_queue_service.py
+- backend/tests/smoke_test_publishing_queue.py
+- frontend/src/app/publishing/queue/page.tsx
+- frontend/src/components/create-publishing-queue-item-form.tsx
+- frontend/src/components/run-publishing-queue-item-action.tsx
+
+Updated files:
+
+- backend/src/api/publishing.py
+- frontend/src/components/app-nav.tsx
+- scripts/backend-check.ps1
+- scripts/frontend-check.ps1
+- docs/publishing-foundation.md
+- docs/project-status.md
+
+Added behavior:
+
+- manual publishing queue
+- add approved/ready variants to queue
+- run queue item manually
+- WordPress and Telegram connector execution
+- dry-run default
+- queue status tracking
+- attempt linking
+
+Next recommended Release Pack:
+
+Release Pack AI: Multi-channel Publish Dashboard
+
+Suggested scope:
+
+- one page for content asset  variants  queue
+- select multiple channels
+- generate variants
+- add all to queue
+- run dry-run batch
+- no fully automatic public publishing yet

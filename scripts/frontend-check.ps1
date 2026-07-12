@@ -279,4 +279,20 @@ if ($TelegramVariantAction -notmatch "/telegram/send-test") {
     throw "Telegram variant action is missing send-test endpoint."
 }
 
+$PublishingQueuePage = Read-TextFile ".\frontend\src\app\publishing\queue\page.tsx"
+$PublishingQueueForm = Read-TextFile ".\frontend\src\components\create-publishing-queue-item-form.tsx"
+$PublishingQueueRunAction = Read-TextFile ".\frontend\src\components\run-publishing-queue-item-action.tsx"
+
+if ($PublishingQueuePage -notmatch "/publishing/queue") {
+    throw "Publishing queue page does not call queue endpoint."
+}
+
+if ($PublishingQueueForm -notmatch "/publishing/queue") {
+    throw "Publishing queue form does not call queue endpoint."
+}
+
+if ($PublishingQueueRunAction -notmatch "/run") {
+    throw "Publishing queue run action is missing run endpoint."
+}
+
 Write-Host "Frontend production readiness check passed."
