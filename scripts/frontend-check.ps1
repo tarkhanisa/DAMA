@@ -34,6 +34,8 @@ Pop-Location
 
 $RequiredFiles = @(
     ".\frontend\src\lib\persian-copy.ts",
+    ".\frontend\src\lib\operator-workflow.ts",
+    ".\frontend\src\components\operator-checklist.tsx",
     ".\frontend\src\components\cleanup-test-data-action.tsx",
     ".\frontend\src\components\create-publishing-queue-item-form.tsx",
     ".\frontend\src\components\run-publishing-queue-item-action.tsx",
@@ -41,8 +43,8 @@ $RequiredFiles = @(
     ".\frontend\src\app\publishing\queue\page.tsx",
     ".\frontend\src\app\publishing\attempts\page.tsx",
     ".\frontend\src\app\publishing\attempts\[attemptId]\page.tsx",
-    ".\frontend\src\app\advanced\page.tsx",
-    ".\frontend\src\app\advanced\cleanup\page.tsx"
+    ".\frontend\src\app\advanced\cleanup\page.tsx",
+    ".\frontend\src\app\globals.css"
 )
 
 foreach ($File in $RequiredFiles) {
@@ -52,12 +54,33 @@ foreach ($File in $RequiredFiles) {
 }
 
 $HomePage = Read-TextFile ".\frontend\src\app\page.tsx"
+$OperatorWorkflow = Read-TextFile ".\frontend\src\lib\operator-workflow.ts"
+$OperatorChecklist = Read-TextFile ".\frontend\src\components\operator-checklist.tsx"
 $QueuePage = Read-TextFile ".\frontend\src\app\publishing\queue\page.tsx"
 $AttemptsPage = Read-TextFile ".\frontend\src\app\publishing\attempts\page.tsx"
 $AttemptDetailPage = Read-TextFile ".\frontend\src\app\publishing\attempts\[attemptId]\page.tsx"
-$AdvancedPage = Read-TextFile ".\frontend\src\app\advanced\page.tsx"
 $CleanupPage = Read-TextFile ".\frontend\src\app\advanced\cleanup\page.tsx"
-$CleanupAction = Read-TextFile ".\frontend\src\components\cleanup-test-data-action.tsx"
+$Styles = Read-TextFile ".\frontend\src\app\globals.css"
+
+if ($OperatorWorkflow -notmatch "buildOperatorChecklist") {
+    throw "Operator workflow helper is missing checklist builder."
+}
+
+if ($OperatorWorkflow -notmatch "getOperatorNextAction") {
+    throw "Operator workflow helper is missing next action resolver."
+}
+
+if ($OperatorChecklist -notmatch "next-action-card") {
+    throw "Operator checklist component is missing next action card."
+}
+
+if ($HomePage -notmatch "OperatorChecklist") {
+    throw "Home page is not rendering operator checklist."
+}
+
+if ($HomePage -notmatch "getOperatorNextAction") {
+    throw "Home page is not using next action resolver."
+}
 
 if ($HomePage -notmatch "dashboard-flow") {
     throw "Home page is missing visual dashboard flow."
@@ -75,16 +98,12 @@ if ($AttemptDetailPage -notmatch "technical-details") {
     throw "Attempt detail page is missing collapsible technical details."
 }
 
-if ($AdvancedPage -notmatch "/advanced/cleanup") {
-    throw "Advanced page does not link to cleanup page."
-}
-
 if ($CleanupPage -notmatch "/publishing/cleanup/test-data/preview") {
     throw "Cleanup page does not call cleanup preview endpoint."
 }
 
-if ($CleanupAction -notmatch "/publishing/cleanup/test-data/run") {
-    throw "Cleanup action does not call cleanup run endpoint."
+if ($Styles -notmatch "Guided operator checklist") {
+    throw "Global styles are missing guided operator checklist marker."
 }
 
 Write-Host "Frontend production readiness check passed."

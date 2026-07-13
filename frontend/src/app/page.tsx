@@ -1,6 +1,12 @@
+import { OperatorChecklist } from "../components/operator-checklist";
 import { PageHeader } from "../components/page-header";
 import { StatCard } from "../components/stat-card";
 import { labelAttemptStatus, labelQueueStatus, labelReady } from "../lib/persian-copy";
+import {
+  buildOperatorChecklist,
+  getOperatorNextAction,
+  type OperatorSignal
+} from "../lib/operator-workflow";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +21,8 @@ function asRecord(value: unknown): RuntimeItem {
 
 function getItems(payload: unknown): RuntimeItem[] {
   const record = asRecord(payload);
-  return Array.isArray(record.items) ? record.items.map(asRecord) : [];
+  const items = Array.isArray(record.items) ? record.items : Array.isArray(payload) ? payload : [];
+  return items.map(asRecord);
 }
 
 async function loadJson(path: string): Promise<unknown> {
@@ -34,33 +41,68 @@ async function loadJson(path: string): Promise<unknown> {
   }
 }
 
+function itemStatus(item: RuntimeItem): string {
+  return String(item.status ?? "").trim();
+}
+
 export default async function HomePage() {
-  const [wordpressConfig, telegramConfig, queuePayload, attemptsPayload] =
+  const [wordpressConfig, telegramConfig, variantsPayload, queuePayload, attemptsPayload] =
     await Promise.all([
       loadJson("/publishing/wordpress/config"),
       loadJson("/publishing/telegram/config"),
+      loadJson("/publishing/variants"),
       loadJson("/publishing/queue"),
       loadJson("/publishing/attempts")
     ]);
 
   const wordpressReady = Boolean(asRecord(wordpressConfig).ready);
   const telegramReady = Boolean(asRecord(telegramConfig).ready);
+  const variants = getItems(variantsPayload);
   const queueItems = getItems(queuePayload);
   const attempts = getItems(attemptsPayload);
 
+  const readyVariantCount = variants.filter((item) =>
+    ["approved", "ready_for_publish", "scheduled"].includes(itemStatus(item))
+  ).length;
+
+  const queuedCount = queueItems.filter((item) => itemStatus(item) === "queued").length;
+  const failedQueueCount = queueItems.filter((item) =>
+    ["failed", "blocked"].includes(itemStatus(item))
+  ).length;
+
+  const failedAttemptCount = attempts.filter((item) =>
+    ["failed", "blocked"].includes(itemStatus(item))
+  ).length;
+
   const latestQueueStatus = labelQueueStatus(String(queueItems[0]?.status ?? ""));
   const latestAttemptStatus = labelAttemptStatus(String(attempts[0]?.status ?? ""));
+
+  const signal: OperatorSignal = {
+    wordpressReady,
+    telegramReady,
+    variantCount: variants.length,
+    readyVariantCount,
+    queueCount: queueItems.length,
+    queuedCount,
+    failedQueueCount,
+    attemptCount: attempts.length,
+    failedAttemptCount,
+    latestAttemptStatus: String(attempts[0]?.status ?? "")
+  };
+
+  const checklist = buildOperatorChecklist(signal);
+  const nextAction = getOperatorNextAction(signal);
 
   return (
     <main className="page-shell">
       <PageHeader
         eyebrow="DAMA"
-        title="داشبورد ساده عملیات محتوا"
-        lead="مسیر اصلی را از راست به چپ دنبال کن: محتوا بساز، نسخه آماده کن، وارد صف کن و نتیجه را بررسی کن."
+        title="داشبورد راهنمای عملیات محتوا"
+        lead="این صفحه به تو می‌گوید الان قدم بعدی چیست؛ از تولید محتوا تا صف انتشار و بررسی گزارش."
       >
         <div className="actions">
-          <a href="/generate">شروع تولید محتوا</a>
-          <a href="/publishing/queue">رفتن به صف انتشار</a>
+          <a href={nextAction.href}>{nextAction.actionLabel}</a>
+          <a href="/publishing/queue">صف انتشار</a>
         </div>
       </PageHeader>
 
@@ -69,8 +111,8 @@ export default async function HomePage() {
           <p className="eyebrow">نمای کلی</p>
           <h2>مسیر روزمره DAMA</h2>
           <p>
-            این داشبورد برای استفاده روزانه ساده شده است. ابزارهای فنی در بخش
-            پیشرفته قرار گرفته‌اند.
+            مسیر اصلی را از راست به چپ دنبال کن: محتوا بساز، نسخه آماده کن،
+            وارد صف کن و نتیجه را بررسی کن.
           </p>
         </div>
 
@@ -83,6 +125,8 @@ export default async function HomePage() {
           </span>
         </div>
       </section>
+
+      <OperatorChecklist items={checklist} nextAction={nextAction} />
 
       <section className="dashboard-flow" aria-label="شماتیک مسیر کار">
         <a className="flow-card primary-flow-card" href="/generate">
@@ -126,15 +170,15 @@ export default async function HomePage() {
       <section className="two-column">
         <section className="panel">
           <div className="panel-heading">
-            <p className="eyebrow">کار پیشنهادی بعدی</p>
-            <h2>از کجا شروع کنم؟</h2>
+            <p className="eyebrow">راهنمای سریع</p>
+            <h2>چطور با کمترین خطا جلو بروم؟</h2>
           </div>
 
           <ol className="simple-steps">
-            <li>برای محتوای جدید، از «تولید محتوا» شروع کن.</li>
-            <li>برای انتشار، اول نسخه کانالی بساز.</li>
-            <li>قبل از اجرای واقعی، اجرای آزمایشی امن را بزن.</li>
-            <li>بعد از اجرا، نتیجه را در گزارش‌ها ببین.</li>
+            <li>اگر قدم پیشنهادی بالا فعال است، همان را انجام بده.</li>
+            <li>برای انتشار واقعی عجله نکن؛ اول اجرای آزمایشی امن بزن.</li>
+            <li>اگر خطایی دیدی، اول گزارش‌ها و سپس تنظیمات اتصال را بررسی کن.</li>
+            <li>برای خلوت نگه‌داشتن پنل، از بخش پیشرفته داده‌های تستی را پاک کن.</li>
           </ol>
         </section>
 
@@ -145,8 +189,8 @@ export default async function HomePage() {
           </div>
 
           <p>
-            برای خلوتی پنل، سلامت سیستم، عملیات، نگهداری، خروجی‌ها و جستجو به بخش
-            پیشرفته منتقل شده‌اند.
+            سلامت سیستم، عملیات، خروجی‌ها، نگهداری و پاک‌سازی داده‌های تستی در بخش
+            پیشرفته قرار گرفته‌اند.
           </p>
 
           <div className="actions">

@@ -2058,3 +2058,40 @@ Goal:
 - show a step-by-step checklist in the UI
 - guide the user from content generation to variants, queue and report review
 - make the panel feel less like a technical dashboard and more like an operator console
+
+## Release Pack AI-4 Completed
+
+Name:
+
+Guided Operator Checklist
+
+Added files:
+
+- frontend/src/lib/operator-workflow.ts
+- frontend/src/components/operator-checklist.tsx
+
+Updated files:
+
+- frontend/src/app/page.tsx
+- frontend/src/app/globals.css
+- scripts/frontend-check.ps1
+- docs/project-status.md
+
+Added behavior:
+
+- guided operator checklist on dashboard
+- automatic next action suggestion
+- dashboard now reads connector, variant, queue and attempt status
+- clear five-step daily workflow
+- warning state when queue or attempts need review
+- simpler operator console behavior before adding bigger multi-channel dashboard
+
+Next recommended step:
+
+Release Pack AI-5: Variants Page Persian Polish
+
+Goal:
+
+- simplify and Persian-polish the variants page
+- make review/approval flow clearer
+- add "send to queue" path from variant detail

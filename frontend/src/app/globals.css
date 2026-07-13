@@ -1300,3 +1300,122 @@ code,
     grid-template-columns: 1fr;
   }
 }
+
+/* Guided operator checklist */
+.operator-checklist-panel {
+  display: grid;
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+.next-action-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1.25rem;
+  border: 1px solid rgba(35, 74, 112, 0.28);
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(circle at top right, rgba(35, 74, 112, 0.13), transparent 34%),
+    rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow);
+}
+
+.next-action-card h2 {
+  margin: 0.25rem 0 0.5rem;
+}
+
+.next-action-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.next-action-card a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  border-radius: 999px;
+  background: var(--text);
+  color: white;
+  text-decoration: none;
+  font-weight: 900;
+}
+
+.operator-checklist {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.checklist-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.95rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1.15rem;
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.checklist-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.checklist-item p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.checklist-item em {
+  font-style: normal;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.checklist-step {
+  display: inline-flex;
+  width: 2.15rem;
+  height: 2.15rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(16, 25, 39, 0.08);
+  font-weight: 900;
+}
+
+.checklist-done {
+  opacity: 0.82;
+}
+
+.checklist-active {
+  border-color: rgba(35, 74, 112, 0.36);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.checklist-warning {
+  border-color: rgba(160, 80, 40, 0.35);
+  background: rgba(255, 248, 242, 0.95);
+}
+
+.checklist-pending {
+  opacity: 0.68;
+}
+
+@media (max-width: 720px) {
+  .next-action-card,
+  .checklist-item {
+    grid-template-columns: 1fr;
+  }
+
+  .next-action-card a {
+    width: 100%;
+  }
+}
