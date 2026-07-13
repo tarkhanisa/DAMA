@@ -1984,3 +1984,77 @@ Added behavior:
 Next recommended step:
 
 Use docs/frontend-copy-audit.md to polish remaining WordPress, Telegram, variants and attempt pages.
+
+## Release Pack AI-2 Completed
+
+Name:
+
+Persian Attempts & Technical Details Polish
+
+Updated files:
+
+- frontend/src/lib/persian-copy.ts
+- frontend/src/app/publishing/attempts/page.tsx
+- frontend/src/app/publishing/attempts/[attemptId]/page.tsx
+- frontend/src/app/globals.css
+- scripts/frontend-check.ps1
+- docs/project-status.md
+
+Added behavior:
+
+- Persian labels for publishing attempts
+- simplified attempts list
+- simplified attempt detail page
+- technical JSON moved behind collapsible details
+- better Persian error summaries
+- safer frontend check using LiteralPath for dynamic route folders
+
+Next recommended step:
+
+Release Pack AI-3: Smart Test Data Cleanup
+
+Goal:
+
+- remove only smoke/test queue items, variants and attempts
+- preserve clean real WordPress and Telegram channels
+- add a button/page in Advanced for safe cleanup
+
+## Release Pack AI-3 Completed
+
+Name:
+
+Smart Test Data Cleanup
+
+Added files:
+
+- backend/src/services/runtime_cleanup_service.py
+- scripts/cleanup_test_runtime_data.py
+- frontend/src/components/cleanup-test-data-action.tsx
+- frontend/src/app/advanced/cleanup/page.tsx
+
+Updated files:
+
+- backend/src/api/publishing.py
+- backend/tests/smoke_test_publishing_queue.py
+- frontend/src/app/advanced/page.tsx
+- scripts/frontend-check.ps1
+- docs/project-status.md
+
+Added behavior:
+
+- preview test runtime cleanup
+- run test runtime cleanup with backup
+- preserve clean real WordPress and Telegram channels
+- remove smoke/test channels, variants, attempts and queue items
+- publishing queue smoke test cleans its own runtime artifacts
+- advanced cleanup page for safe manual cleanup
+
+Next recommended step:
+
+Release Pack AI-4: Guided Operator Checklist
+
+Goal:
+
+- show a step-by-step checklist in the UI
+- guide the user from content generation to variants, queue and report review
+- make the panel feel less like a technical dashboard and more like an operator console

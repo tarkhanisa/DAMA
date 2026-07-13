@@ -76,6 +76,43 @@ export function labelReady(value: boolean | undefined | null): string {
   return value ? "آماده" : "نیازمند بررسی";
 }
 
+export function labelBoolean(value: boolean | undefined | null): string {
+  return value ? "بله" : "خیر";
+}
+
+export function shortId(value: string | undefined | null): string {
+  const text = String(value ?? "").trim();
+
+  if (!text) {
+    return "";
+  }
+
+  if (text.length <= 10) {
+    return text;
+  }
+
+  return `${text.slice(0, 6)}${text.slice(-4)}`;
+}
+
+export function formatPersianDate(value: string | undefined | null): string {
+  const text = String(value ?? "").trim();
+
+  if (!text) {
+    return "";
+  }
+
+  const date = new Date(text);
+
+  if (Number.isNaN(date.getTime())) {
+    return text;
+  }
+
+  return date.toLocaleString("fa-IR", {
+    dateStyle: "medium",
+    timeStyle: "short"
+  });
+}
+
 export function friendlyErrorMessage(value: string | undefined | null): string {
   const text = String(value ?? "").trim();
 
@@ -83,7 +120,9 @@ export function friendlyErrorMessage(value: string | undefined | null): string {
     return "";
   }
 
-  if (text.includes("Failed to fetch") || text.includes("fetch")) {
+  const lowered = text.toLowerCase();
+
+  if (lowered.includes("failed to fetch") || lowered.includes("fetch")) {
     return "ارتباط با سرور برقرار نشد.";
   }
 
@@ -95,9 +134,43 @@ export function friendlyErrorMessage(value: string | undefined | null): string {
     return "خطای داخلی سرور رخ داد.";
   }
 
-  if (text.toLowerCase().includes("timeout")) {
+  if (lowered.includes("timeout") || lowered.includes("timed out")) {
     return "زمان اتصال تمام شد. اتصال اینترنت یا VPN را بررسی کن.";
   }
 
+  if (lowered.includes("telegram")) {
+    return "اتصال یا ارسال تلگرام نیازمند بررسی است.";
+  }
+
+  if (lowered.includes("wordpress")) {
+    return "اتصال یا ساخت پیش‌نویس وردپرس نیازمند بررسی است.";
+  }
+
   return text;
+}
+
+export function attemptResultSummary(status: string | undefined | null): string {
+  const key = String(status ?? "").trim();
+
+  if (key === "draft_created") {
+    return "پیش‌نویس وردپرس با موفقیت ساخته شده است.";
+  }
+
+  if (key === "test_sent") {
+    return "پیام تست تلگرام با موفقیت ارسال شده است.";
+  }
+
+  if (key === "dry_run") {
+    return "اجرای آزمایشی انجام شده و چیزی واقعاً منتشر نشده است.";
+  }
+
+  if (key === "failed") {
+    return "این اجرا ناموفق بوده و باید جزئیات بررسی شود.";
+  }
+
+  if (key === "blocked") {
+    return "این اجرا به‌دلیل ناقص‌بودن تنظیمات یا شرط ایمنی متوقف شده است.";
+  }
+
+  return "نتیجه این اجرا در جزئیات ثبت شده است.";
 }

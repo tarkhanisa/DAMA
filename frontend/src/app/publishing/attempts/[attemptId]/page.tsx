@@ -1,38 +1,24 @@
-import { ErrorPanel } from "../../../../components/error-panel";
 import { PageHeader } from "../../../../components/page-header";
 import { StatCard } from "../../../../components/stat-card";
+import {
+  attemptResultSummary,
+  formatPersianDate,
+  friendlyErrorMessage,
+  labelAttemptStatus,
+  labelConnector,
+  labelMode,
+  shortId
+} from "../../../../lib/persian-copy";
 
 export const dynamic = "force-dynamic";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_DAMA_API_BASE_URL ?? "http://127.0.0.1:8000";
 
-type AttemptDetailPageProps = {
+type Props = {
   params: Promise<{
     attemptId: string;
   }>;
-};
-
-type PublishingAttempt = {
-  id: string;
-  variant_id: string;
-  content_asset_id?: string;
-  channel_id?: string;
-  channel_name?: string;
-  channel_type?: string;
-  connector?: string;
-  mode?: string;
-  requested_by?: string;
-  notes?: string;
-  status: string;
-  created_at?: string;
-  updated_at?: string;
-  target_url?: string;
-  request_preview?: Record<string, unknown>;
-  response?: Record<string, unknown>;
-  error?: string;
-  error_detail?: Record<string, unknown>;
-  validation?: Record<string, unknown>;
 };
 
 function asRecord(value: unknown): Record<string, unknown> {
@@ -41,162 +27,143 @@ function asRecord(value: unknown): Record<string, unknown> {
     : {};
 }
 
-async function loadAttempt(attemptId: string): Promise<PublishingAttempt | null> {
+function stringFrom(...values: unknown[]): string {
+  for (const value of values) {
+    const text = String(value ?? "").trim();
+
+    if (text) {
+      return text;
+    }
+  }
+
+  return "";
+}
+
+async function loadAttempt(attemptId: string): Promise<Record<string, unknown>> {
   try {
     const response = await fetch(`${API_BASE_URL}/publishing/attempts/${attemptId}`, {
       cache: "no-store"
     });
 
     if (!response.ok) {
-      return null;
+      return {};
     }
 
-    return (await response.json()) as PublishingAttempt;
+    return asRecord(await response.json());
   } catch {
-    return null;
+    return {};
   }
 }
 
-function statusLabel(status: string): string {
-  const labels: Record<string, string> = {
-    dry_run: "Dry-run",
-    draft_created: "Draft ساخته شد",
-    failed: "خطا",
-    blocked: "مسدود شده",
-    created: "ساخته شده"
-  };
-
-  return labels[status] ?? status;
-}
-
-export default async function PublishingAttemptDetailPage({
-  params
-}: AttemptDetailPageProps) {
+export default async function PublishingAttemptDetailPage({ params }: Props) {
   const { attemptId } = await params;
   const attempt = await loadAttempt(attemptId);
 
-  if (!attempt) {
-    return (
-      <main className="page-shell">
-        <ErrorPanel
-          eyebrow="گزارش انتشار"
-          title="تلاش انتشار پیدا نشد"
-          message="این گزارش در بک‌اند پیدا نشد."
-        />
-      </main>
-    );
-  }
-
+  const request = asRecord(attempt.request);
   const response = asRecord(attempt.response);
-  const requestPreview = asRecord(attempt.request_preview);
-  const validation = asRecord(attempt.validation);
-  const errorDetail = asRecord(attempt.error_detail);
 
-  const wordpressLink = String(response.wordpress_link ?? "");
-  const wordpressPostId = String(response.wordpress_post_id ?? "");
+  const status = stringFrom(attempt.status, response.status);
+  const connector = stringFrom(attempt.connector, attempt.channel_type, request.connector);
+  const mode = stringFrom(attempt.mode, request.mode, connector);
+  const createdAt = stringFrom(attempt.created_at, attempt.createdAt);
+  const error = stringFrom(attempt.error, response.error);
+  const variantId = stringFrom(attempt.variant_id, request.variant_id);
+  const targetUrl = stringFrom(attempt.target_url, request.target_url, response.target_url);
+  const externalUrl = stringFrom(
+    response.draft_url,
+    response.wordpress_draft_url,
+    response.link,
+    response.url,
+    response.external_url
+  );
+  const externalId = stringFrom(
+    response.wordpress_post_id,
+    response.post_id,
+    response.telegram_message_id,
+    response.message_id
+  );
 
   return (
     <main className="page-shell">
       <PageHeader
-        eyebrow="جزئیات تلاش انتشار"
-        title={`${attempt.connector ?? "connector"}  ${statusLabel(attempt.status)}`}
-        lead="این صفحه گزارش دقیق یک تلاش انتشار یا ساخت Draft را نشان می‌دهد."
+        eyebrow="جزئیات گزارش"
+        title={`گزارش اجرا ${shortId(attemptId)}`}
+        lead={attemptResultSummary(status)}
       >
         <div className="actions">
           <a href="/publishing/attempts">بازگشت به گزارش‌ها</a>
-          <a href={`/publishing/variants/${attempt.variant_id}`}>بازگشت به نسخه</a>
+          <a href="/publishing/queue">صف انتشار</a>
         </div>
       </PageHeader>
 
       <section className="stats-grid">
-        <StatCard label="وضعیت" value={statusLabel(attempt.status)} helper={attempt.mode ?? ""} />
-        <StatCard label="کانال" value={attempt.channel_name ?? ""} helper={attempt.channel_type ?? ""} />
-        <StatCard label="درخواست‌کننده" value={attempt.requested_by ?? ""} helper={attempt.created_at ?? ""} />
-        <StatCard label="WordPress Post" value={wordpressPostId || ""} helper="شناسه Draft در وردپرس" />
+        <StatCard label="نتیجه" value={labelAttemptStatus(status)} helper={error ? friendlyErrorMessage(error) : "بدون خطای ثبت‌شده"} />
+        <StatCard label="مقصد" value={labelConnector(connector)} helper={targetUrl || ""} />
+        <StatCard label="نوع اجرا" value={labelMode(mode)} helper={variantId ? `نسخه: ${shortId(variantId)}` : ""} />
+        <StatCard label="زمان اجرا" value={formatPersianDate(createdAt)} helper={`شناسه: ${shortId(attemptId)}`} />
       </section>
-
-      {wordpressLink ? (
-        <section className="panel success-panel">
-          <div className="panel-heading">
-            <p className="eyebrow">Draft ساخته شد</p>
-            <h2>لینک وردپرس</h2>
-          </div>
-
-          <p>
-            پیش‌نویس وردپرس ساخته شده است. برای مشاهده یا ادامه ویرایش، لینک زیر را باز کن:
-          </p>
-
-          <a className="primary-link" href={wordpressLink} target="_blank" rel="noreferrer">
-            باز کردن Draft وردپرس
-          </a>
-        </section>
-      ) : null}
-
-      {attempt.error ? (
-        <section className="panel danger-panel">
-          <div className="panel-heading">
-            <p className="eyebrow">خطا</p>
-            <h2>پیام خطا</h2>
-          </div>
-
-          <p>{attempt.error}</p>
-
-          {Object.keys(errorDetail).length ? (
-            <pre className="json-block">{JSON.stringify(errorDetail, null, 2)}</pre>
-          ) : null}
-        </section>
-      ) : null}
 
       <section className="two-column">
         <section className="panel">
           <div className="panel-heading">
-            <p className="eyebrow">Request Preview</p>
-            <h2>چیزی که قرار بود ساخته شود</h2>
+            <p className="eyebrow">خلاصه ساده</p>
+            <h2>چه اتفاقی افتاد؟</h2>
           </div>
 
-          <div className="health-list">
+          <dl className="detail-list">
             <div>
-              <strong>Title</strong>
-              <span>{String(requestPreview.title ?? "")}</span>
+              <dt>وضعیت</dt>
+              <dd>{labelAttemptStatus(status)}</dd>
             </div>
             <div>
-              <strong>Slug</strong>
-              <span>{String(requestPreview.slug ?? "")}</span>
+              <dt>مقصد</dt>
+              <dd>{labelConnector(connector)}</dd>
             </div>
             <div>
-              <strong>Excerpt</strong>
-              <span>{String(requestPreview.excerpt ?? "")}</span>
+              <dt>نوع اجرا</dt>
+              <dd>{labelMode(mode)}</dd>
             </div>
             <div>
-              <strong>SEO Title</strong>
-              <span>{String(requestPreview.seo_title ?? "")}</span>
+              <dt>شناسه خروجی</dt>
+              <dd>{externalId || ""}</dd>
             </div>
             <div>
-              <strong>Meta Description</strong>
-              <span>{String(requestPreview.meta_description ?? "")}</span>
+              <dt>خطا</dt>
+              <dd>{error ? friendlyErrorMessage(error) : ""}</dd>
             </div>
-          </div>
+          </dl>
 
-          <pre className="json-block">{JSON.stringify(requestPreview, null, 2)}</pre>
+          {externalUrl ? (
+            <div className="actions">
+              <a href={externalUrl} target="_blank" rel="noreferrer">
+                باز کردن خروجی
+              </a>
+            </div>
+          ) : null}
         </section>
 
-        <section className="panel">
+        <section className="panel quiet-panel">
           <div className="panel-heading">
-            <p className="eyebrow">Validation</p>
-            <h2>نتیجه اعتبارسنجی</h2>
+            <p className="eyebrow">راهنما</p>
+            <h2>بعدش چه کنم؟</h2>
           </div>
 
-          <pre className="json-block">{JSON.stringify(validation, null, 2)}</pre>
+          <ol className="simple-steps">
+            <li>اگر نتیجه موفق است، خروجی را در مقصد بررسی کن.</li>
+            <li>اگر اجرای آزمایشی بوده، می‌توانی اجرای واقعی را از صف انجام بدهی.</li>
+            <li>اگر خطا دارد، اول تنظیمات اتصال و اینترنت/VPN را بررسی کن.</li>
+          </ol>
         </section>
       </section>
 
       <section className="panel">
-        <div className="panel-heading">
-          <p className="eyebrow">Response</p>
-          <h2>پاسخ Connector</h2>
-        </div>
-
-        <pre className="json-block">{JSON.stringify(response, null, 2)}</pre>
+        <details className="technical-details">
+          <summary>نمایش جزئیات فنی</summary>
+          <p className="muted-note">
+            این بخش برای عیب‌یابی است. در استفاده روزمره معمولاً نیازی به آن نداری.
+          </p>
+          <pre className="json-block">{JSON.stringify(attempt, null, 2)}</pre>
+        </details>
       </section>
     </main>
   );

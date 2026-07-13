@@ -51,6 +51,8 @@ from src.services.publishing_queue_service import (
     run_queue_item,
 )
 
+from src.services.runtime_cleanup_service import cleanup_test_runtime_data
+
 router = APIRouter(prefix="/publishing", tags=["publishing"])
 
 
@@ -322,3 +324,16 @@ def api_cancel_publishing_queue_item(queue_id: str) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail="Publishing queue item not found.")
 
     return result
+
+
+
+@router.get("/cleanup/test-data/preview")
+def api_preview_test_data_cleanup() -> dict[str, Any]:
+    return cleanup_test_runtime_data(dry_run=True)
+
+
+@router.post("/cleanup/test-data/run")
+def api_run_test_data_cleanup(payload: dict[str, Any] | None = None) -> dict[str, Any]:
+    request = payload or {}
+    backup = bool(request.get("backup", True))
+    return cleanup_test_runtime_data(dry_run=False, backup=backup)

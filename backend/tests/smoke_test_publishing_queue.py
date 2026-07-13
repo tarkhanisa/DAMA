@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 
 from src.main import app
+from src.services.runtime_cleanup_service import cleanup_test_runtime_data
 
 
 client = TestClient(app)
@@ -77,6 +78,9 @@ def main() -> None:
     list_response = client.get("/publishing/queue")
     assert list_response.status_code == 200, list_response.text
     assert list_response.json()["total"] >= 1
+
+    cleanup_result = cleanup_test_runtime_data(dry_run=False, backup=False)
+    assert cleanup_result["ok"] is True
 
     print("Publishing queue smoke test passed.")
 

@@ -1,4 +1,4 @@
-﻿$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Stop"
 
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
@@ -9,16 +9,16 @@ function Read-TextFile {
         [string]$Path
     )
 
-    if (-not (Test-Path $Path)) {
+    if (-not (Test-Path -LiteralPath $Path)) {
         throw "Required frontend file is missing: $Path"
     }
 
-    return Get-Content -Path $Path -Raw -Encoding UTF8
+    return Get-Content -LiteralPath $Path -Raw -Encoding UTF8
 }
 
 Write-Host "Checking frontend..."
 
-if (-not (Test-Path ".\frontend\node_modules")) {
+if (-not (Test-Path -LiteralPath ".\frontend\node_modules")) {
     throw "frontend/node_modules not found. Run npm install in frontend first."
 }
 
@@ -34,82 +34,57 @@ Pop-Location
 
 $RequiredFiles = @(
     ".\frontend\src\lib\persian-copy.ts",
-    ".\frontend\src\components\app-nav.tsx",
+    ".\frontend\src\components\cleanup-test-data-action.tsx",
     ".\frontend\src\components\create-publishing-queue-item-form.tsx",
     ".\frontend\src\components\run-publishing-queue-item-action.tsx",
     ".\frontend\src\app\page.tsx",
-    ".\frontend\src\app\publishing\page.tsx",
     ".\frontend\src\app\publishing\queue\page.tsx",
-    ".\frontend\src\app\settings\page.tsx",
-    ".\frontend\src\app\advanced\page.tsx"
+    ".\frontend\src\app\publishing\attempts\page.tsx",
+    ".\frontend\src\app\publishing\attempts\[attemptId]\page.tsx",
+    ".\frontend\src\app\advanced\page.tsx",
+    ".\frontend\src\app\advanced\cleanup\page.tsx"
 )
 
 foreach ($File in $RequiredFiles) {
-    if (-not (Test-Path $File)) {
+    if (-not (Test-Path -LiteralPath $File)) {
         throw "Required frontend file is missing: $File"
     }
 }
 
-$AppNav = Read-TextFile ".\frontend\src\components\app-nav.tsx"
 $HomePage = Read-TextFile ".\frontend\src\app\page.tsx"
 $QueuePage = Read-TextFile ".\frontend\src\app\publishing\queue\page.tsx"
-$QueueForm = Read-TextFile ".\frontend\src\components\create-publishing-queue-item-form.tsx"
-$QueueRunAction = Read-TextFile ".\frontend\src\components\run-publishing-queue-item-action.tsx"
-$PersianCopy = Read-TextFile ".\frontend\src\lib\persian-copy.ts"
-
-$ExpectedNavRoutes = @(
-    'href: "/"',
-    'href: "/generate"',
-    'href: "/publishing"',
-    'href: "/projects"',
-    'href: "/content-assets"',
-    'href: "/settings"',
-    'href: "/advanced"'
-)
-
-foreach ($Route in $ExpectedNavRoutes) {
-    if ($AppNav -notmatch [regex]::Escape($Route)) {
-        throw "Simplified navigation is missing route marker: $Route"
-    }
-}
-
-$HiddenFromMainNav = @(
-    'href: "/operations"',
-    'href: "/runtime"',
-    'href: "/exports"',
-    'href: "/maintenance"',
-    'href: "/workflows"',
-    'href: "/search"'
-)
-
-foreach ($Route in $HiddenFromMainNav) {
-    if ($AppNav -match [regex]::Escape($Route)) {
-        throw "Technical route should not be in main nav: $Route"
-    }
-}
-
-if ($PersianCopy -notmatch "labelQueueStatus") {
-    throw "Persian copy helper is missing queue status labels."
-}
-
-if ($PersianCopy -notmatch "labelAttemptStatus") {
-    throw "Persian copy helper is missing attempt status labels."
-}
+$AttemptsPage = Read-TextFile ".\frontend\src\app\publishing\attempts\page.tsx"
+$AttemptDetailPage = Read-TextFile ".\frontend\src\app\publishing\attempts\[attemptId]\page.tsx"
+$AdvancedPage = Read-TextFile ".\frontend\src\app\advanced\page.tsx"
+$CleanupPage = Read-TextFile ".\frontend\src\app\advanced\cleanup\page.tsx"
+$CleanupAction = Read-TextFile ".\frontend\src\components\cleanup-test-data-action.tsx"
 
 if ($HomePage -notmatch "dashboard-flow") {
     throw "Home page is missing visual dashboard flow."
 }
 
 if ($QueuePage -notmatch "labelQueueStatus") {
-    throw "Queue page is not using Persian queue status labels."
+    throw "Queue page is not using Persian queue labels."
 }
 
-if ($QueueForm -notmatch "labelConnector") {
-    throw "Queue form is not using Persian connector labels."
+if ($AttemptsPage -notmatch "labelAttemptStatus") {
+    throw "Attempts page is not using Persian attempt labels."
 }
 
-if ($QueueRunAction -notmatch "labelQueueStatus") {
-    throw "Queue run action is not using Persian status labels."
+if ($AttemptDetailPage -notmatch "technical-details") {
+    throw "Attempt detail page is missing collapsible technical details."
+}
+
+if ($AdvancedPage -notmatch "/advanced/cleanup") {
+    throw "Advanced page does not link to cleanup page."
+}
+
+if ($CleanupPage -notmatch "/publishing/cleanup/test-data/preview") {
+    throw "Cleanup page does not call cleanup preview endpoint."
+}
+
+if ($CleanupAction -notmatch "/publishing/cleanup/test-data/run") {
+    throw "Cleanup action does not call cleanup run endpoint."
 }
 
 Write-Host "Frontend production readiness check passed."

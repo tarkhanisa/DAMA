@@ -4,6 +4,11 @@ export const dynamic = "force-dynamic";
 
 const advancedLinks = [
   {
+    href: "/advanced/cleanup",
+    title: "پاک‌سازی داده‌های تستی",
+    description: "حذف امن smoke/test از صف، نسخه‌ها و گزارش‌ها با backup."
+  },
+  {
     href: "/runtime",
     title: "سلامت سیستم",
     description: "وضعیت backend، مدل‌ها و سرویس‌ها."
@@ -41,7 +46,7 @@ export default function AdvancedPage() {
       <PageHeader
         eyebrow="پیشرفته"
         title="ابزارهای فنی و کم‌استفاده"
-        lead="این بخش برای وقتی است که بخواهی وضعیت سیستم، ابزارهای فنی یا خروجی‌ها را بررسی کنی."
+        lead="این بخش برای وقتی است که بخواهی وضعیت سیستم، پاک‌سازی داده‌ها یا ابزارهای فنی را بررسی کنی."
       >
         <div className="actions">
           <a href="/">داشبورد</a>
