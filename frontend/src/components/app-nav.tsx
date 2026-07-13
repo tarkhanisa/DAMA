@@ -5,12 +5,9 @@ import { usePathname } from "next/navigation";
 
 const navItems = [
   { href: "/", label: "داشبورد" },
-  { href: "/generate", label: "تولید محتوا" },
+  { href: "/produce", label: "تولید" },
   { href: "/publishing", label: "انتشار" },
-  { href: "/projects", label: "پروژه‌ها" },
-  { href: "/content-assets", label: "محتواها" },
-  { href: "/settings", label: "تنظیمات" },
-  { href: "/advanced", label: "پیشرفته" }
+  { href: "/other", label: "سایر" }
 ];
 
 export function AppNav() {

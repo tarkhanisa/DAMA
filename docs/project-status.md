@@ -2139,3 +2139,43 @@ Goal:
 - generate variants for all selected channels
 - link variants back to campaign
 - prepare the bridge toward multi-channel queue publishing
+
+## Release Pack AI-6 Completed
+
+Name:
+
+Three-Door Operator Console + Publish Wizard
+
+Added files:
+
+- frontend/src/app/produce/page.tsx
+- frontend/src/app/other/page.tsx
+- frontend/src/components/simple-publish-wizard-form.tsx
+
+Updated files:
+
+- frontend/src/app/page.tsx
+- frontend/src/app/publishing/page.tsx
+- frontend/src/components/app-nav.tsx
+- frontend/src/app/globals.css
+- scripts/frontend-check.ps1
+- docs/project-status.md
+
+Added behavior:
+
+- dashboard reduced to three main doors: Produce, Publish, Other
+- production area separated from publishing
+- publishing starts with project/context question
+- publishing wizard creates a media campaign
+- reports, settings, cleanup, backups and technical tools moved to Other
+- top navigation simplified dramatically
+
+Next recommended step:
+
+Release Pack AI-7: Campaign-to-Variants Planner
+
+Goal:
+
+- after a campaign is created, generate platform-specific variants for selected channels
+- link generated variants back to the campaign
+- then add those variants to the publishing queue

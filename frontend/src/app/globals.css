@@ -1543,3 +1543,116 @@ code,
   color: var(--muted);
   font-weight: 700;
 }
+
+/* Three door operator console */
+.three-door-console {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.door-card {
+  display: grid;
+  gap: 0.9rem;
+  align-content: start;
+  min-height: 17rem;
+  padding: 1.45rem;
+  border: 1px solid var(--border);
+  border-radius: 1.7rem;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--text);
+  text-decoration: none;
+  box-shadow: var(--shadow);
+}
+
+.door-card span {
+  display: inline-flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(16, 25, 39, 0.08);
+  font-weight: 900;
+}
+
+.door-card strong {
+  font-size: 1.45rem;
+}
+
+.door-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.door-card em {
+  margin-top: auto;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.door-primary {
+  border-color: rgba(35, 74, 112, 0.34);
+  background:
+    radial-gradient(circle at top right, rgba(35, 74, 112, 0.12), transparent 34%),
+    rgba(255, 255, 255, 0.88);
+}
+
+.muted-operator-card {
+  opacity: 0.66;
+}
+
+.publish-wizard-form {
+  border-color: rgba(35, 74, 112, 0.24);
+}
+
+.publish-flow-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin: 1.25rem 0;
+}
+
+.publish-flow-strip div {
+  display: grid;
+  gap: 0.4rem;
+  justify-items: center;
+  padding: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.62);
+  text-align: center;
+}
+
+.publish-flow-strip span {
+  display: inline-flex;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(16, 25, 39, 0.08);
+  font-weight: 900;
+}
+
+.publish-flow-strip strong {
+  font-size: 0.95rem;
+}
+
+.other-groups {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (max-width: 980px) {
+  .three-door-console,
+  .publish-flow-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .door-card {
+    min-height: auto;
+  }
+}
