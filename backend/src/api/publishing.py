@@ -53,6 +53,13 @@ from src.services.publishing_queue_service import (
 
 from src.services.runtime_cleanup_service import cleanup_test_runtime_data
 
+from src.services.media_campaign_service import (
+    create_media_campaign,
+    get_media_campaign,
+    list_media_campaigns,
+    update_media_campaign,
+)
+
 router = APIRouter(prefix="/publishing", tags=["publishing"])
 
 
@@ -337,3 +344,37 @@ def api_run_test_data_cleanup(payload: dict[str, Any] | None = None) -> dict[str
     request = payload or {}
     backup = bool(request.get("backup", True))
     return cleanup_test_runtime_data(dry_run=False, backup=backup)
+
+
+
+@router.get("/campaigns")
+def api_list_media_campaigns(
+    status: str | None = None,
+    project_id: str | None = None,
+) -> dict[str, Any]:
+    return list_media_campaigns(status=status, project_id=project_id)
+
+
+@router.post("/campaigns")
+def api_create_media_campaign(payload: dict[str, Any]) -> dict[str, Any]:
+    return create_media_campaign(payload)
+
+
+@router.get("/campaigns/{campaign_id}")
+def api_get_media_campaign(campaign_id: str) -> dict[str, Any]:
+    campaign = get_media_campaign(campaign_id)
+
+    if not campaign:
+        raise HTTPException(status_code=404, detail="Media campaign not found.")
+
+    return campaign
+
+
+@router.patch("/campaigns/{campaign_id}")
+def api_update_media_campaign(campaign_id: str, payload: dict[str, Any]) -> dict[str, Any]:
+    campaign = update_media_campaign(campaign_id, payload)
+
+    if not campaign:
+        raise HTTPException(status_code=404, detail="Media campaign not found.")
+
+    return campaign

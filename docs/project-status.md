@@ -2095,3 +2095,47 @@ Goal:
 - simplify and Persian-polish the variants page
 - make review/approval flow clearer
 - add "send to queue" path from variant detail
+
+## Release Pack AI-5 Completed
+
+Name:
+
+Media Campaign Composer
+
+Added files:
+
+- backend/src/services/media_campaign_service.py
+- backend/tests/smoke_test_media_campaigns.py
+- frontend/src/components/create-media-campaign-form.tsx
+- frontend/src/app/publishing/campaigns/page.tsx
+- frontend/src/app/publishing/campaigns/[campaignId]/page.tsx
+
+Updated files:
+
+- backend/src/api/publishing.py
+- scripts/backend-check.ps1
+- scripts/frontend-check.ps1
+- frontend/src/app/publishing/page.tsx
+- frontend/src/app/globals.css
+- docs/project-status.md
+
+Added behavior:
+
+- create media campaign with project name
+- write master caption/body
+- add image/video paths or URLs
+- select destination channels
+- list campaigns
+- view campaign detail
+- store campaign runtime data locally
+
+Next recommended step:
+
+Release Pack AI-6: Campaign-to-Variants Planner
+
+Goal:
+
+- select a campaign
+- generate variants for all selected channels
+- link variants back to campaign
+- prepare the bridge toward multi-channel queue publishing

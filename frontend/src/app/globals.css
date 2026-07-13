@@ -1419,3 +1419,127 @@ code,
     width: 100%;
   }
 }
+
+/* Media campaign composer */
+.channel-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.6rem;
+}
+
+.checkbox-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 0.7rem;
+  align-items: start;
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.checkbox-card input {
+  margin-top: 0.25rem;
+}
+
+.checkbox-card strong,
+.checkbox-card small {
+  display: block;
+}
+
+.checkbox-card small {
+  color: var(--muted);
+}
+
+.campaign-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.campaign-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--text);
+  text-decoration: none;
+  box-shadow: var(--shadow);
+}
+
+.campaign-card strong {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 1.05rem;
+}
+
+.campaign-card p {
+  color: var(--muted);
+  line-height: 1.85;
+}
+
+.campaign-card dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 0;
+}
+
+.campaign-card dt {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.campaign-card dd {
+  margin: 0.15rem 0 0;
+  font-weight: 800;
+}
+
+.media-list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.media-row {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.media-row span {
+  font-weight: 900;
+}
+
+.media-row code {
+  direction: ltr;
+  overflow-wrap: anywhere;
+}
+
+.channel-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.channel-chip {
+  display: inline-grid;
+  gap: 0.15rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  font-weight: 900;
+}
+
+.channel-chip small {
+  color: var(--muted);
+  font-weight: 700;
+}

@@ -107,3 +107,15 @@ if (Test-Path $PublishingQueueSmokeTest) {
     }
 }
 
+$MediaCampaignSmokeTest = Join-Path (Split-Path -Parent $PSScriptRoot) "backend\tests\smoke_test_media_campaigns.py"
+$MediaCampaignPython = Join-Path (Split-Path -Parent $PSScriptRoot) "backend\.venv\Scripts\python.exe"
+
+if (Test-Path $MediaCampaignSmokeTest) {
+    Write-Host ""
+    Write-Host "Running .\backend\tests\smoke_test_media_campaigns.py..."
+    & $MediaCampaignPython $MediaCampaignSmokeTest
+    if ($LASTEXITCODE -ne 0) {
+        throw "Smoke test failed: .\backend\tests\smoke_test_media_campaigns.py"
+    }
+}
+
