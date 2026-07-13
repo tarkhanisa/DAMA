@@ -9,17 +9,17 @@ const groups = [
       {
         href: "/publishing/attempts",
         title: "گزارش انتشار",
-        description: "نتیجه اجرای وردپرس تلگرام dry-run و خطاها."
+        description: "نتیجه اجرای وردپرس، تلگرام، dry-run و خطاها."
       },
       {
         href: "/publishing/campaigns",
-        title: "کمپینهای قبلی",
-        description: "کمپینهایی که برای انتشار ساخته شدهاند."
+        title: "کمپین‌های قبلی",
+        description: "کمپین‌هایی که برای انتشار ساخته شده‌اند."
       },
       {
         href: "/publishing/queue",
         title: "صف انتشار",
-        description: "آیتمهایی که برای اجرا آماده شدهاند."
+        description: "آیتم‌هایی که برای اجرا آماده شده‌اند."
       }
     ]
   },
@@ -33,8 +33,8 @@ const groups = [
       },
       {
         href: "/advanced/cleanup",
-        title: "پاکسازی دادههای تستی",
-        description: "حذف امن دادههای smoke/test با backup."
+        title: "پاک‌سازی داده‌های تستی",
+        description: "حذف امن داده‌های smoke/test با backup."
       },
       {
         href: "/maintenance",
@@ -49,22 +49,22 @@ const groups = [
       {
         href: "/advanced",
         title: "پیشرفته",
-        description: "همه ابزارهای کماستفاده و فنی."
+        description: "همه ابزارهای کم‌استفاده و فنی."
       },
       {
         href: "/runtime",
         title: "سلامت سیستم",
-        description: "بررسی وضعیت backend و سرویسها."
+        description: "بررسی وضعیت backend و سرویس‌ها."
       },
       {
         href: "/projects",
-        title: "پروژهها",
-        description: "فهرست و مدیریت پروژهها."
+        title: "پروژه‌ها",
+        description: "فهرست و مدیریت پروژه‌ها."
       },
       {
         href: "/content-assets",
         title: "محتواها",
-        description: "داراییهای محتوایی ثبتشده."
+        description: "دارایی‌های محتوایی ثبت‌شده."
       }
     ]
   }
@@ -75,8 +75,8 @@ export default function OtherPage() {
     <main className="page-shell">
       <PageHeader
         eyebrow="سایر"
-        title="گزارشها تنظیمات و ابزارهای فنی"
-        lead="هر چیزی که کار روزمره تولید و انتشار نیست اینجا قرار میگیرد تا داشبورد اصلی شلوغ نشود."
+        title="گزارش‌ها، تنظیمات و ابزارهای فنی"
+        lead="هر چیزی که کار روزمره تولید و انتشار نیست، اینجا قرار می‌گیرد تا داشبورد اصلی شلوغ نشود."
       >
         <div className="actions">
           <a href="/">داشبورد</a>
@@ -95,7 +95,7 @@ export default function OtherPage() {
             <div className="operator-grid">
               {group.items.map((item) => (
                 <a className="operator-card" href={item.href} key={item.href}>
-                  <span></span>
+                  <span>•</span>
                   <strong>{item.title}</strong>
                   <p>{item.description}</p>
                 </a>

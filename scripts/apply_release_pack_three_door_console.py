@@ -74,29 +74,29 @@ export default function HomePage() {
     <main className="page-shell">
       <PageHeader
         eyebrow="DAMA"
-        title="چه کاری میخواهی انجام بدهی"
-        lead="برای سادهتر شدن کار پنل به سه بخش اصلی تقسیم شده است: تولید انتشار و سایر."
+        title="چه کاری می‌خواهی انجام بدهی؟"
+        lead="برای ساده‌تر شدن کار، پنل به سه بخش اصلی تقسیم شده است: تولید، انتشار و سایر."
       />
 
       <section className="three-door-console" aria-label="درهای اصلی پنل">
         <a className="door-card door-primary" href="/produce">
-          <span></span>
+          <span>۱</span>
           <strong>تولید</strong>
-          <p>متن ایده پست تصویر یا ویدیو را برای یک پروژه آماده کن.</p>
+          <p>متن، ایده، پست، تصویر یا ویدیو را برای یک پروژه آماده کن.</p>
           <em>شروع تولید محتوا</em>
         </a>
 
         <a className="door-card door-primary" href="/publishing">
-          <span></span>
+          <span>۲</span>
           <strong>انتشار</strong>
-          <p>پروژه را انتخاب کن متن و رسانه را وارد کن کانالها را انتخاب کن و برای انتشار آماده شو.</p>
+          <p>پروژه را انتخاب کن، متن و رسانه را وارد کن، کانال‌ها را انتخاب کن و برای انتشار آماده شو.</p>
           <em>شروع انتشار</em>
         </a>
 
         <a className="door-card" href="/other">
-          <span></span>
+          <span>۳</span>
           <strong>سایر</strong>
-          <p>گزارشها تنظیمات تاریخچه پشتیبان پاکسازی و ابزارهای فنی.</p>
+          <p>گزارش‌ها، تنظیمات، تاریخچه، پشتیبان، پاک‌سازی و ابزارهای فنی.</p>
           <em>رفتن به ابزارها</em>
         </a>
       </section>
@@ -108,9 +108,9 @@ export default function HomePage() {
         </div>
 
         <ol className="simple-steps">
-          <li>اگر میخواهی چیزی بسازی از تولید شروع کن.</li>
-          <li>اگر محتوایت آماده است و میخواهی منتشر کنی از انتشار شروع کن.</li>
-          <li>اگر میخواهی گزارشها تنظیمات یا پاکسازی را ببینی برو به سایر.</li>
+          <li>اگر می‌خواهی چیزی بسازی، از «تولید» شروع کن.</li>
+          <li>اگر محتوایت آماده است و می‌خواهی منتشر کنی، از «انتشار» شروع کن.</li>
+          <li>اگر می‌خواهی گزارش‌ها، تنظیمات یا پاک‌سازی را ببینی، برو به «سایر».</li>
         </ol>
       </section>
     </main>
@@ -133,12 +133,12 @@ export default function ProducePage() {
     <main className="page-shell">
       <PageHeader
         eyebrow="تولید"
-        title="برای چه پروژهای میخواهی محتوا بسازی"
-        lead="این بخش فعلا مسیر ساده تولید متن و پست را نگه میدارد. تولید تصویر و ویدیو در مرحلههای بعدی توسعه پیدا میکند."
+        title="برای چه پروژه‌ای می‌خواهی محتوا بسازی؟"
+        lead="این بخش فعلاً مسیر ساده تولید متن و پست را نگه می‌دارد. تولید تصویر و ویدیو در مرحله‌های بعدی توسعه پیدا می‌کند."
       >
         <div className="actions">
           <a href="/generate">تولید متن</a>
-          <a href="/projects">پروژهها</a>
+          <a href="/projects">پروژه‌ها</a>
         </div>
       </PageHeader>
 
@@ -151,27 +151,27 @@ export default function ProducePage() {
 
       <section className="operator-grid">
         <a className="operator-card primary-operator-card" href="/generate">
-          <span></span>
+          <span>۱</span>
           <strong>تولید متن / پست</strong>
-          <p>برای سایت تلگرام لینکدین یا کمپین متن مادر بساز.</p>
+          <p>برای سایت، تلگرام، لینکدین یا کمپین، متن مادر بساز.</p>
         </a>
 
         <a className="operator-card" href="/projects">
-          <span></span>
+          <span>۲</span>
           <strong>انتخاب یا بررسی پروژه</strong>
-          <p>پروژههایی که قبلا تعریف شدهاند را ببین.</p>
+          <p>پروژه‌هایی که قبلاً تعریف شده‌اند را ببین.</p>
         </a>
 
         <a className="operator-card muted-operator-card" href="/produce">
-          <span></span>
+          <span>۳</span>
           <strong>تولید تصویر</strong>
-          <p>در مرحله بعد تولید تصویر پروژهمحور از اینجا فعال میشود.</p>
+          <p>در مرحله بعد، تولید تصویر پروژه‌محور از اینجا فعال می‌شود.</p>
         </a>
 
         <a className="operator-card muted-operator-card" href="/produce">
-          <span></span>
+          <span>۴</span>
           <strong>تولید ویدیو</strong>
-          <p>در مرحلههای بعد تولید ویدیو و آمادهسازی رسانه اضافه میشود.</p>
+          <p>در مرحله‌های بعد، تولید ویدیو و آماده‌سازی رسانه اضافه می‌شود.</p>
         </a>
       </section>
     </main>
@@ -257,7 +257,7 @@ export function SimplePublishWizardForm({
         return;
       }
 
-      setMessage("کمپین انتشار ساخته شد. قدم بعدی: ساخت نسخههای مخصوص هر کانال.");
+      setMessage("کمپین انتشار ساخته شد. قدم بعدی: ساخت نسخه‌های مخصوص هر کانال.");
       setCampaignLink(`/publishing/campaigns/${payload.id}`);
     } catch (error) {
       setMessage(friendlyErrorMessage(error instanceof Error ? error.message : "خطای ناشناخته"));
@@ -274,11 +274,11 @@ export function SimplePublishWizardForm({
       </div>
 
       <label>
-        این محتوا برای کدام پروژه است
+        این محتوا برای کدام پروژه است؟
         <input
           value={projectName}
           onChange={(event) => setProjectName(event.target.value)}
-          placeholder="مثلا دامامدیا گرگران درخت و دختر اورماشاپ..."
+          placeholder="مثلاً دامامدیا، گرگران، درخت و دختر، اورماشاپ..."
           required
         />
       </label>
@@ -298,14 +298,14 @@ export function SimplePublishWizardForm({
         <textarea
           value={sourceBody}
           onChange={(event) => setSourceBody(event.target.value)}
-          placeholder="توضیح اصلی را اینجا بنویس. بعدا برای هر شبکه نسخه مناسب ساخته میشود."
+          placeholder="توضیح اصلی را اینجا بنویس. بعداً برای هر شبکه نسخه مناسب ساخته می‌شود."
           rows={7}
           required
         />
       </label>
 
       <label>
-        عکسها یا ویدیوها
+        عکس‌ها یا ویدیوها
         <textarea
           value={mediaUrls}
           onChange={(event) => setMediaUrls(event.target.value)}
@@ -315,7 +315,7 @@ export function SimplePublishWizardForm({
       </label>
 
       <div className="field-group">
-        <span>کجا منتشر شود</span>
+        <span>کجا منتشر شود؟</span>
 
         <div className="channel-checkbox-grid">
           {channels.length > 0 ? (
@@ -331,21 +331,21 @@ export function SimplePublishWizardForm({
               </label>
             ))
           ) : (
-            <p className="muted-note">هنوز کانال فعالی ثبت نشده است. اول از بخش تنظیمات/انتشار کانالها را بساز.</p>
+            <p className="muted-note">هنوز کانال فعالی ثبت نشده است. اول از بخش تنظیمات/انتشار کانال‌ها را بساز.</p>
           )}
         </div>
       </div>
 
       <p className="muted-note">
-        این دکمه هنوز چیزی را منتشر نمیکند. فقط یک کمپین مادر میسازد تا در قدم بعد برای هر کانال نسخه جدا ساخته شود.
+        این دکمه هنوز چیزی را منتشر نمی‌کند. فقط یک کمپین مادر می‌سازد تا در قدم بعد برای هر کانال نسخه جدا ساخته شود.
       </p>
 
       {message ? <p className="form-message">{message}</p> : null}
 
       {campaignLink ? (
         <div className="actions">
-          <a href={campaignLink}>مشاهده کمپین ساختهشده</a>
-          <a href="/publishing/campaigns">همه کمپینها</a>
+          <a href={campaignLink}>مشاهده کمپین ساخته‌شده</a>
+          <a href="/publishing/campaigns">همه کمپین‌ها</a>
         </div>
       ) : null}
 
@@ -426,41 +426,41 @@ export default async function PublishingHomePage() {
     <main className="page-shell">
       <PageHeader
         eyebrow="انتشار"
-        title="چه چیزی را برای کدام پروژه منتشر کنیم"
-        lead="اول پروژه را مشخص کن بعد متن و رسانه را وارد کن سپس کانالهای مقصد را انتخاب کن."
+        title="چه چیزی را برای کدام پروژه منتشر کنیم؟"
+        lead="اول پروژه را مشخص کن، بعد متن و رسانه را وارد کن، سپس کانال‌های مقصد را انتخاب کن."
       >
         <div className="actions">
-          <a href="/publishing/campaigns">کمپینهای قبلی</a>
+          <a href="/publishing/campaigns">کمپین‌های قبلی</a>
           <a href="/publishing/queue">صف انتشار</a>
         </div>
       </PageHeader>
 
       <section className="stats-grid">
-        <StatCard label="قدم فعلی" value="ساخت کمپین" helper="هنوز انتشار واقعی انجام نمیشود" />
-        <StatCard label="کانالهای فعال" value={channels.length} helper="قابل انتخاب برای کمپین" />
-        <StatCard label="مرحله بعد" value="نسخهسازی" helper="برای هر کانال متن جدا ساخته میشود" />
+        <StatCard label="قدم فعلی" value="ساخت کمپین" helper="هنوز انتشار واقعی انجام نمی‌شود" />
+        <StatCard label="کانال‌های فعال" value={channels.length} helper="قابل انتخاب برای کمپین" />
+        <StatCard label="مرحله بعد" value="نسخه‌سازی" helper="برای هر کانال متن جدا ساخته می‌شود" />
         <StatCard label="انتشار" value="دستی" helper="بعد از بازبینی و صف انتشار" />
       </section>
 
       <section className="publish-flow-strip" aria-label="مسیر انتشار">
         <div>
-          <span></span>
+          <span>۱</span>
           <strong>پروژه</strong>
         </div>
         <div>
-          <span></span>
+          <span>۲</span>
           <strong>متن و رسانه</strong>
         </div>
         <div>
-          <span></span>
-          <strong>کانالها</strong>
+          <span>۳</span>
+          <strong>کانال‌ها</strong>
         </div>
         <div>
-          <span></span>
-          <strong>نسخهسازی</strong>
+          <span>۴</span>
+          <strong>نسخه‌سازی</strong>
         </div>
         <div>
-          <span></span>
+          <span>۵</span>
           <strong>صف انتشار</strong>
         </div>
       </section>
@@ -470,7 +470,7 @@ export default async function PublishingHomePage() {
 
         <section className="panel quiet-panel">
           <div className="panel-heading">
-            <p className="eyebrow">کانالهای فعلی</p>
+            <p className="eyebrow">کانال‌های فعلی</p>
             <h2>مقصدهای قابل انتخاب</h2>
           </div>
 
@@ -488,7 +488,7 @@ export default async function PublishingHomePage() {
           </div>
 
           <div className="actions">
-            <a href="/publishing/campaigns">کمپینها</a>
+            <a href="/publishing/campaigns">کمپین‌ها</a>
             <a href="/settings">تنظیمات اتصال</a>
           </div>
         </section>
@@ -514,17 +514,17 @@ const groups = [
       {
         href: "/publishing/attempts",
         title: "گزارش انتشار",
-        description: "نتیجه اجرای وردپرس تلگرام dry-run و خطاها."
+        description: "نتیجه اجرای وردپرس، تلگرام، dry-run و خطاها."
       },
       {
         href: "/publishing/campaigns",
-        title: "کمپینهای قبلی",
-        description: "کمپینهایی که برای انتشار ساخته شدهاند."
+        title: "کمپین‌های قبلی",
+        description: "کمپین‌هایی که برای انتشار ساخته شده‌اند."
       },
       {
         href: "/publishing/queue",
         title: "صف انتشار",
-        description: "آیتمهایی که برای اجرا آماده شدهاند."
+        description: "آیتم‌هایی که برای اجرا آماده شده‌اند."
       }
     ]
   },
@@ -538,8 +538,8 @@ const groups = [
       },
       {
         href: "/advanced/cleanup",
-        title: "پاکسازی دادههای تستی",
-        description: "حذف امن دادههای smoke/test با backup."
+        title: "پاک‌سازی داده‌های تستی",
+        description: "حذف امن داده‌های smoke/test با backup."
       },
       {
         href: "/maintenance",
@@ -554,22 +554,22 @@ const groups = [
       {
         href: "/advanced",
         title: "پیشرفته",
-        description: "همه ابزارهای کماستفاده و فنی."
+        description: "همه ابزارهای کم‌استفاده و فنی."
       },
       {
         href: "/runtime",
         title: "سلامت سیستم",
-        description: "بررسی وضعیت backend و سرویسها."
+        description: "بررسی وضعیت backend و سرویس‌ها."
       },
       {
         href: "/projects",
-        title: "پروژهها",
-        description: "فهرست و مدیریت پروژهها."
+        title: "پروژه‌ها",
+        description: "فهرست و مدیریت پروژه‌ها."
       },
       {
         href: "/content-assets",
         title: "محتواها",
-        description: "داراییهای محتوایی ثبتشده."
+        description: "دارایی‌های محتوایی ثبت‌شده."
       }
     ]
   }
@@ -580,8 +580,8 @@ export default function OtherPage() {
     <main className="page-shell">
       <PageHeader
         eyebrow="سایر"
-        title="گزارشها تنظیمات و ابزارهای فنی"
-        lead="هر چیزی که کار روزمره تولید و انتشار نیست اینجا قرار میگیرد تا داشبورد اصلی شلوغ نشود."
+        title="گزارش‌ها، تنظیمات و ابزارهای فنی"
+        lead="هر چیزی که کار روزمره تولید و انتشار نیست، اینجا قرار می‌گیرد تا داشبورد اصلی شلوغ نشود."
       >
         <div className="actions">
           <a href="/">داشبورد</a>
@@ -600,7 +600,7 @@ export default function OtherPage() {
             <div className="operator-grid">
               {group.items.map((item) => (
                 <a className="operator-card" href={item.href} key={item.href}>
-                  <span></span>
+                  <span>•</span>
                   <strong>{item.title}</strong>
                   <p>{item.description}</p>
                 </a>

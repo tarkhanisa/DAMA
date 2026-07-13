@@ -8,12 +8,12 @@ export default function ProducePage() {
     <main className="page-shell">
       <PageHeader
         eyebrow="تولید"
-        title="برای چه پروژهای میخواهی محتوا بسازی"
-        lead="این بخش فعلا مسیر ساده تولید متن و پست را نگه میدارد. تولید تصویر و ویدیو در مرحلههای بعدی توسعه پیدا میکند."
+        title="برای چه پروژه‌ای می‌خواهی محتوا بسازی؟"
+        lead="این بخش فعلاً مسیر ساده تولید متن و پست را نگه می‌دارد. تولید تصویر و ویدیو در مرحله‌های بعدی توسعه پیدا می‌کند."
       >
         <div className="actions">
           <a href="/generate">تولید متن</a>
-          <a href="/projects">پروژهها</a>
+          <a href="/projects">پروژه‌ها</a>
         </div>
       </PageHeader>
 
@@ -26,27 +26,27 @@ export default function ProducePage() {
 
       <section className="operator-grid">
         <a className="operator-card primary-operator-card" href="/generate">
-          <span></span>
+          <span>۱</span>
           <strong>تولید متن / پست</strong>
-          <p>برای سایت تلگرام لینکدین یا کمپین متن مادر بساز.</p>
+          <p>برای سایت، تلگرام، لینکدین یا کمپین، متن مادر بساز.</p>
         </a>
 
         <a className="operator-card" href="/projects">
-          <span></span>
+          <span>۲</span>
           <strong>انتخاب یا بررسی پروژه</strong>
-          <p>پروژههایی که قبلا تعریف شدهاند را ببین.</p>
+          <p>پروژه‌هایی که قبلاً تعریف شده‌اند را ببین.</p>
         </a>
 
         <a className="operator-card muted-operator-card" href="/produce">
-          <span></span>
+          <span>۳</span>
           <strong>تولید تصویر</strong>
-          <p>در مرحله بعد تولید تصویر پروژهمحور از اینجا فعال میشود.</p>
+          <p>در مرحله بعد، تولید تصویر پروژه‌محور از اینجا فعال می‌شود.</p>
         </a>
 
         <a className="operator-card muted-operator-card" href="/produce">
-          <span></span>
+          <span>۴</span>
           <strong>تولید ویدیو</strong>
-          <p>در مرحلههای بعد تولید ویدیو و آمادهسازی رسانه اضافه میشود.</p>
+          <p>در مرحله‌های بعد، تولید ویدیو و آماده‌سازی رسانه اضافه می‌شود.</p>
         </a>
       </section>
     </main>

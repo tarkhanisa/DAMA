@@ -62,41 +62,41 @@ export default async function PublishingHomePage() {
     <main className="page-shell">
       <PageHeader
         eyebrow="انتشار"
-        title="چه چیزی را برای کدام پروژه منتشر کنیم"
-        lead="اول پروژه را مشخص کن بعد متن و رسانه را وارد کن سپس کانالهای مقصد را انتخاب کن."
+        title="چه چیزی را برای کدام پروژه منتشر کنیم؟"
+        lead="اول پروژه را مشخص کن، بعد متن و رسانه را وارد کن، سپس کانال‌های مقصد را انتخاب کن."
       >
         <div className="actions">
-          <a href="/publishing/campaigns">کمپینهای قبلی</a>
+          <a href="/publishing/campaigns">کمپین‌های قبلی</a>
           <a href="/publishing/queue">صف انتشار</a>
         </div>
       </PageHeader>
 
       <section className="stats-grid">
-        <StatCard label="قدم فعلی" value="ساخت کمپین" helper="هنوز انتشار واقعی انجام نمیشود" />
-        <StatCard label="کانالهای فعال" value={channels.length} helper="قابل انتخاب برای کمپین" />
-        <StatCard label="مرحله بعد" value="نسخهسازی" helper="برای هر کانال متن جدا ساخته میشود" />
+        <StatCard label="قدم فعلی" value="ساخت کمپین" helper="هنوز انتشار واقعی انجام نمی‌شود" />
+        <StatCard label="کانال‌های فعال" value={channels.length} helper="قابل انتخاب برای کمپین" />
+        <StatCard label="مرحله بعد" value="نسخه‌سازی" helper="برای هر کانال متن جدا ساخته می‌شود" />
         <StatCard label="انتشار" value="دستی" helper="بعد از بازبینی و صف انتشار" />
       </section>
 
       <section className="publish-flow-strip" aria-label="مسیر انتشار">
         <div>
-          <span></span>
+          <span>۱</span>
           <strong>پروژه</strong>
         </div>
         <div>
-          <span></span>
+          <span>۲</span>
           <strong>متن و رسانه</strong>
         </div>
         <div>
-          <span></span>
-          <strong>کانالها</strong>
+          <span>۳</span>
+          <strong>کانال‌ها</strong>
         </div>
         <div>
-          <span></span>
-          <strong>نسخهسازی</strong>
+          <span>۴</span>
+          <strong>نسخه‌سازی</strong>
         </div>
         <div>
-          <span></span>
+          <span>۵</span>
           <strong>صف انتشار</strong>
         </div>
       </section>
@@ -106,7 +106,7 @@ export default async function PublishingHomePage() {
 
         <section className="panel quiet-panel">
           <div className="panel-heading">
-            <p className="eyebrow">کانالهای فعلی</p>
+            <p className="eyebrow">کانال‌های فعلی</p>
             <h2>مقصدهای قابل انتخاب</h2>
           </div>
 
@@ -124,7 +124,7 @@ export default async function PublishingHomePage() {
           </div>
 
           <div className="actions">
-            <a href="/publishing/campaigns">کمپینها</a>
+            <a href="/publishing/campaigns">کمپین‌ها</a>
             <a href="/settings">تنظیمات اتصال</a>
           </div>
         </section>

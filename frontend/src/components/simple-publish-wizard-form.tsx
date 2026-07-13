@@ -71,7 +71,7 @@ export function SimplePublishWizardForm({
         return;
       }
 
-      setMessage("کمپین انتشار ساخته شد. قدم بعدی: ساخت نسخههای مخصوص هر کانال.");
+      setMessage("کمپین انتشار ساخته شد. قدم بعدی: ساخت نسخه‌های مخصوص هر کانال.");
       setCampaignLink(`/publishing/campaigns/${payload.id}`);
     } catch (error) {
       setMessage(friendlyErrorMessage(error instanceof Error ? error.message : "خطای ناشناخته"));
@@ -88,11 +88,11 @@ export function SimplePublishWizardForm({
       </div>
 
       <label>
-        این محتوا برای کدام پروژه است
+        این محتوا برای کدام پروژه است؟
         <input
           value={projectName}
           onChange={(event) => setProjectName(event.target.value)}
-          placeholder="مثلا دامامدیا گرگران درخت و دختر اورماشاپ..."
+          placeholder="مثلاً دامامدیا، گرگران، درخت و دختر، اورماشاپ..."
           required
         />
       </label>
@@ -112,14 +112,14 @@ export function SimplePublishWizardForm({
         <textarea
           value={sourceBody}
           onChange={(event) => setSourceBody(event.target.value)}
-          placeholder="توضیح اصلی را اینجا بنویس. بعدا برای هر شبکه نسخه مناسب ساخته میشود."
+          placeholder="توضیح اصلی را اینجا بنویس. بعداً برای هر شبکه نسخه مناسب ساخته می‌شود."
           rows={7}
           required
         />
       </label>
 
       <label>
-        عکسها یا ویدیوها
+        عکس‌ها یا ویدیوها
         <textarea
           value={mediaUrls}
           onChange={(event) => setMediaUrls(event.target.value)}
@@ -129,7 +129,7 @@ export function SimplePublishWizardForm({
       </label>
 
       <div className="field-group">
-        <span>کجا منتشر شود</span>
+        <span>کجا منتشر شود؟</span>
 
         <div className="channel-checkbox-grid">
           {channels.length > 0 ? (
@@ -145,21 +145,21 @@ export function SimplePublishWizardForm({
               </label>
             ))
           ) : (
-            <p className="muted-note">هنوز کانال فعالی ثبت نشده است. اول از بخش تنظیمات/انتشار کانالها را بساز.</p>
+            <p className="muted-note">هنوز کانال فعالی ثبت نشده است. اول از بخش تنظیمات/انتشار کانال‌ها را بساز.</p>
           )}
         </div>
       </div>
 
       <p className="muted-note">
-        این دکمه هنوز چیزی را منتشر نمیکند. فقط یک کمپین مادر میسازد تا در قدم بعد برای هر کانال نسخه جدا ساخته شود.
+        این دکمه هنوز چیزی را منتشر نمی‌کند. فقط یک کمپین مادر می‌سازد تا در قدم بعد برای هر کانال نسخه جدا ساخته شود.
       </p>
 
       {message ? <p className="form-message">{message}</p> : null}
 
       {campaignLink ? (
         <div className="actions">
-          <a href={campaignLink}>مشاهده کمپین ساختهشده</a>
-          <a href="/publishing/campaigns">همه کمپینها</a>
+          <a href={campaignLink}>مشاهده کمپین ساخته‌شده</a>
+          <a href="/publishing/campaigns">همه کمپین‌ها</a>
         </div>
       ) : null}
 
