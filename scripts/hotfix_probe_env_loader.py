@@ -1,4 +1,11 @@
+﻿from pathlib import Path
 
+ROOT = Path("I:/DAMA")
+
+probe = ROOT / "scripts/probe_local_ai_tools.py"
+
+probe.write_text(
+    r'''
 from __future__ import annotations
 
 from pathlib import Path
@@ -43,4 +50,8 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-    
+    ''',
+    encoding="utf-8",
+)
+
+print("probe_local_ai_tools.py patched.")

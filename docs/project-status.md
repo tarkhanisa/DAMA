@@ -2354,3 +2354,19 @@ Added behavior:
 - Safe stop closes the dedicated DAMA window without closing the user's normal browser sessions.
 - Start still restores the last saved route.
 - Ollama is intentionally not stopped.
+
+## Release Pack AI-11 Completed
+
+Name:
+
+FFmpeg Local Video Fallback Adapter
+
+Added behavior:
+
+- DAMA_FFMPEG_PATH points to the discovered ffmpeg.exe.
+- DAMA_LOCAL_VIDEO_COMMAND points to the local FFmpeg adapter.
+- Local video jobs can create a real MP4.
+- One start image creates a short subtle-zoom video.
+- Start image + end image creates a fade transition video.
+- Output is saved under backend/outputs/local-video.
+- This is a local fallback renderer, not AI video generation.

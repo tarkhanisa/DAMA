@@ -67,3 +67,6 @@ frontend/.env.local
 
 # DAMA local app window runtime
 .runtime/
+
+# DAMA generated local video outputs
+backend/outputs/
