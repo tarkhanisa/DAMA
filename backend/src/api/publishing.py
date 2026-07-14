@@ -60,6 +60,25 @@ from src.services.media_campaign_service import (
     update_media_campaign,
 )
 
+from src.services.local_video_service import (
+    create_video_job,
+    get_video_job,
+    list_video_jobs,
+    local_video_config,
+    run_video_job,
+)
+
+from src.services.local_ai_tools_service import (
+    enhance_local_video_prompt,
+    local_ai_tools_status,
+)
+
+from src.services.operator_session_service import (
+    read_operator_session,
+    safe_exit,
+    update_last_route,
+)
+
 router = APIRouter(prefix="/publishing", tags=["publishing"])
 
 
@@ -378,3 +397,66 @@ def api_update_media_campaign(campaign_id: str, payload: dict[str, Any]) -> dict
         raise HTTPException(status_code=404, detail="Media campaign not found.")
 
     return campaign
+
+
+
+@router.get("/local-video/config")
+def api_local_video_config() -> dict[str, Any]:
+    return local_video_config()
+
+
+@router.get("/local-video/jobs")
+def api_list_local_video_jobs(status: str | None = None) -> dict[str, Any]:
+    return list_video_jobs(status=status)
+
+
+@router.post("/local-video/jobs")
+def api_create_local_video_job(payload: dict[str, Any]) -> dict[str, Any]:
+    return create_video_job(payload)
+
+
+@router.get("/local-video/jobs/{job_id}")
+def api_get_local_video_job(job_id: str) -> dict[str, Any]:
+    job = get_video_job(job_id)
+
+    if not job:
+        raise HTTPException(status_code=404, detail="Local video job not found.")
+
+    return job
+
+
+@router.post("/local-video/jobs/{job_id}/run")
+def api_run_local_video_job(job_id: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
+    result = run_video_job(job_id, payload)
+
+    if not result:
+        raise HTTPException(status_code=404, detail="Local video job not found.")
+
+    return result
+
+
+
+@router.get("/local-tools/status")
+def api_local_ai_tools_status() -> dict[str, Any]:
+    return local_ai_tools_status()
+
+
+@router.post("/local-video/prompt/enhance")
+def api_enhance_local_video_prompt(payload: dict[str, Any]) -> dict[str, Any]:
+    return enhance_local_video_prompt(payload)
+
+
+
+@router.get("/operator/session")
+def api_get_operator_session() -> dict[str, Any]:
+    return read_operator_session()
+
+
+@router.post("/operator/session/route")
+def api_update_operator_route(payload: dict[str, Any]) -> dict[str, Any]:
+    return update_last_route(payload.get("last_route"))
+
+
+@router.post("/operator/session/safe-exit")
+def api_operator_safe_exit(payload: dict[str, Any] | None = None) -> dict[str, Any]:
+    return safe_exit(payload)

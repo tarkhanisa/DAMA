@@ -1,4 +1,5 @@
 import { PageHeader } from "../../../../components/page-header";
+import { PlanCampaignVariantsAction } from "../../../../components/plan-campaign-variants-action";
 import { StatCard } from "../../../../components/stat-card";
 import { formatPersianDate, labelConnector, shortId } from "../../../../lib/persian-copy";
 
@@ -138,8 +139,16 @@ export default async function MediaCampaignDetailPage({ params }: Props) {
         <section className="panel quiet-panel">
           <div className="panel-heading">
             <p className="eyebrow">قدم بعدی</p>
-            <h2>بعد از ساخت کمپین</h2>
+            <h2>ساخت نسخه‌های کانالی</h2>
           </div>
+
+          <PlanCampaignVariantsAction
+            apiBaseUrl={API_BASE_URL}
+            campaignId={campaignId}
+            sourceTitle={String(campaign.source_title ?? "")}
+            sourceBody={String(campaign.source_body ?? "")}
+            channelIds={channelIds}
+          />
 
           <ol className="simple-steps">
             <li>در مرحله بعد، برای کانال‌های انتخاب‌شده نسخه مخصوص ساخته می‌شود.</li>

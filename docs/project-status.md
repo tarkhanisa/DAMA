@@ -2179,3 +2179,153 @@ Goal:
 - after a campaign is created, generate platform-specific variants for selected channels
 - link generated variants back to the campaign
 - then add those variants to the publishing queue
+
+## Release Pack AI-8 Completed
+
+Name:
+
+Campaign-to-Variants Planner + Local Video Tool Foundation
+
+Added files:
+
+- backend/src/services/local_video_service.py
+- backend/tests/smoke_test_local_video.py
+- frontend/src/components/plan-campaign-variants-action.tsx
+- frontend/src/components/create-local-video-job-form.tsx
+- frontend/src/components/run-local-video-job-action.tsx
+- frontend/src/app/produce/video/page.tsx
+- frontend/src/app/produce/video/[jobId]/page.tsx
+
+Updated files:
+
+- backend/src/api/publishing.py
+- scripts/backend-check.ps1
+- scripts/frontend-check.ps1
+- frontend/src/app/produce/page.tsx
+- frontend/src/app/publishing/campaigns/[campaignId]/page.tsx
+- frontend/src/app/globals.css
+- docs/project-status.md
+
+Added behavior:
+
+- campaign detail can generate platform-specific variants through existing variants planner
+- local video jobs can be created from start image, optional end image and prompt
+- default video duration is 4 seconds
+- duration, aspect ratio and FPS are configurable
+- local video dry-run prepares input JSON
+- real local execution is adapter-based through DAMA_LOCAL_VIDEO_COMMAND
+
+Required for real local video generation later:
+
+- set DAMA_LOCAL_VIDEO_COMMAND to a local executable/script
+- that command receives input_json_path and output_video_path as arguments
+- examples can be built for ComfyUI, Wan, AnimateDiff or other local tools
+
+## Release Pack AI-9 Completed
+
+Name:
+
+Local AI Tools Bridge
+
+Added files:
+
+- backend/src/services/local_ai_tools_service.py
+- backend/tests/smoke_test_local_ai_tools.py
+- scripts/probe_local_ai_tools.py
+- frontend/src/app/produce/video/setup/page.tsx
+
+Updated files:
+
+- backend/src/api/publishing.py
+- scripts/backend-check.ps1
+- scripts/frontend-check.ps1
+- frontend/src/components/create-local-video-job-form.tsx
+- frontend/src/app/produce/video/page.tsx
+- docs/project-status.md
+
+Added behavior:
+
+- DAMA detects local Ollama
+- DAMA lists Qwen models if available
+- DAMA probes default ComfyUI local API
+- DAMA checks DAMA_LOCAL_VIDEO_COMMAND
+- local video form can enhance prompts with Ollama/Qwen
+- fallback prompt enhancement works even if Ollama is offline
+- local video setup page shows tool readiness
+
+Next recommended step:
+
+Release Pack AI-10: ComfyUI/Wan Adapter
+
+Goal:
+
+- decide which installed local studio/video engine will be used
+- create a concrete adapter script for that engine
+- set DAMA_LOCAL_VIDEO_COMMAND to that adapter
+- run a real short 4-second image-to-video job locally
+
+## Release Pack AI-10 Completed
+
+Name:
+
+Safe Start / Safe Exit / Restore Last Page
+
+Added files:
+
+- backend/src/services/operator_session_service.py
+- backend/tests/smoke_test_operator_session.py
+- scripts/dama-start.ps1
+- scripts/dama-stop.ps1
+- frontend/src/components/last-session-card.tsx
+- frontend/src/components/safe-exit-action.tsx
+- frontend/src/app/other/exit/page.tsx
+
+Updated files:
+
+- backend/src/api/publishing.py
+- scripts/backend-check.ps1
+- scripts/frontend-check.ps1
+- frontend/src/components/app-nav.tsx
+- frontend/src/app/page.tsx
+- frontend/src/app/other/page.tsx
+- frontend/src/app/globals.css
+- docs/project-status.md
+
+Added behavior:
+
+- app remembers the last visited route
+- home page shows a continue-last-page card
+- safe exit page saves last route
+- safe exit creates runtime data backup
+- safe exit schedules local dashboard shutdown
+- stop script closes frontend/backend local processes on ports 3000 and 8000
+- start script opens the dashboard at the last saved route
+- Ollama is intentionally not stopped
+
+Recommended daily usage:
+
+Start:
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dama-start.ps1 -CleanPorts
+
+Stop:
+
+Use /other/exit in the UI or run:
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dama-stop.ps1
+
+
+## Hotfix AI-10.2 Completed
+
+Name:
+
+Sticky Red Safe Exit Button
+
+Added behavior:
+
+- Safe Exit is always visible in the sticky top navigation.
+- Safe Exit button is red and prominent.
+- Safe Exit saves last route, creates backup and schedules backend/frontend shutdown.
+- Browser tab close is attempted with window.close().
+- If the browser blocks tab closing, a closed-screen fallback is shown.
+- dama-stop.ps1 was hardened to stop DAMA node/python/powershell processes while keeping Ollama alive.

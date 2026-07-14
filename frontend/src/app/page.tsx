@@ -1,3 +1,4 @@
+import { LastSessionCard } from "../components/last-session-card";
 import { PageHeader } from "../components/page-header";
 
 export const dynamic = "force-dynamic";

@@ -37,6 +37,11 @@ const groups = [
         description: "حذف امن داده‌های smoke/test با backup."
       },
       {
+        href: "/other/exit",
+        title: "خروج امن",
+        description: "ذخیره آخرین صفحه، backup و بستن سرورهای محلی DAMA."
+      },
+      {
         href: "/maintenance",
         title: "نگهداری",
         description: "ابزارهای نگهداری سیستم."

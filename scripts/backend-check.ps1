@@ -119,3 +119,39 @@ if (Test-Path $MediaCampaignSmokeTest) {
     }
 }
 
+$LocalVideoSmokeTest = Join-Path (Split-Path -Parent $PSScriptRoot) "backend\tests\smoke_test_local_video.py"
+$LocalVideoPython = Join-Path (Split-Path -Parent $PSScriptRoot) "backend\.venv\Scripts\python.exe"
+
+if (Test-Path $LocalVideoSmokeTest) {
+    Write-Host ""
+    Write-Host "Running .\backend\tests\smoke_test_local_video.py..."
+    & $LocalVideoPython $LocalVideoSmokeTest
+    if ($LASTEXITCODE -ne 0) {
+        throw "Smoke test failed: .\backend\tests\smoke_test_local_video.py"
+    }
+}
+
+$LocalAIToolsSmokeTest = Join-Path (Split-Path -Parent $PSScriptRoot) "backend\tests\smoke_test_local_ai_tools.py"
+$LocalAIToolsPython = Join-Path (Split-Path -Parent $PSScriptRoot) "backend\.venv\Scripts\python.exe"
+
+if (Test-Path $LocalAIToolsSmokeTest) {
+    Write-Host ""
+    Write-Host "Running .\backend\tests\smoke_test_local_ai_tools.py..."
+    & $LocalAIToolsPython $LocalAIToolsSmokeTest
+    if ($LASTEXITCODE -ne 0) {
+        throw "Smoke test failed: .\backend\tests\smoke_test_local_ai_tools.py"
+    }
+}
+
+$OperatorSessionSmokeTest = Join-Path (Split-Path -Parent $PSScriptRoot) "backend\tests\smoke_test_operator_session.py"
+$OperatorSessionPython = Join-Path (Split-Path -Parent $PSScriptRoot) "backend\.venv\Scripts\python.exe"
+
+if (Test-Path $OperatorSessionSmokeTest) {
+    Write-Host ""
+    Write-Host "Running .\backend\tests\smoke_test_operator_session.py..."
+    & $OperatorSessionPython $OperatorSessionSmokeTest
+    if ($LASTEXITCODE -ne 0) {
+        throw "Smoke test failed: .\backend\tests\smoke_test_operator_session.py"
+    }
+}
+

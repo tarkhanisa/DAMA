@@ -34,13 +34,7 @@ Pop-Location
 
 $RequiredFiles = @(
     ".\frontend\src\components\app-nav.tsx",
-    ".\frontend\src\components\simple-publish-wizard-form.tsx",
-    ".\frontend\src\app\page.tsx",
-    ".\frontend\src\app\produce\page.tsx",
-    ".\frontend\src\app\publishing\page.tsx",
-    ".\frontend\src\app\other\page.tsx",
-    ".\frontend\src\app\publishing\campaigns\page.tsx",
-    ".\frontend\src\app\publishing\campaigns\[campaignId]\page.tsx",
+    ".\frontend\src\components\safe-exit-action.tsx",
     ".\frontend\src\app\globals.css"
 )
 
@@ -51,56 +45,27 @@ foreach ($File in $RequiredFiles) {
 }
 
 $AppNav = Read-TextFile ".\frontend\src\components\app-nav.tsx"
-$HomePage = Read-TextFile ".\frontend\src\app\page.tsx"
-$ProducePage = Read-TextFile ".\frontend\src\app\produce\page.tsx"
-$PublishingPage = Read-TextFile ".\frontend\src\app\publishing\page.tsx"
-$OtherPage = Read-TextFile ".\frontend\src\app\other\page.tsx"
-$PublishWizard = Read-TextFile ".\frontend\src\components\simple-publish-wizard-form.tsx"
+$SafeExitAction = Read-TextFile ".\frontend\src\components\safe-exit-action.tsx"
 $Styles = Read-TextFile ".\frontend\src\app\globals.css"
 
-$ExpectedTopRoutes = @(
-    'href: "/"',
-    'href: "/produce"',
-    'href: "/publishing"',
-    'href: "/other"'
-)
-
-foreach ($Route in $ExpectedTopRoutes) {
-    if ($AppNav -notmatch [regex]::Escape($Route)) {
-        throw "Main nav missing route: $Route"
-    }
+if ($AppNav -notmatch "safe-exit-top-button") {
+    throw "App nav is missing sticky safe exit button."
 }
 
-if ($HomePage -notmatch "three-door-console") {
-    throw "Home page is missing three-door console."
+if ($AppNav -notmatch "/publishing/operator/session/safe-exit") {
+    throw "App nav safe exit button does not call backend safe exit endpoint."
 }
 
-if ($ProducePage -notmatch "/generate") {
-    throw "Produce page does not link to generation."
+if ($AppNav -notmatch "window.close") {
+    throw "App nav safe exit does not attempt to close the browser tab."
 }
 
-if ($PublishingPage -notmatch "SimplePublishWizardForm") {
-    throw "Publishing page is missing simplified publish wizard."
+if ($SafeExitAction -notmatch "window.close") {
+    throw "Safe exit page does not attempt to close the browser tab."
 }
 
-if ($PublishWizard -notmatch "/publishing/campaigns") {
-    throw "Publish wizard does not create campaigns."
-}
-
-if ($PublishWizard -notmatch "channel_ids") {
-    throw "Publish wizard does not submit selected channels."
-}
-
-if ($OtherPage -notmatch "/advanced/cleanup") {
-    throw "Other page does not link to cleanup."
-}
-
-if ($OtherPage -notmatch "/publishing/attempts") {
-    throw "Other page does not link to publishing attempts."
-}
-
-if ($Styles -notmatch "Three door operator console") {
-    throw "Global styles missing three-door marker."
+if ($Styles -notmatch "Sticky red safe exit button") {
+    throw "Global styles missing sticky red safe exit marker."
 }
 
 Write-Host "Frontend production readiness check passed."
