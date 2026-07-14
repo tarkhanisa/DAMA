@@ -2329,3 +2329,28 @@ Added behavior:
 - Browser tab close is attempted with window.close().
 - If the browser blocks tab closing, a closed-screen fallback is shown.
 - dama-stop.ps1 was hardened to stop DAMA node/python/powershell processes while keeping Ollama alive.
+
+## Hotfix AI-10.3 Completed
+
+Name:
+
+Dedicated DAMA App Window
+
+Added files:
+
+- scripts/open-dashboard-window.ps1
+
+Updated files:
+
+- scripts/dama-start.ps1
+- scripts/dama-stop.ps1
+- .gitignore
+- docs/project-status.md
+
+Added behavior:
+
+- DAMA opens in a dedicated Edge/Chrome app-style window instead of a normal browser tab.
+- DAMA uses an isolated local browser profile under .runtime/dama-app-window-profile.
+- Safe stop closes the dedicated DAMA window without closing the user's normal browser sessions.
+- Start still restores the last saved route.
+- Ollama is intentionally not stopped.

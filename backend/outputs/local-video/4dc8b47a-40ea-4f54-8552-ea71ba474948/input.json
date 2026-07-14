@@ -1,0 +1,26 @@
+{
+  "id": "4dc8b47a-40ea-4f54-8552-ea71ba474948",
+  "project_name": "DAMA Smoke",
+  "title": "تست ویدیو لوکال",
+  "prompt": "حرکت آرام سینمایی از تصویر اول به تصویر دوم.",
+  "negative_prompt": "",
+  "start_image": "I:/DAMA/smoke-start.png",
+  "end_image": "I:/DAMA/smoke-end.png",
+  "duration_seconds": 4.0,
+  "aspect_ratio": "16:9",
+  "fps": 24,
+  "seed": "",
+  "profile": "image-to-video",
+  "status": "draft",
+  "output_path": "",
+  "error": "",
+  "created_at": "2026-07-14T15:41:59.344685+00:00",
+  "updated_at": "2026-07-14T15:41:59.344685+00:00",
+  "history": [
+    {
+      "status": "draft",
+      "at": "2026-07-14T15:41:59.344685+00:00",
+      "message": "Local video job created."
+    }
+  ]
+}

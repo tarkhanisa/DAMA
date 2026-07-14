@@ -45,6 +45,6 @@ Start-Process powershell.exe -ArgumentList @(
 
 Start-Sleep -Seconds 6
 
-Start-Process $Url
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\scripts\open-dashboard-window.ps1" -Url $Url
 
-Write-Host "DAMA started. Browser opened at $Url"
+Write-Host "DAMA started in dedicated app window."

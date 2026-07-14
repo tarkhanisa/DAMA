@@ -64,3 +64,6 @@ frontend/.env.local
 !.env.example
 !backend/.env.local.example
 !frontend/.env.example
+
+# DAMA local app window runtime
+.runtime/

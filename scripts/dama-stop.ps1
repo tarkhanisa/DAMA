@@ -42,6 +42,8 @@ foreach ($Port in $Ports) {
     }
 }
 
+$DamaProfileMarker = ".runtime\dama-app-window-profile"
+
 $DamaProcesses = Get-CimInstance Win32_Process |
     Where-Object {
         $_.CommandLine -and
@@ -49,16 +51,26 @@ $DamaProcesses = Get-CimInstance Win32_Process |
             $_.CommandLine -like "*I:\DAMA*" -or
             $_.CommandLine -like "*uvicorn src.main:app*" -or
             $_.CommandLine -like "*next dev*" -or
-            $_.CommandLine -like "*dev-all.ps1*"
+            $_.CommandLine -like "*dev-all.ps1*" -or
+            $_.CommandLine -like "*$DamaProfileMarker*" -or
+            $_.CommandLine -like "*--app=http://localhost:3000*"
         ) -and
         (
-            $_.Name -in @("node.exe", "python.exe", "pythonw.exe", "powershell.exe", "pwsh.exe")
+            $_.Name -in @(
+                "node.exe",
+                "python.exe",
+                "pythonw.exe",
+                "powershell.exe",
+                "pwsh.exe",
+                "msedge.exe",
+                "chrome.exe"
+            )
         ) -and
         $_.ProcessId -ne $PID
     }
 
 foreach ($Process in $DamaProcesses) {
-    Write-Host "Stopping DAMA process: $($Process.Name) PID $($Process.ProcessId)"
+    Write-Host "Stopping DAMA process/window: $($Process.Name) PID $($Process.ProcessId)"
     Stop-Process -Id $Process.ProcessId -Force -ErrorAction SilentlyContinue
 }
 
