@@ -1,3 +1,207 @@
+﻿from pathlib import Path
+
+ROOT = Path("I:/DAMA")
+
+
+def write_file(path: str, content: str) -> None:
+    target = ROOT / path
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(content.strip() + "\n", encoding="utf-8")
+    print(f"Wrote {path}")
+
+
+def append_once(path: str, marker: str, content: str) -> None:
+    target = ROOT / path
+    text = target.read_text(encoding="utf-8") if target.exists() else ""
+
+    if marker not in text:
+        target.write_text(text.rstrip() + "\n\n" + content.strip() + "\n", encoding="utf-8")
+        print(f"Updated {path}")
+    else:
+        print(f"Skipped {path}")
+
+
+api_path = ROOT / "backend/src/api/publishing.py"
+api_text = api_path.read_text(encoding="utf-8")
+
+if '@router.get("/local-video/jobs/{job_id}/output")' not in api_text:
+    api_text += r'''
+
+
+@router.get("/local-video/jobs/{job_id}/output")
+def api_get_local_video_output(job_id: str):
+    from pathlib import Path
+
+    from fastapi import HTTPException
+    from fastapi.responses import FileResponse
+
+    from src.services.local_video_service import get_video_job
+
+    job = get_video_job(job_id)
+
+    if not isinstance(job, dict):
+        raise HTTPException(status_code=404, detail="Local video job not found.")
+
+    output_path = Path(str(job.get("output_path") or ""))
+
+    if not output_path.is_file():
+        raise HTTPException(status_code=404, detail="Local video output file not found.")
+
+    return FileResponse(
+        path=str(output_path),
+        media_type="video/mp4",
+        filename=output_path.name,
+    )
+
+
+@router.post("/local-video/jobs/{job_id}/open-output-folder")
+def api_open_local_video_output_folder(job_id: str):
+    from pathlib import Path
+    import os
+    import subprocess
+    import sys
+
+    from fastapi import HTTPException
+
+    from src.services.local_video_service import get_video_job
+
+    job = get_video_job(job_id)
+
+    if not isinstance(job, dict):
+        raise HTTPException(status_code=404, detail="Local video job not found.")
+
+    output_path = Path(str(job.get("output_path") or ""))
+
+    if not output_path:
+        raise HTTPException(status_code=404, detail="Local video output path is empty.")
+
+    folder = output_path.parent
+
+    if not folder.exists():
+        raise HTTPException(status_code=404, detail="Local video output folder not found.")
+
+    try:
+        if os.name == "nt":
+            os.startfile(str(folder))  # type: ignore[attr-defined]
+        elif sys.platform == "darwin":
+            subprocess.Popen(["open", str(folder)])
+        else:
+            subprocess.Popen(["xdg-open", str(folder)])
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Could not open output folder: {exc}") from exc
+
+    return {
+        "ok": True,
+        "folder": str(folder),
+        "message": "Output folder open request sent.",
+    }
+'''
+
+api_path.write_text(api_text.strip() + "\n", encoding="utf-8")
+print("Patched publishing API with video output endpoints.")
+
+
+write_file(
+    "frontend/src/components/local-video-output-actions.tsx",
+    r'''
+"use client";
+
+import { useState } from "react";
+import { friendlyErrorMessage } from "../lib/persian-copy";
+
+type LocalVideoOutputActionsProps = {
+  apiBaseUrl: string;
+  jobId: string;
+  outputPath: string;
+  hasOutput: boolean;
+};
+
+export function LocalVideoOutputActions({
+  apiBaseUrl,
+  jobId,
+  outputPath,
+  hasOutput
+}: LocalVideoOutputActionsProps) {
+  const [message, setMessage] = useState("");
+
+  const outputUrl = `${apiBaseUrl}/publishing/local-video/jobs/${jobId}/output`;
+
+  async function copyOutputPath() {
+    setMessage("");
+
+    if (!outputPath) {
+      setMessage("هنوز مسیر خروجی وجود ندارد.");
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(outputPath);
+      setMessage("مسیر خروجی کپی شد.");
+    } catch {
+      setMessage("کپی خودکار انجام نشد. مسیر را دستی کپی کن.");
+    }
+  }
+
+  async function openOutputFolder() {
+    setMessage("");
+
+    try {
+      const response = await fetch(
+        `${apiBaseUrl}/publishing/local-video/jobs/${jobId}/open-output-folder`,
+        {
+          method: "POST"
+        }
+      );
+
+      const payload = await response.json();
+
+      if (!response.ok) {
+        setMessage(friendlyErrorMessage(String(payload.detail ?? `HTTP ${response.status}`)));
+        return;
+      }
+
+      setMessage("درخواست باز کردن فولدر خروجی ارسال شد.");
+    } catch (error) {
+      setMessage(friendlyErrorMessage(error instanceof Error ? error.message : "خطای ناشناخته"));
+    }
+  }
+
+  function openVideoInNewWindow() {
+    if (!hasOutput) {
+      setMessage("هنوز ویدیوی خروجی ساخته نشده است.");
+      return;
+    }
+
+    window.open(outputUrl, "_blank", "noopener,noreferrer");
+  }
+
+  return (
+    <div className="local-video-actions">
+      <button type="button" onClick={openVideoInNewWindow} disabled={!hasOutput}>
+        مشاهده ویدیو
+      </button>
+
+      <button type="button" onClick={openOutputFolder} disabled={!hasOutput}>
+        باز کردن فولدر خروجی
+      </button>
+
+      <button type="button" onClick={copyOutputPath} disabled={!outputPath}>
+        کپی مسیر فایل
+      </button>
+
+      <a href={`/produce/video/${jobId}`}>به‌روزرسانی وضعیت</a>
+
+      {message ? <p className="form-message">{message}</p> : null}
+    </div>
+  );
+}
+    ''',
+)
+
+
+write_file(
+    "frontend/src/app/produce/video/[jobId]/page.tsx",
+    r'''
 import { LocalVideoOutputActions } from "../../../../components/local-video-output-actions";
 import { PageHeader } from "../../../../components/page-header";
 import { RunLocalVideoJobAction } from "../../../../components/run-local-video-job-action";
@@ -349,3 +553,239 @@ export default async function LocalVideoJobPage({ params }: Props) {
     </main>
   );
 }
+    ''',
+)
+
+
+append_once(
+    "frontend/src/app/globals.css",
+    "/* Video workbench */",
+    r'''
+/* Video workbench */
+.video-workbench-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.video-preview-panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.local-video-preview,
+.empty-video-preview {
+  width: 100%;
+  min-height: 320px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 1.25rem;
+  background: #0f172a;
+  box-shadow: var(--shadow);
+}
+
+.local-video-preview {
+  display: block;
+  max-height: 560px;
+}
+
+.empty-video-preview {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  text-align: center;
+  color: white;
+}
+
+.empty-video-preview p {
+  max-width: 36rem;
+  margin: 0.6rem auto 0;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.9;
+}
+
+.output-path-box {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.9rem 1rem;
+  border: 1px dashed rgba(15, 23, 42, 0.18);
+  border-radius: 1rem;
+  background: rgba(248, 250, 252, 0.85);
+}
+
+.output-path-box span {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.output-path-box code {
+  overflow-wrap: anywhere;
+  direction: ltr;
+  text-align: left;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+}
+
+.local-video-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  align-items: center;
+}
+
+.local-video-actions button,
+.local-video-actions a {
+  display: inline-flex;
+  min-height: 2.55rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.95rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--text);
+  color: white;
+  text-decoration: none;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.local-video-actions button:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+.video-error-box {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(180, 35, 24, 0.28);
+  border-radius: 1rem;
+  background: rgba(254, 242, 242, 0.9);
+  color: #7f1d1d;
+}
+
+.video-error-box p {
+  margin: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.8;
+}
+
+.video-step-grid,
+.video-engine-roadmap {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.video-step-card,
+.video-engine-roadmap article {
+  min-height: 9rem;
+  padding: 1rem;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 1.1rem;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.video-step-card span {
+  display: inline-flex;
+  margin-bottom: 0.55rem;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.08);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.video-step-card h3,
+.video-engine-roadmap h3,
+.section-subtitle {
+  margin: 0 0 0.5rem;
+}
+
+.video-step-card p,
+.video-engine-roadmap p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.video-step-card.done {
+  border-color: rgba(22, 163, 74, 0.25);
+  background: rgba(240, 253, 244, 0.9);
+}
+
+.video-step-card.active {
+  border-color: rgba(37, 99, 235, 0.25);
+  background: rgba(239, 246, 255, 0.92);
+}
+
+.video-step-card.failed {
+  border-color: rgba(180, 35, 24, 0.28);
+  background: rgba(254, 242, 242, 0.92);
+}
+
+.secondary-output {
+  opacity: 0.88;
+}
+
+.video-engine-roadmap {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 1100px) {
+  .video-workbench-grid,
+  .video-step-grid,
+  .video-engine-roadmap {
+    grid-template-columns: 1fr;
+  }
+}
+    ''',
+)
+
+
+append_once(
+    "docs/project-status.md",
+    "## Release Pack AI-12 Completed",
+    r'''
+## Release Pack AI-12 Completed
+
+Name:
+
+Video Workbench Dashboard
+
+Added files:
+
+- frontend/src/components/local-video-output-actions.tsx
+
+Updated files:
+
+- backend/src/api/publishing.py
+- frontend/src/app/produce/video/[jobId]/page.tsx
+- frontend/src/app/globals.css
+- docs/project-status.md
+
+Added behavior:
+
+- local video output can be streamed from the backend
+- dashboard can preview completed MP4 outputs
+- dashboard shows output path and copy/open actions
+- dashboard can request opening the output folder on the local machine
+- video job detail page is now a production workbench
+- process steps are visible: request, prompt, prepare, render, review
+- future engines are framed: Motion Graphics, ComfyUI/Stable Diffusion, Cloud Video Connectors
+
+Next recommended step:
+
+Release Pack AI-13: Local Motion Graphics Engine
+
+Goal:
+
+- add a local 2D motion graphics renderer
+- support line-drawing animation, pan/zoom, layer motion, animated text and simple After Effects-style compositions
+- keep outputs in the same Video Workbench
+    ''',
+)
+
+print("Release Pack AI-12 applied successfully.")

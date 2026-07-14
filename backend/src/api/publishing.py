@@ -460,3 +460,73 @@ def api_update_operator_route(payload: dict[str, Any]) -> dict[str, Any]:
 @router.post("/operator/session/safe-exit")
 def api_operator_safe_exit(payload: dict[str, Any] | None = None) -> dict[str, Any]:
     return safe_exit(payload)
+
+
+
+@router.get("/local-video/jobs/{job_id}/output")
+def api_get_local_video_output(job_id: str):
+    from pathlib import Path
+
+    from fastapi import HTTPException
+    from fastapi.responses import FileResponse
+
+    from src.services.local_video_service import get_video_job
+
+    job = get_video_job(job_id)
+
+    if not isinstance(job, dict):
+        raise HTTPException(status_code=404, detail="Local video job not found.")
+
+    output_path = Path(str(job.get("output_path") or ""))
+
+    if not output_path.is_file():
+        raise HTTPException(status_code=404, detail="Local video output file not found.")
+
+    return FileResponse(
+        path=str(output_path),
+        media_type="video/mp4",
+        filename=output_path.name,
+    )
+
+
+@router.post("/local-video/jobs/{job_id}/open-output-folder")
+def api_open_local_video_output_folder(job_id: str):
+    from pathlib import Path
+    import os
+    import subprocess
+    import sys
+
+    from fastapi import HTTPException
+
+    from src.services.local_video_service import get_video_job
+
+    job = get_video_job(job_id)
+
+    if not isinstance(job, dict):
+        raise HTTPException(status_code=404, detail="Local video job not found.")
+
+    output_path = Path(str(job.get("output_path") or ""))
+
+    if not output_path:
+        raise HTTPException(status_code=404, detail="Local video output path is empty.")
+
+    folder = output_path.parent
+
+    if not folder.exists():
+        raise HTTPException(status_code=404, detail="Local video output folder not found.")
+
+    try:
+        if os.name == "nt":
+            os.startfile(str(folder))  # type: ignore[attr-defined]
+        elif sys.platform == "darwin":
+            subprocess.Popen(["open", str(folder)])
+        else:
+            subprocess.Popen(["xdg-open", str(folder)])
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Could not open output folder: {exc}") from exc
+
+    return {
+        "ok": True,
+        "folder": str(folder),
+        "message": "Output folder open request sent.",
+    }

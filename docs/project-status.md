@@ -2370,3 +2370,40 @@ Added behavior:
 - Start image + end image creates a fade transition video.
 - Output is saved under backend/outputs/local-video.
 - This is a local fallback renderer, not AI video generation.
+
+## Release Pack AI-12 Completed
+
+Name:
+
+Video Workbench Dashboard
+
+Added files:
+
+- frontend/src/components/local-video-output-actions.tsx
+
+Updated files:
+
+- backend/src/api/publishing.py
+- frontend/src/app/produce/video/[jobId]/page.tsx
+- frontend/src/app/globals.css
+- docs/project-status.md
+
+Added behavior:
+
+- local video output can be streamed from the backend
+- dashboard can preview completed MP4 outputs
+- dashboard shows output path and copy/open actions
+- dashboard can request opening the output folder on the local machine
+- video job detail page is now a production workbench
+- process steps are visible: request, prompt, prepare, render, review
+- future engines are framed: Motion Graphics, ComfyUI/Stable Diffusion, Cloud Video Connectors
+
+Next recommended step:
+
+Release Pack AI-13: Local Motion Graphics Engine
+
+Goal:
+
+- add a local 2D motion graphics renderer
+- support line-drawing animation, pan/zoom, layer motion, animated text and simple After Effects-style compositions
+- keep outputs in the same Video Workbench
